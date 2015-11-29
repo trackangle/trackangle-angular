@@ -10,7 +10,7 @@ api_urls = [
 
 urlpatterns = patterns(
     '',
-    url(r'^api-1\.0/', include(api_urls)),
+    url('^api-1\.0/', include(api_urls)),
     url('^.*$', IndexView.as_view(), name='index'),
 )
 

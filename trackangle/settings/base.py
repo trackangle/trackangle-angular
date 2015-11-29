@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+    'dj_static',
     'rest_framework',
     'compressor',
     'trackangle.authentication',
@@ -57,7 +58,7 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'trackangle.urls'
 
-WSGI_APPLICATION = 'trackangle.wsgi.application'
+#WSGI_APPLICATION = 'trackangle.wsgi.application'
 
 
 # Database
