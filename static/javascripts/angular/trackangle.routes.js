@@ -15,7 +15,7 @@
     $routeProvider.when('/register', {
       controller: 'RegisterController', 
       controllerAs: 'vm',
-      templateUrl: '/static/templates/authentication/register.html'
+      templateUrl: '/static/javascripts/angular/authentication/templates/register.html'
     }).otherwise('/');
   }
 })();

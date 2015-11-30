@@ -10,3 +10,4 @@ six==1.8.0
 static3==0.5.1
 PyMySQL
 django-extensions
+django-oauth-toolkit

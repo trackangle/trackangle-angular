@@ -15,7 +15,7 @@
     .module('trackangle.routes', ['ngRoute']);
 
     angular
-  .module('thinkster')
+  .module('trackangle')
   .run(run);
 
     run.$inject = ['$http'];
