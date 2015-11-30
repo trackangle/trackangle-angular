@@ -43,7 +43,8 @@ INSTALLED_APPS = (
     'rest_framework',
     'compressor',
     'trackangle.authentication',
-    'trackangle.route'
+    'trackangle.route',
+    'trackangle.utils'
 )
 
 MIDDLEWARE_CLASSES = (
