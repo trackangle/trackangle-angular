@@ -9,8 +9,9 @@ class Route(models.Model):
     description = models.CharField(max_length=255, blank=True, null=True);
     owners = models.ManyToManyField(Account, through='RouteHasOwners',
                                     related_name='owned_routes')
-    created = models.DateTimeField(default=now(), null=False)
-    updated = models.DateTimeField(default=now(), null=False)
+    url_title = models.CharField(max_length=100, blank=False)
+    created = models.DateTimeField(null=False)
+    updated = models.DateTimeField(null=False)
 
 
 class RouteHasOwners(models.Model):
