@@ -14,7 +14,11 @@ class RouteViewSet(viewsets.ModelViewSet):
     #     return (True,)
 
     def create(self, request, *args, **kwargs):
-        return response.Response(status=status.HTTP_201_CREATED)
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            Route.objects.create_route(**serializer.validated_data)
+            return response.Response(status=status.HTTP_201_CREATED)
+        return response.Response(status=status.HTTP_400_BAD_REQUEST)
 
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)

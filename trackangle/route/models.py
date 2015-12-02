@@ -1,6 +1,7 @@
 from django.utils.timezone import now
 from django.db import models
 from trackangle.authentication.models import Account
+from trackangle.route.managers import RouteManager
 
 
 class Route(models.Model):
@@ -12,6 +13,8 @@ class Route(models.Model):
     url_title = models.CharField(max_length=100, blank=False)
     created = models.DateTimeField(null=False)
     updated = models.DateTimeField(null=False)
+
+    objects = RouteManager()
 
 
 class RouteHasOwners(models.Model):
