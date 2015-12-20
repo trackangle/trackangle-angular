@@ -22,6 +22,10 @@
         controller: 'RouteController',
         templateUrl: '/static/javascripts/angular/route/templates/route.html'
       })
+      .when('/route/create', {
+        controller: 'CreateRouteController',
+        templateUrl: '/static/javascripts/angular/route/templates/create_route.html'
+      })
       .otherwise('/');
   }
 })();

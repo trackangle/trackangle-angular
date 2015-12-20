@@ -1,9 +1,8 @@
-<!-- <div class="row"> -->
-  <div ng-repeat="route in routes" class="row">
-	<!-- <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="route in routes"> -->
-	        <p class="text-center col-xs-6 col-sm-3">{{route.title}}</p>
-	        <a href="{{ route.url_title }}" class="text-center col-xs-6 col-sm-3">Go To Route Detail</a>
-	    <!-- </div> -->
-    <!-- </div> -->
-  </div>
-<!-- </div> -->
+<div ng-repeat="route in routes" class="row">
+    <p class="text-center col-xs-6 col-sm-3">{{route.title}}</p>
+    <a href="{{ route.url_title }}" class="text-center col-xs-6 col-sm-3">Go To Route Detail</a>
+</div>
+
+<div>
+	<a href="/route/create"> Create a new route</a>
+</div>
