@@ -3,8 +3,16 @@
 
 	    <div class="form-group move-down">
 	        <label for="Autocomplete">Generic Autocomplete</label>
-	        <input type="text" id="Autocomplete" ng-autocomplete="result1" details="details1" options="options1" ng-model="hede"/>
+	        <input type="text" id="Autocomplete" ng-autocomplete="result1" details="details1" options="options1" ng-model="country"/>
 	    </div>
-	    <div>result: {{ details1 }}</div>
+	    <div ng-show="details1.address_components != null">
+	    	Your selected country: {{ details1.address_components[0].long_name}}
+	    </div>
 	</form>
 </div>
+
+<div ng-show="details1.address_components[0].short_name != null">
+	<input type="text" id="Autocomplete" ng-autocomplete="result2" details="details2" options="options2" ng-model="city"/>
+</div>
+
+<button ng-click="saveRoute()">Save</button>
