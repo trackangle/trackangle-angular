@@ -24,5 +24,13 @@
         watchEnter: true
       };
       $scope.details1 = '';
+
+      $scope.result2 = '';
+      $scope.options2 =
+      {
+           watchEnter: true,
+           country: $scope.details1.address_components[0].short_name.toLowerCase()
+      };
+      $scope.details2 = '';
   }
 })();
