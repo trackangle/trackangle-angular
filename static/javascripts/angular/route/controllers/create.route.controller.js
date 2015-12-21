@@ -21,7 +21,8 @@
       $scope.result1 = '';
       $scope.options1 = 
       {
-        watchEnter: true
+        watchEnter: true,
+        types: '(cities)'
       };
       $scope.details1 = '';
 
@@ -32,10 +33,13 @@
       $scope.$watch('details1', function(){
         console.log("Has changed");
         if($scope.details1) {
+          console.log($scope.details1);
+          var country_index = $scope.details1.address_components.length - 1;
+          console.log(country_index);
           $scope.options2 = {
                watchEnter: true,
-               types: '(cities)',
-               country: $scope.details1.address_components[0].short_name.toLowerCase()
+               types: 'establishment',
+               country: $scope.details1.address_components[country_index].short_name.toLowerCase()
             };
         }
       });
