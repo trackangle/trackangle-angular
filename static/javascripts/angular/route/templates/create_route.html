@@ -1,18 +1,94 @@
+<!--div class="row">
+	<label for="route_title">Title</label>
+	<input type="text" id="route_title" ng-model="title"/>
+</div>
+
+<div class="row">
+	<label for="route_desc">Description</label>
+	<input type="text" id="route_desc" ng-model="description"/>
+</div>
+
 <div class="row">
 	<form id="form" role="form">
 
 	    <div class="form-group move-down">
-	        <label for="Autocomplete">Generic Autocomplete</label>
-	        <input type="text" id="Autocomplete" ng-autocomplete="result1" details="details1" options="options1" ng-model="country"/>
+	        <label for="AutocompleteCity">City</label>
+	        <input type="text" id="AutocompleteCity" ng-autocomplete="result_city" details="details_city" options="options_city" ng-model="country"/>
 	    </div>
-	    <div ng-show="details1.address_components != null">
-	    	Your selected country: {{ details1.address_components[0].long_name}}
-	    </div>
+
 	</form>
 </div>
 
-<div ng-show="details1.address_components[0].short_name != null">
-	<input type="text" id="Autocomplete" ng-autocomplete="result2" details="details2" options="options2" ng-model="city"/>
+
+<div ng-show="details_city.address_components[0].short_name != null">
+	 <label for="AutocompleteMuseum">Museum</label>
+	<input type="text" id="AutocompleteMuseum" ng-autocomplete="result_museum" details="details_museum" options="options_museum" ng-model="museum"/>
 </div>
 
-<button ng-click="saveRoute()">Save</button>
+<div ng-show="details_city.address_components[0].short_name != null">
+	 <label for="AutocompleteFood">Food</label>
+	<input type="text" id="AutocompleteFood" ng-autocomplete="result_food" details="details_food" options="options_food" ng-model="food"/>
+</div>
+
+<div ng-show="details_city.address_components[0].short_name != null">
+	 <label for="AutocompleteShop">Shop</label>
+	<input type="text" id="AutocompleteShop" ng-autocomplete="result_shop" details="details_shop" options="options_shop" ng-model="shop"/>
+</div>
+
+<button ng-click="saveRoute()">Save</button-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+<form class="form-horizontal" role="form">
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="route_title">Title</label>
+    <div class="col-sm-10">
+      <input type="text" id="route_title" ng-model="title"/>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="route_desc">Description</label>
+    <div class="col-sm-10">
+     <input type="text" id="route_desc" ng-model="description"/>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="AutocompleteCity">City</label>
+    <div class="col-sm-10">
+      <input type="text" id="AutocompleteCity" ng-autocomplete="result_city" details="details_city" options="options_city" ng-model="country"/>
+    </div>
+  </div>
+  <div class="form-group" ng-show="details_city.address_components[0].short_name != null">
+    <label class="control-label col-sm-2" for="AutocompleteMuseum">Museum</label>
+    <div class="col-sm-10">
+     <input type="text" id="AutocompleteMuseum" ng-autocomplete="result_museum" details="details_museum" options="options_museum" ng-model="museum"/>
+    </div>
+  </div>
+  <div class="form-group" ng-show="details_city.address_components[0].short_name != null">
+    <label class="control-label col-sm-2" for="AutocompleteFood">Food</label>
+    <div class="col-sm-10">
+     <input type="text" id="AutocompleteFood" ng-autocomplete="result_food" details="details_food" options="options_food" ng-model="food"/>
+    </div>
+  </div>
+  <div class="form-group" ng-show="details_city.address_components[0].short_name != null">
+    <label class="control-label col-sm-2" for="AutocompleteShop">Shop</label>
+    <div class="col-sm-10">
+     <input type="text" id="AutocompleteShop" ng-autocomplete="result_shop" details="details_shop" options="options_shop" ng-model="shop"/>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+		<button class="btn btn-success" ng-click="saveRoute()">Save</button>
+    </div>
+  </div>
+</form>

@@ -8,7 +8,10 @@ class RouteSerializer(serializers.ModelSerializer):
     title = serializers.CharField()
     description = serializers.CharField()
     url_title = serializers.CharField()
+    museum = serializers.CharField()
+    food = serializers.CharField()
+    shop = serializers.CharField()
 
     class Meta:
         model = Route
-        fields = ('title', 'description', 'url_title',)
+        fields = ('title', 'description', 'url_title', 'museum', 'food', 'shop',)

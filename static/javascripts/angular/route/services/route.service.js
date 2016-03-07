@@ -29,8 +29,15 @@
       return $http.get('/api-1.0/route/');
     }
 
-    function createRoute(country, city) {
-      return $http.get('/api-1.0/route/')
+    function createRoute(title, description, url_title, museum, food, shop) {
+      return $http.post('/api-1.0/route/', {
+        title: title,
+        description: description,
+        url_title: url_title,
+        museum: museum,
+        food: food,
+        shop: shop
+      })
     }
   }
 })();

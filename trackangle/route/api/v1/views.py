@@ -14,6 +14,7 @@ class RouteViewSet(viewsets.ModelViewSet):
     #     return (True,)
 
     def create(self, request, *args, **kwargs):
+        print("asdasds")
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             Route.objects.create_route(**serializer.validated_data)
