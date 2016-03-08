@@ -10,22 +10,13 @@
     .module('trackangle.route.controllers', ['ngAutocomplete'])
     .controller('RouteController', RouteController);
 
-  RouteController.$inject = ['$location', '$scope', '$http', 'RouteService'];
+  RouteController.$inject = ['$location', '$scope', '$http', '$routeParams', 'RouteService'];
 
   /**
   * @namespace RegisterController
   */
-  function RouteController($location, $scope, $http, RouteService) {
-    $http.get('/api-1.0/route/').then(getSuccessFunction, errorFunction);
-
-    function getSuccessFunction(data, status, headers, config) {
-    	console.log("On success: "+ data.data);
-    	$scope.routes = data.data;
-    };
-
-    function errorFunction(data, status, headers, config) {
-    	console.log("An error occured: " + data.error);
-    }
+  function RouteController($location, $scope, $http, $routeParams, RouteService) {
+    console.log($routeParams.id);
  
   }
 })();

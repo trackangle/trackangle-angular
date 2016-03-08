@@ -19,12 +19,16 @@
         templateUrl: '/static/javascripts/angular/authentication/templates/register.html'
       })
       .when('/routes', {
-        controller: 'RouteController',
-        templateUrl: '/static/javascripts/angular/route/templates/route.html'
+        controller: 'RoutesController',
+        templateUrl: '/static/javascripts/angular/route/templates/routes.html'
       })
       .when('/route/create', {
         controller: 'CreateRouteController',
         templateUrl: '/static/javascripts/angular/route/templates/create_route.html'
+      })
+      .when('/route/:id', {
+        controller: 'RouteController',
+        templateUrl: '/static/javascripts/angular/route/templates/route.html'
       })
       .otherwise('/');
   }

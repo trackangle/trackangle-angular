@@ -2,6 +2,7 @@ from rest_framework import viewsets, response, status
 
 from trackangle.route.api.v1.serializers import RouteSerializer
 from trackangle.route.models import Route
+from django.shortcuts import get_object_or_404
 
 
 class RouteViewSet(viewsets.ModelViewSet):
@@ -23,3 +24,9 @@ class RouteViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
+
+    def retrieve(self, request, pk=None):
+        queryset = Route.objects.all()
+        route = get_object_or_404(queryset, pk=pk)
+        serializer = RouteSerializer(route)
+        return response.Response(serializer.data)
