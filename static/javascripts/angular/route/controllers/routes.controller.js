@@ -16,6 +16,7 @@
   * @namespace RegisterController
   */
   function RoutesController($location, $scope, $http, RouteService) {
+      console.log("asdasdasd");
     $http.get('/api-1.0/route/').then(getSuccessFunction, errorFunction);
 
     function getSuccessFunction(data, status, headers, config) {

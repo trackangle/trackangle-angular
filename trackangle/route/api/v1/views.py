@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 
 class RouteViewSet(viewsets.ModelViewSet):
 
-    lookup_field = 'url_title'
+    lookup_field = 'id'
     serializer_class = RouteSerializer
     queryset = Route.objects.all()
 
@@ -15,7 +15,6 @@ class RouteViewSet(viewsets.ModelViewSet):
     #     return (True,)
 
     def create(self, request, *args, **kwargs):
-        print("asdasds")
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             Route.objects.create_route(**serializer.validated_data)
@@ -23,10 +22,11 @@ class RouteViewSet(viewsets.ModelViewSet):
         return response.Response(status=status.HTTP_400_BAD_REQUEST)
 
     def list(self, request, *args, **kwargs):
-        return super().list(request, *args, **kwargs)
+        print("list")
+        return super(RouteViewSet, self).list(request, *args, **kwargs)
 
-    def retrieve(self, request, pk=None):
+    def retrieve(self, request, id):
         queryset = Route.objects.all()
-        route = get_object_or_404(queryset, pk=pk)
+        route = get_object_or_404(queryset, pk=id)
         serializer = RouteSerializer(route)
         return response.Response(serializer.data)
