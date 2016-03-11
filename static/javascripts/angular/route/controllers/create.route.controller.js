@@ -1,21 +1,6 @@
-/**
-* Register controller
-* @namespace trackangle.route.controllers
-* @namespace trackangle.route.controllers
-*/
-(function () {
-  'use strict';
+define(['app', '/static/javascripts/angular/route/services/route.service.js', 'ngAutocomplete'], function (app) {
+    app.register.controller('CreateRouteController', ['$scope','RouteService', function ($scope, RouteService){
 
-  angular
-    .module('trackangle.route.controllers', ['ngAutocomplete'])
-    .controller('CreateRouteController', CreateRouteController);
-
-  CreateRouteController.$inject = ['$location', '$scope', '$http', 'RouteService'];
-
-  /**
-  * @namespace RegisterController
-  */
-  function CreateRouteController($location, $scope, $http, RouteService) {
       console.log("Second controller");
 
       $scope.result_city = '';
@@ -59,26 +44,12 @@
         }
       });
 
-      $scope.$watch('details_museum', function(){
-          if($scope.details_museum) {
-              $scope.museum_data = $scope.details_museum.place_id;
-          }
-      });
-       $scope.$watch('details_food', function(){
-          if($scope.details_food) {
-              $scope.food_data = $scope.details_food.place_id;
-          }
-      });
-      $scope.$watch('details_shop', function(){
-          if($scope.details_shop) {
-              $scope.shop_data = $scope.details_shop.place_id;
-          }
-      });
 
       $scope.saveRoute = function() {
-          RouteService.createRoute($scope.title, $scope.description, 'urltitle', $scope.museum_data, $scope.food_data, $scope.shop_data).then(function(res) {
-            console.log("Res:"+ res);
+          RouteService.createRoute($scope.title, $scope.description, 'urltitle', $scope.details_museum.place_id, $scope.details_food.place_id, $scope.details_shop.place_id).then(function(res) {
+            console.log("Res:"+ res.config.data.id);
+            console.log("Res:"+ res.config.data.title);
           })
       }
-  }
-})();
+  }]);
+});

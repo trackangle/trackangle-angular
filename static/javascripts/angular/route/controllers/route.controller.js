@@ -1,31 +1,15 @@
-/**
-* Register controller
-* @namespace trackangle.route.controllers
-* @namespace trackangle.route.controllers
-*/
-(function () {
-  'use strict';
 
-  angular
-    .module('trackangle.route.controllers')
-    .controller('RouteController', RouteController);
+define(['app'], function (app) {
+    app.register.controller('RouteController', function ($scope, $http, $routeParams) {
+      console.log($routeParams.id);
+      $http.get('/api-1.0/route/' + $routeParams.id + '/').then(getSuccessFunction, errorFunction);
 
-  RouteController.$inject = ['$location', '$scope', '$http', '$routeParams', 'RouteService'];
+      function getSuccessFunction(data, status, headers, config) {
+          $scope.route = data.data;
+      };
 
-  /**
-  * @namespace RegisterController
-  */
-  function RouteController($location, $scope, $http, $routeParams, RouteService) {
-    console.log($routeParams.id);
-    $http.get('/api-1.0/route/' + $routeParams.id + '/').then(getSuccessFunction, errorFunction);
-
-    function getSuccessFunction(data, status, headers, config) {
-    	$scope.route = data.data;
-    };
-
-    function errorFunction(data, status, headers, config) {
-    	console.log("An error occured: " + data.error);
-    }
- 
-  }
-})();
+      function errorFunction(data, status, headers, config) {
+          console.log("An error occured: " + data.error);
+      }
+  });
+});

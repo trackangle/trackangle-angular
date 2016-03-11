@@ -20,6 +20,12 @@
     "ngDialog": "~0.3.3",
     "underscore": "~1.7.0",
     "fontawesome": "~4.2.0",
-    "ngAutocomplete": "~1.0.0"
+    "ngAutocomplete": "~1.0.0",
+    "angularAMD" : "0.2.1",
+    "requirejs": "2.1.14",
+    "angular-resource": "1.2.16",
+    "angular-ui-router": "~0.2.10",
+    "requirejs-text":"2.0.6",
+    "jquery-ui": "1.10.2"
   }
 }

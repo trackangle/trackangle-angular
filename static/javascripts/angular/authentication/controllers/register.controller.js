@@ -1,32 +1,13 @@
-/**
-* Register controller
-* @namespace trackangle.authentication.controllers
-* @namespace trackangle.authentication.controllers
-*/
-(function () {
-  'use strict';
 
-  angular
-    .module('trackangle.authentication.controllers')
-    .controller('RegisterController', RegisterController);
-
-  RegisterController.$inject = ['$location', '$scope', 'Authentication'];
-
-  /**
-  * @namespace RegisterController
-  */
-  function RegisterController($location, $scope, Authentication) {
+define(['app', '/static/javascripts/angular/authentication/services/authentication.service.js'], function (app) {
+    app.register.controller('RegisterController', ['$scope','Authentication', function ($scope, Authentication){
     var vm = this;
 
     vm.register = register;
 
-    /**
-    * @name register
-    * @desc Register a new user
-    * @memberOf trackangle.authentication.controllers.RegisterController
-    */
     function register() {
+      console.log("asdasdasd");
       Authentication.register(vm.email, vm.password, vm.username);
     }
-  }
-})();
+  }])
+});

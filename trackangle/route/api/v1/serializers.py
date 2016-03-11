@@ -5,6 +5,7 @@ from trackangle.route.models import Route
 
 class RouteSerializer(serializers.ModelSerializer):
 
+    id = serializers.DecimalField
     title = serializers.CharField()
     description = serializers.CharField()
     url_title = serializers.CharField()
@@ -14,4 +15,4 @@ class RouteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Route
-        fields = ('title', 'description', 'url_title', 'museum', 'food', 'shop',)
+        fields = ('id', 'title', 'description', 'url_title', 'museum', 'food', 'shop',)
