@@ -7,7 +7,7 @@
   'use strict';
 
   angular
-    .module('trackangle.route.controllers', ['ngAutocomplete'])
+    .module('trackangle.route.controllers')
     .controller('RoutesController', RoutesController);
 
   RoutesController.$inject = ['$location', '$scope', '$http', 'RouteService'];

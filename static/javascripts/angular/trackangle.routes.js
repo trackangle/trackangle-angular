@@ -18,10 +18,6 @@
         controllerAs: 'vm',
         templateUrl: '/static/javascripts/angular/authentication/templates/register.html'
       })
-      .when('/routes', {
-        controller: 'RoutesController',
-        templateUrl: '/static/javascripts/angular/route/templates/routes.html'
-      })
       .when('/route/create', {
         controller: 'CreateRouteController',
         templateUrl: '/static/javascripts/angular/route/templates/create_route.html'
@@ -29,6 +25,10 @@
       .when('/route/:id', {
         controller: 'RouteController',
         templateUrl: '/static/javascripts/angular/route/templates/route.html'
+      })
+      .when('/routes', {
+        controller: 'RoutesController',
+        templateUrl: '/static/javascripts/angular/route/templates/routes.html'
       })
       .otherwise('/');
   }
