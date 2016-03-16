@@ -1,6 +1,6 @@
 
-define(['app'], function (app) {
-    app.register.controller('RouteController', function ($scope, $http, $routeParams) {
+define(['trackangle'], function (trackangle) {
+    trackangle.register.controller('RouteController', function ($scope, $http, $routeParams) {
       console.log($routeParams.id);
       $http.get('/api-1.0/route/' + $routeParams.id + '/').then(getSuccessFunction, errorFunction);
 

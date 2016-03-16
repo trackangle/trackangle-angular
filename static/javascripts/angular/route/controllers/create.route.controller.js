@@ -1,5 +1,5 @@
-define(['app', '/static/javascripts/angular/route/services/route.service.js', 'ngAutocomplete'], function (app) {
-    app.register.controller('CreateRouteController', ['$scope','RouteService', function ($scope, RouteService){
+define(['trackangle', '/static/javascripts/angular/route/services/route.service.js', 'ngAutocomplete'], function (trackangle) {
+    trackangle.register.controller('CreateRouteController', ['$scope','RouteService', function ($scope, RouteService){
 
       console.log("Second controller");
 

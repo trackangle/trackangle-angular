@@ -1,6 +1,6 @@
 
-define(['app'], function (app) {
-    app.register.factory('RouteService', ['$http', function ($http){
+define(['trackangle'], function (trackangle) {
+    trackangle.register.factory('RouteService', ['$http', function ($http){
 
     var RouteService = {
         routes:function getRoutes(email, password, username)

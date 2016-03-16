@@ -28,5 +28,5 @@ require.config({
   },
 
   // kick start application
-  deps: ['app']
+  deps: ['trackangle']
 });

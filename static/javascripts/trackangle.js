@@ -1,8 +1,8 @@
 define(['angularAMD', 'angular-route'], function (angularAMD) {
     'use strict';
 
-  var app = angular.module("trackangle", ['ngRoute']);
-  app.config(function ($routeProvider, $locationProvider) {
+  var trackangle = angular.module("trackangle", ['ngRoute']);
+  trackangle.config(function ($routeProvider, $locationProvider) {
     /*$http.defaults.xsrfHeaderName = 'X-CSRFToken';
 	$http.defaults.xsrfCookieName = 'csrftoken';*/
     $locationProvider.html5Mode(true);
@@ -24,7 +24,7 @@ define(['angularAMD', 'angular-route'], function (angularAMD) {
     .otherwise({redirectTo: "/routes"});
   });
 
-  angularAMD.bootstrap(app);
+  angularAMD.bootstrap(trackangle);
 
-  return app;
+  return trackangle;
 });

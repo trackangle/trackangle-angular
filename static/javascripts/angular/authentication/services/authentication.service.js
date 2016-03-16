@@ -1,5 +1,5 @@
-define(['app'], function (app) {
-    app.register.factory('Authentication', ['$http', function ($http){
+define(['trackangle'], function (trackangle) {
+    trackangle.register.factory('Authentication', ['$http', function ($http){
 
     var Authentication = {
         register:function register(email, password, username) {
