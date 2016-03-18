@@ -25,11 +25,7 @@ class RouteViewSet(viewsets.ModelViewSet):
             route = Route.objects.create_route(**serializer.validated_data)
 
             for place in places:
-                place_id = place.pop('id')
-                place_type = place.pop('type')
-                #Place.objects.create(route=route, **shop)
-                saved_place = Place(id=place_id, type=place_type)
-                saved_place.save()
+                saved_place = Place.objects.create(**place)
                 route_has_places = RouteHasPlaces(route=route, place=saved_place)
                 route_has_places.save()
 
