@@ -4,22 +4,19 @@ from trackangle.authentication.models import Account
 from trackangle.route.managers import RouteManager
 
 
-class Shop(models.Model):
-    # place_id = models.CharField(max_length=100, blank=False, null=False)
-    place_id = models.CharField(max_length=100, primary_key=True)
-    # route = models.ForeignKey(Route, db_column='route_id')
+SHOP = 0
+MUSEUM = 1
+FOOD = 2
+PLACE_TYPES = (
+    (SHOP, 'shop'),
+    (MUSEUM, 'museum'),
+    (FOOD, 'food'),
+)
 
 
-class Museum(models.Model):
-    # place_id = models.CharField(max_length=100, blank=False, null=False)
-    place_id = models.CharField(max_length=100, primary_key=True)
-    # route = models.ForeignKey(Route, db_column='route_id')
-
-
-class Food(models.Model):
-    # place_id = models.CharField(max_length=100, blank=False, null=False)
-    place_id = models.CharField(max_length=100, primary_key=True)
-    # route = models.ForeignKey(Route, db_column='route_id')
+class Place(models.Model):
+    id = models.CharField(max_length=100, primary_key=True)
+    type = models.IntegerField(choices=PLACE_TYPES)
 
 
 class Route(models.Model):
@@ -31,9 +28,7 @@ class Route(models.Model):
     url_title = models.CharField(max_length=100, blank=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    shops = models.ManyToManyField(Shop, through='RouteHasShops',)
-    museums = models.ManyToManyField(Museum, through='RouteHasMuseums',)
-    foods = models.ManyToManyField(Food, through='RouteHasFoods', )
+    places = models.ManyToManyField(Place, through='RouteHasPlaces',)
 
     objects = RouteManager()
 
@@ -43,28 +38,7 @@ class RouteHasOwners(models.Model):
     owner = models.ForeignKey(Account, db_column='owner_id')
 
 
-class RouteHasMuseums(models.Model):
+class RouteHasPlaces(models.Model):
     route = models.ForeignKey(Route, db_column='route_id')
-    museum = models.ForeignKey(Museum, db_column='museum_id')
-
-
-class RouteHasFoods(models.Model):
-    route = models.ForeignKey(Route, db_column='route_id')
-    food = models.ForeignKey(Food, db_column='food_id')
-
-
-class RouteHasShops(models.Model):
-    route = models.ForeignKey(Route, db_column='route_id')
-    shop = models.ForeignKey(Shop, db_column='shop_id')
-
-
-SHOP = 0
-MUSEUM = 1
-FOOD = 2
-PLACE_TYPES = (
-    (SHOP, 'shop'),
-    (MUSEUM, 'museum'),
-    (FOOD, 'food'),
-)
-
+    place = models.ForeignKey(Place, db_column='place_id')
 
