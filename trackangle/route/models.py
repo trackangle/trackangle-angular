@@ -1,22 +1,7 @@
-from django.utils.timezone import now
 from django.db import models
 from trackangle.authentication.models import Account
+from trackangle.place.models import Place
 from trackangle.route.managers import RouteManager
-
-
-SHOP = 0
-MUSEUM = 1
-FOOD = 2
-PLACE_TYPES = (
-    (SHOP, 'shop'),
-    (MUSEUM, 'museum'),
-    (FOOD, 'food'),
-)
-
-
-class Place(models.Model):
-    id = models.CharField(max_length=100, primary_key=True)
-    type = models.IntegerField(choices=PLACE_TYPES)
 
 
 class Route(models.Model):
@@ -42,3 +27,5 @@ class RouteHasPlaces(models.Model):
     route = models.ForeignKey(Route, db_column='route_id')
     place = models.ForeignKey(Place, db_column='place_id')
 
+    class Meta:
+        unique_together = (("route", "place"))

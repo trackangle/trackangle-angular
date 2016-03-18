@@ -4,7 +4,7 @@ from trackangle.route.api.v1.serializers import RouteSerializer
 from trackangle.route.models import Route
 from django.shortcuts import get_object_or_404
 from trackangle.route.models import RouteHasPlaces
-from trackangle.route.models import Place
+from trackangle.place.models import Place
 
 
 class RouteViewSet(viewsets.ModelViewSet):

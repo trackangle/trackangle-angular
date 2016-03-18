@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'compressor',
     'trackangle.authentication',
     'trackangle.route',
+    'trackangle.place',
     'trackangle.utils'
 )
 
