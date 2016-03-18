@@ -1,18 +1,44 @@
 from rest_framework import serializers
 
 from trackangle.route.models import Route
+from trackangle.route.models import Shop
+from trackangle.route.models import Food
+from trackangle.route.models import Museum
+
+
+class ShopSerializer(serializers.ModelSerializer):
+    place_id = serializers.CharField()
+
+    class Meta:
+        model = Shop
+        fields = ('place_id',)
+
+
+class FoodSerializer(serializers.ModelSerializer):
+    place_id = serializers.CharField()
+
+    class Meta:
+        model = Food
+        fields = ('place_id',)
+
+
+class MuseumSerializer(serializers.ModelSerializer):
+    place_id = serializers.CharField()
+
+    class Meta:
+        model = Museum
+        fields = ('place_id',)
 
 
 class RouteSerializer(serializers.ModelSerializer):
 
-    id = serializers.DecimalField
-    title = serializers.CharField()
-    description = serializers.CharField()
-    url_title = serializers.CharField()
-    museum = serializers.CharField()
-    food = serializers.CharField()
-    shop = serializers.CharField()
+    shops = ShopSerializer(many=True)
+    museums = MuseumSerializer(many=True)
+    foods = FoodSerializer(many=True)
 
     class Meta:
         model = Route
-        fields = ('id', 'title', 'description', 'url_title', 'museum', 'food', 'shop',)
+        fields = ('id', 'title', 'description', 'url_title', 'created', 'updated',
+                  'shops', 'museums', 'foods',)
+        read_only_fields = ('created', 'updated',)
+
