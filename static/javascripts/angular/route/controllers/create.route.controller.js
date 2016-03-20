@@ -1,8 +1,9 @@
 define(['trackangle', '/static/javascripts/angular/route/services/route.service.js', 'ngAutocomplete'], function (trackangle) {
-    trackangle.register.controller('CreateRouteController', ['$scope','RouteService', function ($scope, RouteService){
+    trackangle.register.controller('CreateRouteController', ['$scope','RouteService', function ($scope,$location, RouteService){
+
+
 
       console.log("Second controller");
-
       $scope.result_city = '';
       $scope.options_city =
       {
@@ -45,11 +46,43 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
       });
 
 
+      $scope.tops = function () {
+          var tops = this
+          tops.li = 'accomodation';
+          console.log(tops.li)
+          $scope.setAccomodation = function () {
+              tops.li = 'accomodation';
+              console.log(tops.li)
+          };
+          $scope.setFood = function () {
+              tops.li = 'food';
+              console.log(tops.li)
+          };
+          $scope.setNightlife = function () {
+              tops.li = 'nightlife';
+              console.log(tops.li)
+          };
+          $scope.setEntertinment_Arts = function () {
+              tops.li = 'entertainment_arts';
+              console.log(tops.li)
+          };
+          $scope.setArchitecture_buildings = function () {
+              tops.li = 'architecture_buildings';
+              console.log(tops.li)
+          };
+          $scope.setOutdoor = function () {
+              tops.li = 'outdoor';
+              console.log(tops.li)
+          };
+
+      };
+
       $scope.saveRoute = function() {
           RouteService.createRoute($scope.title, $scope.description, 'urltitle', $scope.details_museum.place_id, $scope.details_food.place_id, $scope.details_shop.place_id).then(function(res) {
             console.log("Res:"+ res.config.data.id);
             console.log("Res:"+ res.config.data.title);
           })
       }
+
   }]);
 });
