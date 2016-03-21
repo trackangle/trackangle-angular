@@ -1,27 +1,28 @@
 
-
+<div>
 
 
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-            <div class="collapse navbar-collapse navbar-ex1-collapse" ng-init="tops()">
+            <div class="collapse navbar-collapse navbar-ex1-collapse" >
                 <ul class="nav navbar-nav side-nav">
-                        <li ng-click="setAccomodation()"><a href=""><i class="fa fa-fw fa-home"></i>Accomodation</a></li>
-                        <li ng-click="setFood()"><a href=""><i class="fa fa-fw fa-cutlery"></i>Food</a></li>
-                        <li ng-click="setNightlife()"><a href=""><i class="fa fa-fw fa-glass"></i>Nightlife</a></li>
-                        <li ng-click="setEntertinment_Arts()"><a href=""><i class="fa fa-fw fa-paint-brush"></i> Entertainment & Arts</a></li>
-                        <li ng-click="setArchitecture_buildings()"><a href=""><i class="fa fa-fw fa-university"></i> Architecture & Buildings</a></li>
-                        <li ng-click="setOutdoor()"><a href=""><i class="fa fa-fw fa-bicycle"></i> Outdoor</a></li>
+                        <li ng-click="set_right_navbar('accomodation')"><a href=""><i class="fa fa-fw fa-home"></i>Accomodation</a></li>
+                        <li ng-click="set_right_navbar('food')"><a href=""><i class="fa fa-fw fa-cutlery"></i>Food</a></li>
+                        <li ng-click="set_right_navbar('nightlife')"><a href=""><i class="fa fa-fw fa-glass"></i>Nightlife</a></li>
+                        <li ng-click="set_right_navbar('entertainment_arts')"><a href=""><i class="fa fa-fw fa-paint-brush"></i> Entertainment & Arts</a></li>
+                        <li ng-click="set_right_navbar('architecture_buildings')"><a href=""><i class="fa fa-fw fa-university"></i> Architecture & Buildings</a></li>
+                        <li ng-click="set_right_navbar('outdoor')"><a href=""><i class="fa fa-fw fa-bicycle"></i> Outdoor</a></li>
                 </ul>
-                <div ng-if="tops.li == 'accomodation'" ng-include="'/trackangle/templates/accomodation_details_hotel.html'"style="margin-left: 300px;margin-top: 300px">asdasdasdasd</div>
-                <div ng-if="tops.li == 'food'" ng-include="'food.html'"></div>
-                <div ng-if="tops.li == 'nightlife'" ng-include="'nightlife.html'"></div>
-                <div ng-if="tops.li == 'entertainment_arts'" ng-include="'entertainment_arts.html'"></div>
-                <div ng-if="tops.li == 'architecture_buildings'" ng-include="'architecture_buildings.html'"></div>
-                <div ng-if="tops.li == 'outdoor'" ng-include="'outdoor.html'"></div>
+
+
             </div>
+                <div ng-if="get_right_navbar() == 'accomodation'"  style="margin-left: 300px;margin-top: 300px">accomodation</div>
+                <div ng-if="get_right_navbar() == 'food'"style="margin-left: 300px;margin-top: 300px">food</div>
+                <div ng-if="get_right_navbar() == 'nightlife'" style="margin-left: 300px;margin-top: 300px">nightlife</div>
+                <div ng-if="get_right_navbar() == 'entertainment_arts'" style="margin-left: 300px;margin-top: 300px">entertainment_arts</div>
+                <div ng-if="get_right_navbar() == 'architecture_buildings'" style="margin-left: 300px;margin-top: 300px">architecture_buildings</div>
+                <div ng-if="get_right_navbar() == 'outdoor'" style="margin-left: 300px;margin-top: 300px">outdoor</div>
 
-
-
+   </div>
 <!--form class="form-horizontal" role="form">
   <div class="form-group">
     <label class="control-label col-sm-2" for="route_title">Title</label>
