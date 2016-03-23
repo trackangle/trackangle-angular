@@ -1,14 +1,46 @@
-<div class="collapse navbar-collapse navbar-ex1-collapse" >
-    <ul class="nav navbar-nav side-nav">
-        <li ng-click="set_right_navbar('accomodation')"><a href=""><i class="fa fa-fw fa-home"></i>Accomodation</a></li>
-        <li ng-click="set_right_navbar('food')"><a href=""><i class="fa fa-fw fa-cutlery"></i>Food</a></li>
-        <li ng-click="set_right_navbar('nightlife')"><a href=""><i class="fa fa-fw fa-glass"></i>Nightlife</a></li>
-        <li ng-click="set_right_navbar('entertainment_arts')"><a href=""><i class="fa fa-fw fa-paint-brush"></i> Entertainment & Arts</a></li>
-        <li ng-click="set_right_navbar('architecture_buildings')"><a href=""><i class="fa fa-fw fa-university"></i> Architecture & Buildings</a></li>
-        <li ng-click="set_right_navbar('outdoor')"><a href=""><i class="fa fa-fw fa-bicycle"></i> Outdoor</a></li>
-    </ul>
+<div class="form-group">
+    <div >
+        <ul class="nav navbar-nav side-nav col-lg-2 col-md-2 col-sm-2 col-xs-2">
+            <li ng-click="set_right_navbar('accomodation')"><a href=""><i class="fa fa-fw fa-home"></i>Accomodation</a></li>
+            <li ng-click="set_right_navbar('food')"><a href=""><i class="fa fa-fw fa-cutlery"></i>Food</a></li>
+            <li ng-click="set_right_navbar('nightlife')"><a href=""><i class="fa fa-fw fa-glass"></i>Nightlife</a></li>
+            <li ng-click="set_right_navbar('entertainment_arts')"><a href=""><i class="fa fa-fw fa-paint-brush"></i> Entertainment & Arts</a></li>
+            <li ng-click="set_right_navbar('architecture_buildings')"><a href=""><i class="fa fa-fw fa-university"></i> Architecture & Buildings</a></li>
+            <li ng-click="set_right_navbar('outdoor')"><a href=""><i class="fa fa-fw fa-bicycle"></i> Outdoor</a></li>
+        </ul>
+    </div>
+    <div class="form-group create_route_div col-lg-6 col-md-6 col-sm-6 col-xs-6" >
+    <div ng-if="get_right_navbar() == 'accomodation'" >accomodation</div>
+     <label class="control-label col-sm-2" for="route_title"></label>
+        <div class="col-sm-10">
+          <input type="text" id="route_title" ng-model="title"/>
+        </div>
+     </div>
+
+        <div class="ribbon col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right" style="margin-top: 300px">
+            <h3>Header text</h3>
+            <p>Body text</p>
+        </div>
+
 </div>
-<div ng-if="get_right_navbar() == 'accomodation'"  style="margin-left: 300px;margin-top: 300px">accomodation</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div ng-if="get_right_navbar() == 'food'"style="margin-left: 300px;margin-top: 300px">food</div>
 <div ng-if="get_right_navbar() == 'nightlife'" style="margin-left: 300px;margin-top: 300px">nightlife</div>
 <div ng-if="get_right_navbar() == 'entertainment_arts'" style="margin-left: 300px;margin-top: 300px">entertainment_arts</div>
