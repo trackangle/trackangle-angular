@@ -1,4 +1,4 @@
-define(['trackangle', '/static/bower_components/angular-cookies/angular-cookies.js'], function (trackangle) {
+define(['trackangle', 'angular-cookies'], function (trackangle) {
     trackangle.register.factory('Authentication', ['$http', '$cookies', function ($http, $cookies){
 
 
