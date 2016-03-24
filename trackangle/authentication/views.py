@@ -34,5 +34,6 @@ class AccountViewSet(viewsets.ModelViewSet):
         }, status=status.HTTP_400_BAD_REQUEST)
 
     def list(self, request, *args, **kwargs):
-        print("In this view")
-        return super().list(request, *args, **kwargs)
+        queryset = Account.objects.all()
+        serializer = AccountSerializer(queryset, many=True)
+        return Response(serializer.data)

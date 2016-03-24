@@ -21,13 +21,12 @@ class RouteViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             places = serializer.validated_data.pop('places')
 
-            print(serializer.validated_data)
             route = Route.objects.create_route(**serializer.validated_data)
 
             for place in places:
-                saved_place = Place.objects.create(**place)
-                route_has_places = RouteHasPlaces(route=route, place=saved_place)
-                route_has_places.save()
+                p = Place.objects.create(**place)
+                routehasplaces = RouteHasPlaces(route=route, place=p)
+                routehasplaces.save()
 
             return response.Response(status=status.HTTP_201_CREATED)
         return response.Response(status=status.HTTP_400_BAD_REQUEST)

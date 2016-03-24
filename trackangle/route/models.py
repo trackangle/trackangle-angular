@@ -28,4 +28,4 @@ class RouteHasPlaces(models.Model):
     place = models.ForeignKey(Place, db_column='place_id')
 
     class Meta:
-        unique_together = (("route", "place"))
+        unique_together = ("route", "place",)
