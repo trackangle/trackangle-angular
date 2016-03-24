@@ -1,7 +1,28 @@
-define(['angularAMD', 'angular-route'], function (angularAMD) {
+define(['angularAMD', 'angular-route', 'angular-cookies'], function (angularAMD) {
     'use strict';
 
-  var trackangle = angular.module("trackangle", ['ngRoute']);
+  var trackangle = angular.module("trackangle", ['ngRoute', 'ngCookies']);
+
+  trackangle.controller('NavbarController', function ($scope, $http, $cookies) {
+      $scope.logout = function() {
+          console.log("asdasd");
+          return $http.post('/api/v1/auth/logout/')
+              .then(logoutSuccessFn, logoutErrorFn);
+
+          function logoutSuccessFn(data, status, headers, config) {
+              unauthenticate();
+              window.location = '/';
+          }
+
+          function logoutErrorFn(data, status, headers, config) {
+              console.error('Epic failure!');
+          }
+      }
+      function unauthenticate() {
+        delete $cookies.authenticatedAccount;
+    }
+  });
+
   trackangle.config(function ($routeProvider, $locationProvider, $httpProvider) {
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 	$httpProvider.defaults.xsrfCookieName = 'csrftoken';
@@ -13,6 +34,11 @@ define(['angularAMD', 'angular-route'], function (angularAMD) {
         templateUrl: '/static/javascripts/angular/authentication/templates/register.html',
         controller: 'RegisterController',
         controllerUrl: '/static/javascripts/angular/authentication/controllers/register.controller.js'
+    }))
+    .when("/login", angularAMD.route({
+        templateUrl: '/static/javascripts/angular/authentication/templates/login.html',
+        controller: 'LoginController',
+        controllerUrl: '/static/javascripts/angular/authentication/controllers/login.controller.js'
     }))
     .when("/routes", angularAMD.route({
         templateUrl: '/static/javascripts/angular/route/templates/routes.html',

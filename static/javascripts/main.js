@@ -6,6 +6,7 @@ require.config({
   paths: {
     'angular': '../bower_components/angular/angular',
     'angular-route': '../bower_components/angular-route/angular-route',
+    'angular-cookies': '../bower_components/angular-cookies/angular-cookies',
     'angularAMD': '../bower_components/angularAMD/angularAMD',
     'ngAutocomplete': '../bower_components/ngAutocomplete/src/ngAutocomplete',
     'jquery': '../bower_components/jquery/dist/jquery',
@@ -22,6 +23,7 @@ require.config({
   shim: {
     'angularAMD': ['angular'],
     'angular-route': ['angular'],
+    'angular-cookies': ['angular'],
     'ngAutocomplete': {
 			deps: ['angular', 'jquery', 'google-maps']
 		}

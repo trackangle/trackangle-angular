@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default" role="navigation">
+<nav class="navbar navbar-default" role="navigation" ng-controller="NavbarController">
   <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#not-google-plus-nav">
@@ -13,10 +13,10 @@
     <div class="collapse navbar-collapse" id="not-google-plus-nav">
       <ul class="nav navbar-nav pull-right">
         {% if user.is_authenticated %}
-          <li><a href="/create">Create Route</a></li>
-          <li><a href="/+{{ user.username }}">+{{ user.username }}</a></li>
-          <li><a href="/+{{ user.username }}/settings">Settings</a></li>
-          <li><a href="javascript:void(0)">Logout</a></li>
+          <li><a href="/route/create">Create Route</a></li>
+          <li><a href="/profile">{{ user.username }}</a></li>
+          <li><a href="/settings">Settings</a></li>
+          <li><a href="#" ng-click="logout()">Logout</a></li>
         {% else %}
           <li><a href="/routes">Routes</a></li>
           <li><a href="/login">Login</a></li>

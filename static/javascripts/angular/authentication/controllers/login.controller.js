@@ -1,6 +1,6 @@
 
 define(['trackangle', '/static/javascripts/angular/authentication/services/authentication.service.js'], function (trackangle) {
-    trackangle.register.controller('RegisterController', ['$scope','Authentication', function ($scope, Authentication){
+    trackangle.register.controller('LoginController', ['$scope', '$location', 'Authentication', function ($scope, $location, Authentication){
 
     activate();
 
@@ -11,8 +11,13 @@ define(['trackangle', '/static/javascripts/angular/authentication/services/authe
       }
     }
 
-    $scope.register = function() {
-      Authentication.register($scope.email, $scope.password, $scope.username);
+    $scope.login = function() {
+      Authentication.login($scope.email, $scope.password);
     }
+
+    $scope.logout = function() {
+      Authentication.logout();
+    }
+
   }])
 });
