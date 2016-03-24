@@ -4,6 +4,7 @@ from trackangle.route.api.v1.serializers import RouteSerializer
 from trackangle.route.models import Route
 from django.shortcuts import get_object_or_404
 from trackangle.route.models import RouteHasPlaces
+from trackangle.route.models import RouteHasOwners
 from trackangle.place.models import Place
 
 
@@ -22,6 +23,8 @@ class RouteViewSet(viewsets.ModelViewSet):
             places = serializer.validated_data.pop('places')
 
             route = Route.objects.create_route(**serializer.validated_data)
+            routehasowners = RouteHasOwners(route=route, owner=request.user)
+            routehasowners.save()
 
             for place in places:
                 p = Place.objects.create(**place)
