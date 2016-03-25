@@ -57,6 +57,18 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
         var newItemNo = $scope.choices.length+1;
         $scope.choices.unshift({'id':'choice'+newItemNo});
       };
+      $scope.previous_tab = function() {
+        if($scope.get_right_navbar() == "food"){
+          $scope.set_right_navbar("accomodation");
+          console.log($scope.get_right_navbar());
+        }
+      }
+      $scope.next_tab = function() {
+        if($scope.get_right_navbar() == "food"){
+          $scope.set_right_navbar("nightlife");
+          console.log($scope.get_right_navbar());
+        }
+      }
 
       $scope.saveRoute = function() {
         RouteService.createRoute($scope.title, $scope.description, 'urltitle', $scope.details_museum.place_id, $scope.details_food.place_id, $scope.details_shop.place_id).then(function(res) {

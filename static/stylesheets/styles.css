@@ -24,6 +24,7 @@ input{
         color: #6d7275 !important;
         padding-bottom: 40px;
         padding-top: 25px;
+        z-index: -1
     }
 
     .side-nav>li>a {
@@ -36,7 +37,11 @@ input{
         background-color: #C3C0C0 !important;
     }
 }
-
+.kinda_bar {
+    background-color:#1e1b1d;
+    position: fixed;
+    top: 51px;
+}
 .side-nav>li>ul {
     padding: 0;
 }
@@ -63,6 +68,8 @@ input{
     overflow-x: hidden;
     height: 100%;
     display: block;
+            z-index: -1
+
 }
 
 .create_route_inner_div {
