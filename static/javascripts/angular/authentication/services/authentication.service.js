@@ -48,22 +48,24 @@ define(['trackangle', 'angular-cookies'], function (trackangle) {
     }
 
     function getAuthenticatedAccount() {
-        if (!$cookies.authenticatedAccount) {
+        if (!$cookies.get('authenticatedAccount')) {
             return;
         }
-        return JSON.parse($cookies.authenticatedAccount);
+        return JSON.parse($cookies.get('authenticatedAccount'));
     }
 
     function isAuthenticated() {
-        return !!$cookies.authenticatedAccount;
+        console.log($cookies.get('authenticatedAccount'));
+        return !!$cookies.get('authenticatedAccount');
     }
 
     function setAuthenticatedAccount(account) {
-        $cookies.authenticatedAccount = JSON.stringify(account);
+        $cookies.put('authenticatedAccount', JSON.stringify(account));
     }
 
     function unauthenticate() {
-        delete $cookies.authenticatedAccount;
+        $cookies.remove('authenticatedAccount');
+        //delete $cookies.authenticatedAccount;
     }
 
     var Authentication = {

@@ -1,6 +1,6 @@
 
 define(['trackangle', '/static/javascripts/angular/authentication/services/authentication.service.js'], function (trackangle) {
-    trackangle.register.controller('RegisterController', ['$scope','Authentication', function ($scope, Authentication){
+    trackangle.register.controller('RegisterController', ['$scope', '$location', 'Authentication', function ($scope, $location, Authentication){
 
     activate();
 
