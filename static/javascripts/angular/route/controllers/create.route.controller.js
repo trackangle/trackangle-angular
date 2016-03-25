@@ -2,7 +2,6 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
     trackangle.register.controller('CreateRouteController', ['$scope','RouteService', function ($scope,$location, RouteService){
 
 
-
       console.log("Second controller");
       $scope.result_city = '';
       $scope.options_city =
@@ -52,6 +51,13 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
       $scope.get_right_navbar = function (){
         return selected.li;
       };
+
+      $scope.choices = [{id: 'choice1'}];
+      $scope.addNewChoice = function() {
+        var newItemNo = $scope.choices.length+1;
+        $scope.choices.unshift({'id':'choice'+newItemNo});
+      };
+
       $scope.saveRoute = function() {
         RouteService.createRoute($scope.title, $scope.description, 'urltitle', $scope.details_museum.place_id, $scope.details_food.place_id, $scope.details_shop.place_id).then(function(res) {
           console.log("Res:"+ res.config.data.id);

@@ -1,3 +1,4 @@
+
 <div class="form-group">
     <div >
         <ul class="nav navbar-nav side-nav col-lg-2 col-md-2 col-sm-2 col-xs-2">
@@ -10,18 +11,45 @@
         </ul>
     </div>
     <div class="form-group create_route_div col-lg-6 col-md-6 col-sm-6 col-xs-6" >
-    <div ng-if="get_right_navbar() == 'accomodation'" >accomodation</div>
-     <label class="control-label col-sm-2" for="route_title"></label>
-        <div class="col-sm-10">
-          <input type="text" id="route_title" ng-model="title"/>
+        <!-- Accomodation Details-->
+        <div ng-if="get_right_navbar() == 'accomodation'" class="create_route_inner_div col-lg-5 col-md-5 col-sm-5 col-xs-5">
+            <label ng-if="get_right_navbar() == 'accomodation'"  class="control-label label_color col-lg-12 col-md-12 col-sm-12 col-xs-12">Accomodation Type</label>
+                <div class="col-lg-3 col-md-2 col-sm-3 col-xs-3">
+                    <select ng-if="get_right_navbar() == 'accomodation'" class="form-control">
+                        <option>&nbsp;&nbsp;Hotel</option>
+                        <option>&nbsp;&nbsp;Hostel</option>
+                        <option>&nbsp;&nbsp;Camping</option>
+                        <option>&nbsp;&nbsp;Home Rental</option>
+                        <option>&nbsp;&nbsp;Couchsurfing</option>
+                    </select>
+                </div>
+            <hr ng-if="get_right_navbar() == 'accomodation'" style="height: 0%; width: 99%; line-height:0;border-bottom:2px solid #848484;border-top: 0px; background:none;"/>
+            <label ng-if="get_right_navbar() == 'accomodation'"  class="control-label label_color col-lg-12 col-md-12 col-sm-12 col-xs-12">Place Name</label>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <input ng-if="get_right_navbar() == 'accomodation'" class="form-group"/>
+                </div>
+            </div>
+        <!-- Food Details-->
+        <label ng-if="get_right_navbar() == 'food'" class="control-label label_color col-lg-12 col-md-12 col-sm-12 col-xs-12">Help travelers to experience best food locations</label>
+        <button ng-if="get_right_navbar() == 'food'" ng-click="addNewChoice()">Add another choice</button>
+        <hr ng-if="get_right_navbar() == 'food'" style="height: 0%; width: 99%; line-height:0;border-bottom:2px solid #848484;border-top: 0px; background:none;"/>
+        <div ng-if="get_right_navbar() == 'food'" data-ng-repeat="choice in choices">
+            <div class="row">
+                <label class="control-label label_color col-lg-3 col-md-3 col-sm-3 col-xs-3">Name</label>
+                <label class="control-label label_color col-lg-3 col-md-3 col-sm-3 col-xs-3">star</label>
+                <label class="control-label label_color col-lg-3 col-md-3 col-sm-3 col-xs-3">budget</label>
+            </div>
+            <input class="form-group"/>
+            <input class="form-group"/>
+            <input class="form-group"/>
+            <hr style="height: 0%; width: 99%; line-height:0;border-bottom:2px solid #848484;border-top: 0px; background:none;"/>
         </div>
-     </div>
-
-        <div class="ribbon col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right" style="margin-top: 300px">
+         <!--div class="ribbon col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right" style="margin-top: 300px">
             <h3>Header text</h3>
             <p>Body text</p>
-        </div>
+        </div-->
 
+    </div>
 </div>
 
 
@@ -34,18 +62,6 @@
 
 
 
-
-
-
-
-
-
-
-<div ng-if="get_right_navbar() == 'food'"style="margin-left: 300px;margin-top: 300px">food</div>
-<div ng-if="get_right_navbar() == 'nightlife'" style="margin-left: 300px;margin-top: 300px">nightlife</div>
-<div ng-if="get_right_navbar() == 'entertainment_arts'" style="margin-left: 300px;margin-top: 300px">entertainment_arts</div>
-<div ng-if="get_right_navbar() == 'architecture_buildings'" style="margin-left: 300px;margin-top: 300px">architecture_buildings</div>
-<div ng-if="get_right_navbar() == 'outdoor'" style="margin-left: 300px;margin-top: 300px">outdoor</div>
 
 <!--form class="form-horizontal" role="form">
   <div class="form-group">

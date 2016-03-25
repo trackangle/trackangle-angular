@@ -1,5 +1,8 @@
 body {
-    background-color: #F5F5F5;
+    background-color: #E6E6E6;
+}
+input{
+    height: 30px;
 }
 
 .nav_topmenu_bar {
@@ -15,10 +18,10 @@ body {
         margin-left: -225px;
         border: none;
         border-radius: 0;
-
-        background-color: #F5F5F5;
+        font-size: 110%;
+        background-color: #E6E6E6;
         bottom: 0;
-
+        color: #6d7275 !important;
         padding-bottom: 40px;
         padding-top: 25px;
     }
@@ -52,7 +55,7 @@ body {
 /* Create Route */
 
 .create_route_div {
-    background-color: #E6E6E6;
+    background-color: #FFFFFF;
     top: 60px;
     left: 225px;
     overflow-y: auto;
@@ -62,6 +65,14 @@ body {
     display: block;
 }
 
+.create_route_inner_div {
+    top: 90px;
+    overflow-y: auto;
+    position: fixed;
+    overflow-x: hidden;
+}
+
+/* Infobox */
 .ribbon {
     width: 350px;
     margin: 10px auto;
@@ -105,3 +116,18 @@ body {
 }
 .ribbon h3::before {left: 0;}
 .ribbon h3::after {right: 0;}
+
+/* Bootstrap Elements */
+
+.control-label {
+    color: #2D4961 !important;
+    font-size: 110%;
+}
+
+select.form-control {
+    border: 1px solid #2D4961 !important;
+    font-size: 110%;
+    height: 35px;
+    line-height: 30px;
+
+}
