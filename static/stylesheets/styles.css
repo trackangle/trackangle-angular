@@ -1,46 +1,82 @@
+
+/* HTML Elements */
 body {
     background-color: #E6E6E6;
 }
 input{
     height: 30px;
 }
+ul.nav li a, ul.nav li a:visited {
+    color: #6d7275 !important;
+}
+ul.nav li a:hover, ul.nav li a:focus {
+    color: #46979C !important;
+}
+ul.nav li.active a {
+    color: #333 !important;
+}
+select.form-control {
+    border: 1px solid #E6E6E6 !important;
+    font-size: 110%;
+    height: 35px;
+    line-height: 30px;
+
+}
 
 .nav_topmenu_bar {
-    background-color: #337ab7;
+    background-color: #FFFFFF;
+}
+
+/** HTML Elements **/
+
+.btn-primary{
+    background-color: #62BABF !important;
 }
 
 @media {
     .side-nav {
         position: fixed;
-        top: 51px;
+        top: 111px;
         left: 225px;
         width: 225px;
         margin-left: -225px;
         border: none;
         border-radius: 0;
-        font-size: 110%;
+        font-size: 16px;
         background-color: #E6E6E6;
         bottom: 0;
-        color: #6d7275 !important;
+
         padding-bottom: 40px;
         padding-top: 25px;
-        z-index: -1
+        z-index: -1;
     }
 
     .side-nav>li>a {
         width: 225px;
     }
 
-    .side-nav li a:hover,
+    .side-nav li a:hover{
+        background-color: #E6E6E6 !important;
+        color: #333 !important;
+        font-weight: 400;
+    }
     .side-nav li a:focus {
         outline: none;
-        background-color: #C3C0C0 !important;
+        background-color: #D6D5D5 !important;
+        font-weight: 400;
     }
 }
+
 .kinda_bar {
-    background-color:#1e1b1d;
+    background-color:#565a5c;
     position: fixed;
-    top: 51px;
+    top: 60px;
+    left: 0px;
+}
+.side-selected {
+        outline: none;
+        background-color: #C3C0C0 !important;
+
 }
 .side-nav>li>ul {
     padding: 0;
@@ -61,23 +97,17 @@ input{
 
 .create_route_div {
     background-color: #FFFFFF;
-    top: 60px;
+    top: 110px;
     left: 225px;
     overflow-y: auto;
     position: fixed;
     overflow-x: hidden;
     height: 100%;
     display: block;
-            z-index: -1
+    z-index: -1
 
 }
 
-.create_route_inner_div {
-    top: 90px;
-    overflow-y: auto;
-    position: fixed;
-    overflow-x: hidden;
-}
 
 /* Infobox */
 .ribbon {
@@ -127,14 +157,9 @@ input{
 /* Bootstrap Elements */
 
 .control-label {
-    color: #2D4961 !important;
-    font-size: 110%;
+    color: #565a5c !important;
+    font-size: 18px;
+    font-weight: 400;
 }
 
-select.form-control {
-    border: 1px solid #2D4961 !important;
-    font-size: 110%;
-    height: 35px;
-    line-height: 30px;
 
-}

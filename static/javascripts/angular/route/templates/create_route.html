@@ -1,5 +1,4 @@
 <div class="kinda_bar navbar col-lg-12 col-md-12 col-sm-12 col-xs-12">
-<button class="pull-left">next</button>
 </div>
 <div class="form-group">
     <div >
@@ -8,25 +7,25 @@
             <li ng-click="set_right_navbar('food')"><a href=""><i class="fa fa-fw fa-cutlery"></i>Food</a></li>
             <li ng-click="set_right_navbar('nightlife')"><a href=""><i class="fa fa-fw fa-glass"></i>Nightlife</a></li>
             <li ng-click="set_right_navbar('entertainment_arts')"><a href=""><i class="fa fa-fw fa-paint-brush"></i> Entertainment & Arts</a></li>
-            <li ng-click="set_right_navbar('architecture_buildings')"><a href=""><i class="fa fa-fw fa-university"></i> Architecture & Buildings</a></li>
+            <li ng-click="set_right_navbar('architecture_buildings')"><a href=""><i class="fa fa-fw fa-university"></i> Architecture</a></li>
             <li ng-click="set_right_navbar('outdoor')"><a href=""><i class="fa fa-fw fa-bicycle"></i> Outdoor</a></li>
+
         </ul>
     </div>
     <div class="form-group create_route_div col-lg-6 col-md-6 col-sm-6 col-xs-6" >
         <!-- Accomodation Details-->
-        <div ng-if="get_right_navbar() == 'accomodation'" class="create_route_inner_div col-lg-5 col-md-5 col-sm-5 col-xs-5">
+        <div ng-if="get_right_navbar() == 'accomodation'">
             <label ng-if="get_right_navbar() == 'accomodation'"  class="control-label label_color col-lg-12 col-md-12 col-sm-12 col-xs-12">Accomodation Type</label>
-                <div class="col-lg-3 col-md-2 col-sm-3 col-xs-3">
                     <select ng-if="get_right_navbar() == 'accomodation'" class="form-control">
+                        <option value="" disabled selected>Select your option</option>
                         <option>&nbsp;&nbsp;Hotel</option>
                         <option>&nbsp;&nbsp;Hostel</option>
                         <option>&nbsp;&nbsp;Camping</option>
                         <option>&nbsp;&nbsp;Home Rental</option>
                         <option>&nbsp;&nbsp;Couchsurfing</option>
                     </select>
-                </div>
             <hr ng-if="get_right_navbar() == 'accomodation'" style="height: 0%; width: 99%; line-height:0;border-bottom:2px solid #848484;border-top: 0px; background:none;"/>
-            <label ng-if="get_right_navbar() == 'accomodation'"  class="control-label label_color col-lg-12 col-md-12 col-sm-12 col-xs-12">Place Name</label>
+            <label ng-if="get_right_navbar() == 'accomodation'"  class="control-label label_color">Place Name</label>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                     <input ng-if="get_right_navbar() == 'accomodation'" class="form-group"/>
                 </div>
@@ -46,7 +45,7 @@
             <input class="form-group"/>
         </div>
         <button ng-if="get_right_navbar() == 'food'" ng-click="previous_tab()">back</button>
-            <button ng-if="get_right_navbar() == 'food'" ng-click="next_tab()">next</button>
+        <button ng-if="get_right_navbar() == 'food'" ng-click="next_tab()" type="button" class="btn btn-primary">Next</button>
 
 
     </div>
