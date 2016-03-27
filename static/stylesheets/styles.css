@@ -4,7 +4,7 @@ body {
     background-color: #E6E6E6;
 }
 input{
-    height: 30px;
+    height: 35px;
 }
 ul.nav li a, ul.nav li a:visited {
     color: #6d7275 !important;
@@ -13,7 +13,8 @@ ul.nav li a:hover, ul.nav li a:focus {
     color: #46979C !important;
 }
 ul.nav li.active a {
-    color: #333 !important;
+    color: #46979C !important;
+    background-color: #D6D5D5 !important;
 }
 select.form-control {
     border: 1px solid #E6E6E6 !important;
@@ -23,16 +24,12 @@ select.form-control {
 
 }
 
-.nav_topmenu_bar {
-    background-color: #FFFFFF;
-}
-
 /** HTML Elements **/
 
-.btn-primary{
-    background-color: #62BABF !important;
-}
 
+li.navbar_active {
+    color: #46979C !important;
+}
 @media {
     .side-nav {
         position: fixed;
@@ -45,7 +42,6 @@ select.form-control {
         font-size: 16px;
         background-color: #E6E6E6;
         bottom: 0;
-
         padding-bottom: 40px;
         padding-top: 25px;
         z-index: -1;
@@ -70,6 +66,7 @@ select.form-control {
 .kinda_bar {
     background-color:#565a5c;
     position: fixed;
+    height: 60px;
     top: 60px;
     left: 0px;
 }
@@ -93,19 +90,28 @@ select.form-control {
     color: #fff;
 }
 
+.nav_topmenu_bar {
+    height: 60px;
+    background-color: #ffffff;
+}
+
 /* Create Route */
 
 .create_route_div {
     background-color: #FFFFFF;
+    width: 825px;
     top: 110px;
     left: 225px;
     overflow-y: auto;
+    display: block;
     position: fixed;
     overflow-x: hidden;
     height: 100%;
     display: block;
-    z-index: -1
-
+    z-index: -1;
+    padding-top: 40px;
+    padding-left: 80px;
+    padding-right: 80px;
 }
 
 
