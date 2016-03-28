@@ -99,7 +99,7 @@ li.navbar_active {
 
 .create_route_div {
     background-color: #FFFFFF;
-    width: 825px;
+    width: 768px;
     top: 110px;
     left: 225px;
     overflow-y: auto;
@@ -168,4 +168,7 @@ li.navbar_active {
     font-weight: 400;
 }
 
+.next_button {
+    background-color: #6FD2D8 !important;
+}
 

@@ -36,6 +36,7 @@
         <!-- Food Details-->
         <div  class="fixed-width" ng-if="get_right_navbar() == 'food'" >
             <label class="control-label label_color col-lg-12 col-md-12 col-sm-12 col-xs-12">Help travelers to experience best food locations</label>
+            <span>Help traveller</span>
             <button ng-click="addNewChoice()">Add another choice</button>
             <div data-ng-repeat="choice in choices">
                 <hr style="height: 0%; width: 99%; line-height:0;border-bottom:2px solid #848484;border-top: 0px; background:none;"/>
@@ -50,15 +51,12 @@
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                         <label class="control-label label_color">budget</label>
-                        <div class="input-group">
-  <span class="input-group-addon" id="basic-addon1">@</span>
-  <input type="text" class="form-group" placeholder="Username" aria-describedby="basic-addon1">
-</div>
+                        <input type="text" class="form-group" placeholder="  $">
                     </div>
                 </div>
             </div>
             <button ng-click="previous_tab()">back</button>
-            <button ng-click="next_tab()" type="button" class="btn btn-primary">Next</button>
+            <button ng-click="next_tab()" type="button" class="btn btn-primary pull-right next_button">Next</button>
         </div>
 
     </div>
