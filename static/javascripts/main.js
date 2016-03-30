@@ -15,6 +15,7 @@ require.config({
     'underscore': '../bower_components/underscore/underscore',
     'ngDialog': '../bower_components/ngDialog/js/ngDialog',
     'snackbar': '../lib/snackbarjs/snackbar.min',
+    'uiBootstrap': '../bower_components/angular-bootstrap/ui-bootstrap.min',
     'google-maps': 'http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false'
   },
 

@@ -1,4 +1,4 @@
-define(['trackangle', '/static/javascripts/angular/route/services/route.service.js', 'ngAutocomplete'], function (trackangle) {
+define(['trackangle', '/static/javascripts/angular/route/services/route.service.js', 'ngAutocomplete', 'uiBootstrap'], function (trackangle) {
     trackangle.register.controller('CreateRouteController', ['$scope','RouteService', function ($scope,$location, RouteService){
 
 
@@ -69,6 +69,13 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
           console.log($scope.get_right_navbar());
         }
       }
+      $scope.RatingDemoCtrl =  function() {
+  $scope.rate = 7;
+  $scope.max = 10;
+  $scope.isReadonly = false;
+
+};
+
 
       $scope.saveRoute = function() {
         RouteService.createRoute($scope.title, $scope.description, 'urltitle', $scope.details_museum.place_id, $scope.details_food.place_id, $scope.details_shop.place_id).then(function(res) {
@@ -76,6 +83,8 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
           console.log("Res:"+ res.config.data.title);
         })
       }
+
+
 
   }]);
 });

@@ -1,4 +1,21 @@
 <div class="kinda_bar navbar col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div>
+        <select class="step_list">
+                                    <option value="" disabled selected>Select your option</option>
+                                    <option>&nbsp;&nbsp;Hotel</option>
+                                    <option>&nbsp;&nbsp;Hostel</option>
+                                    <option>&nbsp;&nbsp;Camping</option>
+                                    <option>&nbsp;&nbsp;Home Rental</option>
+                                    <option>&nbsp;&nbsp;Couchsurfing</option>
+        </select>
+    </div>
+    <div class="step_buttons">
+        <button type="button" class="btn btn-primary outline btn_top btn-arrow-right">Verona</button>
+        <button type="button" class="btn btn-primary outline btn_top btn-arrow-right">Venice</button>
+        <button type="button" class="btn btn-primary outline btn_top btn-arrow-right">Florance</button>
+        <button type="button" class="btn btn-primary outline btn_top btn-arrow-right">Genova</button>
+    </div>
+
 </div>
 <div class="form-group" ng-init="set_right_navbar('accomodation')">
     <div >
@@ -15,7 +32,7 @@
     <div class="form-group create_route_div  fixed-width col-lg-6 col-md-6 col-sm-6 col-xs-6" >
         <!-- Accomodation Details-->
         <div ng-if="get_right_navbar() == 'accomodation'">
-            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 center-block">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block" style="margin-bottom: 80px;">
                 <label  class="control-label label_color col-lg-12 col-md-12 col-sm-12 col-xs-12">Accomodation Type</label>
                         <select  class="form-control">
                             <option value="" disabled selected>Select your option</option>
@@ -26,12 +43,24 @@
                             <option>&nbsp;&nbsp;Couchsurfing</option>
                         </select>
             </div>
+            <uib-rating ng-model="rate" max="max" read-only="isReadonly" on-hover="hoveringOver(value)" on-leave="overStar = null" titles="['one','two','three']" aria-labelledby="default-rating"></uib-rating>
 
-            <hr style="height: 0%; width: 99%; line-height:0;border-bottom:2px solid #848484;border-top: 0px; background:none;"/>
-            <label class="control-label label_color">Place Name</label>
-                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                    <input class="form-group"/>
+        <div>
+                <div class="row fixed-width">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <label class="control-label label_color">Name</label>
+                        <input class="form-group"/>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <label class="control-label label_color ">star</label>
+                        <input class="form-group"/>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <label class="control-label label_color">budget</label>
+                        <input type="text" class="form-group" placeholder="  $">
+                    </div>
                 </div>
+        </div>
         </div>
         <!-- Food Details-->
         <div  class="fixed-width" ng-if="get_right_navbar() == 'food'" >
@@ -39,7 +68,7 @@
             <span>Help traveller</span>
             <button ng-click="addNewChoice()">Add another choice</button>
             <div data-ng-repeat="choice in choices">
-                <hr style="height: 0%; width: 99%; line-height:0;border-bottom:2px solid #848484;border-top: 0px; background:none;"/>
+                <hr style="height: 0%; width: 99%; line-height:0;border-bottom:1px solid #D6D5D5;border-top: 0px; background:none;"/>
                 <div class="row fixed-width">
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                         <label class="control-label label_color">Name</label>
@@ -58,7 +87,6 @@
             <button ng-click="previous_tab()">back</button>
             <button ng-click="next_tab()" type="button" class="btn btn-primary pull-right next_button">Next</button>
         </div>
-
     </div>
 </div>
 
