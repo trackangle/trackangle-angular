@@ -14,6 +14,8 @@ PLACE_TYPES = (
 
 class Place(models.Model):
     id = models.CharField(max_length=100, primary_key=True)
+    location_lat = models.CharField(max_length=100)
+    location_lng = models.CharField(max_length=100)
     type = models.IntegerField(choices=PLACE_TYPES)
 
     objects = PlaceManager()

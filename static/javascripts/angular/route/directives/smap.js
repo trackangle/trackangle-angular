@@ -30,7 +30,7 @@ define(['trackangle', 'jquery'], function (trackangle) {
                  service = new google.maps.places.PlacesService(map);
 
                  for(var i=0; i<scope.places.length; i++){
-                        setMap(scope.places[i].id);
+                        setMap(scope.places[i].location_lat, scope.places[i].location_lng);
                  }
 
 
@@ -48,13 +48,9 @@ define(['trackangle', 'jquery'], function (trackangle) {
              }
 
 
-             var setMap = function(placeid) {
-                 service.getDetails({
-                     placeId: placeid
-                 }, function (result, status) {
-                     var pos = {lat: result.geometry.location.lat(), lng: result.geometry.location.lng()}
-                     addMarker(pos);
-                 });
+             var setMap = function(lat, lng) {
+                 var pos = {lat: lat, lng: lng}
+                 addMarker(pos);
              }
 
 
@@ -63,7 +59,7 @@ define(['trackangle', 'jquery'], function (trackangle) {
                  var marker = new google.maps.Marker({
                      position: myLatlng,
                      map: map,
-                     title: "Hello World!"
+                     //title: "Hello World!"
                  });
                  bounds.extend(marker.getPosition());
                  map.fitBounds(bounds);

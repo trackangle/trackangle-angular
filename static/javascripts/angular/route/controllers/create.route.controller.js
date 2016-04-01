@@ -48,9 +48,9 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
       $scope.saveRoute = function() {
 
             var places = [];
-            places.push({id: $scope.details_shop.place_id, type:0});
-            places.push({id: $scope.details_museum.place_id, type:1});
-            places.push({id: $scope.details_food.place_id, type:2});
+            places.push({id: $scope.details_shop.place_id, type:0, location_lat:$scope.details_shop.geometry.location.lat(), location_lng:$scope.details_shop.geometry.location.lng()});
+            places.push({id: $scope.details_museum.place_id, type:1, location_lat:$scope.details_museum.geometry.location.lat(), location_lng:$scope.details_museum.geometry.location.lng()});
+            places.push({id: $scope.details_food.place_id, type:2, location_lat:$scope.details_food.geometry.location.lat(), location_lng:$scope.details_food.geometry.location.lng()});
             var routeJSON = {
                 title: $scope.title,
                 description: $scope.description,
