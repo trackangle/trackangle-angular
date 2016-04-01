@@ -51,7 +51,7 @@ define(['angularAMD', 'angular-route', 'angular-cookies'], function (angularAMD)
         controllerUrl: '/static/javascripts/angular/route/controllers/create.route.controller.js'
     }))
     .when("/route/:id", angularAMD.route({
-        templateUrl: '/static/javascripts/angular/route/templates/route.html',
+        templateUrl: '/static/javascripts/angular/route/templates/route_details.html',
         controller: 'RouteController',
         controllerUrl: '/static/javascripts/angular/route/controllers/route.controller.js'
     }))

@@ -1,4 +1,31 @@
-<div ng-repeat="route in routes" class="row">
-    <p class="text-center col-xs-6 col-sm-3">{{route.title}}</p>
-    <a ng-href="route/{{ route.id }}" class="text-center col-xs-6 col-sm-3">Go To Route Detail</a>
+<div id="map_container" class="container">
+   <div class="row">
+       <div class="col-md-3">
+            <div ng-repeat="route in routes" class="row">
+
+                <div class = "panel panel-default">
+                    <div class = "panel-heading">
+	                    <div class="media">
+		                    <a href="" class="pull-left">
+			                    <img src="http://placehold.it/18x18" class="profile-image img-circle">
+                            </a>
+                            <div class="media-body">
+                               <a href="#" class="pull-right text-muted"><i class="icon-reply-all-fill fa fa-2x "></i></a>
+                               <a href="">{{route.owners[0].username}}</a>
+                               <span>on {{route.created}}</span>
+                           </div>
+                        </div>
+                    </div>
+
+
+                    <smap places="route.places" id='map_{{route.id}}' class="map_canvas"></smap>
+
+	                <div class="panel-footer text-muted"><a href="route/{{ route.id }}">{{route.title}}</a></div>
+                </div>
+
+
+
+            </div>
+        </div>
+   </div>
 </div>
