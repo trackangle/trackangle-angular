@@ -1,4 +1,4 @@
-define(['trackangle', '/static/javascripts/angular/route/services/route.service.js', 'ngAutocomplete', 'uiBootstrap'], function (trackangle) {
+define(['trackangle', '/static/javascripts/angular/route/services/route.service.js', 'ngAutocomplete', 'uiBootstrap','ngAnimate'], function (trackangle) {
     trackangle.register.controller('CreateRouteController', ['$scope','RouteService', function ($scope,$location, RouteService){
 
 
@@ -57,25 +57,33 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
         var newItemNo = $scope.choices.length+1;
         $scope.choices.unshift({'id':'choice'+newItemNo});
       };
+
       $scope.previous_tab = function() {
         if($scope.get_right_navbar() == "food"){
           $scope.set_right_navbar("accomodation");
-          console.log($scope.get_right_navbar());
+        }else if($scope.get_right_navbar() == "nightlife"){
+          $scope.set_right_navbar("food");
+        }else if($scope.get_right_navbar() == "entertainment_arts"){
+          $scope.set_right_navbar("nightlife");
+        }else if($scope.get_right_navbar() == "architecture_buildings"){
+          $scope.set_right_navbar("entertainment_arts");
+        }else if($scope.get_right_navbar() == "outdoor"){
+          $scope.set_right_navbar("architecture_buildings");
         }
       }
       $scope.next_tab = function() {
-        if($scope.get_right_navbar() == "food"){
+        if($scope.get_right_navbar() == "accomodation"){
+          $scope.set_right_navbar("food");
+        }else if($scope.get_right_navbar() == "food"){
           $scope.set_right_navbar("nightlife");
-          console.log($scope.get_right_navbar());
+        }else if($scope.get_right_navbar() == "nightlife"){
+          $scope.set_right_navbar("entertainment_arts");
+        }else if($scope.get_right_navbar() == "entertainment_arts"){
+          $scope.set_right_navbar("architecture_buildings");
+        }else if($scope.get_right_navbar() == "architecture_buildings"){
+          $scope.set_right_navbar("outdoor");
         }
       }
-      $scope.RatingDemoCtrl =  function() {
-  $scope.rate = 7;
-  $scope.max = 10;
-  $scope.isReadonly = false;
-
-};
-
 
       $scope.saveRoute = function() {
         RouteService.createRoute($scope.title, $scope.description, 'urltitle', $scope.details_museum.place_id, $scope.details_food.place_id, $scope.details_shop.place_id).then(function(res) {
