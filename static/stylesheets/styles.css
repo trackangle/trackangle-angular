@@ -1,4 +1,5 @@
 
+
 /* HTML Elements */
 body {
     background-color: #E6E6E6;
@@ -422,4 +423,11 @@ li.navbar_active {
 .btn-arrow-right:before,
 .btn-arrow-left:after {
     background-color: #565a5c;
+
+.map_canvas {
+    height: 300px;
+    /*width:300px;*/
+}
+.columns {
+  columns: 3;
 }

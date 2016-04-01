@@ -8,15 +8,9 @@ define(['trackangle'], function (trackangle) {
             return $http.get('/api-1.0/route/');
         },
 
-        createRoute:function createRoute(title, description, url_title, museum, food, shop) {
-            return $http.post('/api-1.0/route/', {
-                title: title,
-                description: description,
-                url_title: url_title,
-                museum: museum,
-                food: food,
-                shop: shop
-            })
+        createRoute:function createRoute(routeJSON) {
+
+            return $http.post('/api-1.0/route/', routeJSON);
         }
     }
     return RouteService;
