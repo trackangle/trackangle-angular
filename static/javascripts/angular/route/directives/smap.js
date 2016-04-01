@@ -32,11 +32,23 @@ define(['trackangle', 'jquery'], function (trackangle) {
                  for(var i=0; i<scope.places.length; i++){
                         setMap(scope.places[i].id);
                  }
+
+
+                 google.maps.event.addListener(map, 'click', function (e) {
+                    scope.$apply(function () {
+                     addMarker({
+                         lat: e.latLng.lat(),
+                         lng: e.latLng.lng()
+                     });
+
+                         console.log(e);
+                 });
+                }); // end click listener
+
              }
 
 
              var setMap = function(placeid) {
-
                  service.getDetails({
                      placeId: placeid
                  }, function (result, status) {
@@ -45,20 +57,6 @@ define(['trackangle', 'jquery'], function (trackangle) {
                  });
              }
 
-
-             var asdasd = function(){
-                google.maps.event.addListener(map, 'click', function (e) {
-                 scope.$apply(function () {
-                     addMarker({
-                         lat: e.latLng.lat(),
-                         lng: e.latLng.lng()
-                     });
-
-                         //console.log(e);
-                 });
-
-                }); // end click listener
-             }
 
              var addMarker = function (pos) {
                  var myLatlng = new google.maps.LatLng(pos.lat, pos.lng);
@@ -73,16 +71,10 @@ define(['trackangle', 'jquery'], function (trackangle) {
 
 
              scope.$watch('places',function(newValue){
-                 console.log(newValue);
-                 console.log(attrs.id);
-                 console.log(document.getElementById(attrs.id));
                  initialize();
 
 
              });
-
-             //var tre = scope.getplaces();
-             //console.log("asdas"+tre);
 
          }
      }
