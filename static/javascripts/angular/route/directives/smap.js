@@ -67,6 +67,7 @@ define(['trackangle', 'jquery'], function (trackangle) {
 
 
              scope.$watch('places',function(newValue){
+                 console.log(newValue);
                  initialize();
 
 
