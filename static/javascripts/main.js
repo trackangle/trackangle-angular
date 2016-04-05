@@ -15,7 +15,7 @@ require.config({
     'ngDialog': '../bower_components/ngDialog/js/ngDialog',
     'snackbar': '../lib/snackbarjs/snackbar.min',
     'uiBootstrap': '../bower_components/angular-bootstrap/ui-bootstrap.min',
-    'ngAnimate':'../bower_components/angular-animate/angular-animate.min',
+    'ngAnimate':'../bower_components/angular-animate/angular-animate',
     'google-maps': 'http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false'
 
   },

@@ -9,6 +9,8 @@ class PlaceSerializer(serializers.ModelSerializer):
     location_lat = serializers.CharField()
     location_lng = serializers.CharField()
     type = serializers.IntegerField()
+    rating = serializers.FloatField()
+    comment = serializers.CharField()
     class Meta:
         model = Place
-        fields = ('id', 'type', 'location_lat', 'location_lng',)
+        fields = ('id', 'type', 'location_lat', 'location_lng', 'rating', 'comment')
