@@ -72,26 +72,31 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
       $scope.details_outdoor = '';
 
       $scope.$watch('details_city', function(){
-        if($scope.result_city) {
-          console.log($scope.result_city);
-          var country_index = $scope.result_city.address_components.length - 1;
-          console.log("country_index"+$scope.result_city.address_components.length);
-
+        if($scope.details_city) {
+          var country_index = $scope.details_city.address_components.length - 1;
           $scope.options_food = {
             watchEnter: true,
             type: 'establishment',
-            country: $scope.result_city.address_components[country_index].short_name.toLowerCase()
+            country: $scope.details_city.address_components[country_index].short_name.toLowerCase()
           };
         }
       });
+      $scope.food_details = function () {
+        console.log("ersan dedi");
+        $scope.$watch('details_food', function () {
+          if ($scope.details_food) {
+            console.log("atz2");
+          }
+        });
+      }
       $scope.saveRoute = function() {
-            console.log($scope.result_food);
-            console.log($scope.result_food.place_id);
-            console.log($scope.result_food.geometry.location.lat());
-            console.log($scope.result_food.geometry.location.lng());
 
+            console.log($scope.details_food);
+            console.log($scope.details_food.place_id);
+            console.log($scope.details_food.geometry.location.lat());
+            console.log($scope.details_food.geometry.location.lng());
             var places = [];
-            places.push({id: $scope.result_food.place_id, type:0, location_lat:$scope.result_food.geometry.location.lat(), location_lng:$scope.result_food.geometry.location.lng()});
+            places.push({id: $scope.details_food.place_id, type:0, location_lat:$scope.details_food.geometry.location.lat(), location_lng:$scope.details_food.geometry.location.lng()});
             //places.push({id: $scope.details_museum.place_id, type:1, location_lat:$scope.details_museum.geometry.location.lat(), location_lng:$scope.details_museum.geometry.location.lng()});
             //places.push({id: $scope.details_food.place_id, type:2, location_lat:$scope.details_food.geometry.location.lat(), location_lng:$scope.details_food.geometry.location.lng()});
             var routeJSON = {

@@ -8,7 +8,7 @@
     </div>
 
 </div>
-<div class="form-group" ng-init="set_right_navbar('accomodation')">
+<div class="form-group" ng-init="set_right_navbar('route_essentials')">
     <div >
         <ul class="nav navbar-nav side-nav col-lg-2 col-md-2 col-sm-2 col-xs-2">
             <li ng-click="set_right_navbar('route_essentials')" ng-class="{'active':get_right_navbar() == 'route_essentials' }"><a href=""><i class="fa fa-fw fa-location-arrow"></i>Route Essentials</a></li>
@@ -24,14 +24,32 @@
     <div class="form-group create_route_div  fixed-width col-lg-6 col-md-6 col-sm-6 col-xs-6" >
 
         <!-- Route Essentials  -->
-    <div ng-if="get_right_navbar() == 'route_essentials'">
-
+        <places></places>
+    <div ng-show="get_right_navbar() == 'route_essentials'">
+        <div class="form-group" >
+            <label class="control-label col-sm-2" for="route_title">Title</label>
+            <div class="col-sm-10">
+              <input type="text" id="route_title" ng-model="title"/>
+            </div>
+        </div>
+         <div class="form-group">
+            <label class="control-label col-sm-2" for="route_desc">Description</label>
+            <div class="col-sm-10">
+             <input type="text" id="route_desc" ng-model="description"/>
+            </div>
+         </div>
+         <div class="form-group">
+            <label class="control-label col-sm-2" for="AutocompleteCity">City</label>
+            <div class="col-sm-10">
+              <input type="text" id="AutocompleteCity" ng-autocomplete ng-model="result_city" details="details_city" options="options_city" />
+            </div>
+         </div>
     </div>
 
 
         <!-- Accomodation Details-->
 
-        <div ng-if="get_right_navbar() == 'accomodation'">
+        <div ng-show="get_right_navbar() == 'accomodation'">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center-block" style="margin-bottom: 80px;">
                 <label  class="control-label label_color col-lg-12 col-md-12 col-sm-12 col-xs-12">Accomodation Type</label>
                         <select  class="form-control">
@@ -76,26 +94,8 @@
         </div>
 
         <!-- Food Details-->
-        <div  class="fixed-width" ng-if="get_right_navbar() == 'food'" >
-             <div class="form-group" >
-            <label class="control-label col-sm-2" for="route_title">Title</label>
-            <div class="col-sm-10">
-              <input type="text" id="route_title" ng-model="title"/>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="control-label col-sm-2" for="route_desc">Description</label>
-            <div class="col-sm-10">
-             <input type="text" id="route_desc" ng-model="description"/>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="control-label col-sm-2" for="AutocompleteCity">City</label>
-            <div class="col-sm-10">
-              <input type="text" id="AutocompleteCity" ng-autocomplete ng-model="result_city" details="details_city" options="options_city" />
-            </div>
-          </div>
-            <label class="control-label label_color col-lg-12 col-md-12 col-sm-12 col-xs-12">Help travelers to experience best food locations</label>
+        <div  class="fixed-width" ng-show="get_right_navbar() == 'food'">
+            <label ng-init="food_details()" class="control-label label_color col-lg-12 col-md-12 col-sm-12 col-xs-12">Help travelers to experience best food locations</label>
             <span>Help traveller</span>
             <div data-ng-repeat="choice in choices">
                 <hr style="height: 0%; width: 99%; line-height:0;border-bottom:1px solid #D6D5D5;border-top: 0px; background:none;"/>
@@ -114,7 +114,7 @@
                             <span class="input-group-addon">$</span>
                             <input type="text" class="form-control"/>
                         </div>
-                                        {{result_food}}
+                                        {{details_food}}
                         <button class="btn btn-success" ng-click="saveRoute()">Save</button>
                     </div>
                 </div>
@@ -133,10 +133,12 @@
                 </div>
 
             </div>
+
+
         </div>
 
         <!-- Nightlife Details -->
-        <div  class="fixed-width" ng-if="get_right_navbar() == 'nightlife'" >
+        <div  class="fixed-width" ng-show="get_right_navbar() == 'nightlife'" >
             <label class="control-label label_color col-lg-12 col-md-12 col-sm-12 col-xs-12">Help travelers to experience best food locations</label>
             <span>Help traveller</span>
             <div data-ng-repeat="choice in choices">
@@ -175,7 +177,7 @@
 
         <!-- Entertainment & Arts Details -->
 
-        <div  class="fixed-width" ng-if="get_right_navbar() == 'entertainment_arts'" >
+        <div  class="fixed-width" ng-show="get_right_navbar() == 'entertainment_arts'" >
             <label class="control-label label_color col-lg-12 col-md-12 col-sm-12 col-xs-12">Help travelers to experience best food locations</label>
             <span>Help traveller</span>
             <div data-ng-repeat="choice in choices">
@@ -215,7 +217,7 @@
 
         <!-- Architecture -->
 
-        <div  class="fixed-width" ng-if="get_right_navbar() == 'architecture_buildings'" >
+        <div  class="fixed-width" ng-show="get_right_navbar() == 'architecture_buildings'" >
             <label class="control-label label_color col-lg-12 col-md-12 col-sm-12 col-xs-12">Help travelers to experience best food locations</label>
             <span>Help traveller</span>
             <div data-ng-repeat="choice in choices">
@@ -256,7 +258,7 @@
 
         <!-- Outdoor -->
 
-        <div  class="fixed-width" ng-if="get_right_navbar() == 'outdoor'" >
+        <div  class="fixed-width" ng-show="get_right_navbar() == 'outdoor'" >
             <label class="control-label label_color col-lg-12 col-md-12 col-sm-12 col-xs-12">Help travelers to experience best food locations</label>
             <span>Help traveller</span>
             <div data-ng-repeat="choice in choices">
