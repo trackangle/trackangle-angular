@@ -1,4 +1,4 @@
-define(['trackangle', '/static/javascripts/angular/route/services/route.service.js', 'ngAutocomplete'], function (trackangle) {
+define(['trackangle', '/static/javascripts/angular/route/services/route.service.js','/static/javascripts/angular/route/directives/places.js', 'ngAutocomplete'], function (trackangle) {
     trackangle.register.controller('CreateRouteController', ['$scope','RouteService', function ($scope,$location, RouteService){
 
 
