@@ -1,0 +1,19 @@
+<div class="form-group" >
+    <label class="control-label col-sm-2" for="route_title">Title</label>
+        <div class="col-sm-10">
+            <input type="text" id="route_title" ng-model="title"/>
+        </div>
+</div>
+<div class="form-group">
+    <label class="control-label col-sm-2" for="route_desc">Description</label>
+    <div class="col-sm-10">
+        <input type="text" id="route_desc" ng-model="description"/>
+    </div>
+</div>
+<div class="form-group">
+    <label class="control-label col-sm-2" for="AutocompleteCity">City</label>
+    <div class="col-sm-10">
+        <input type="text" id="AutocompleteCity" ng-autocomplete ng-model="$parent.result_city" details="$parent.details_city" options="$parent.options_city" />
+        {{details_city}}
+    </div>
+</div>
