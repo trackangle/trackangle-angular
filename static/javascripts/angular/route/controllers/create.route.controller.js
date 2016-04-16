@@ -1,5 +1,5 @@
 define(['trackangle', '/static/javascripts/angular/route/services/route.service.js', 'ngAutocomplete'], function (trackangle) {
-    trackangle.register.controller('CreateRouteController', ['$scope','RouteService', function ($scope,$location, RouteService){
+    trackangle.register.controller('CreateRouteController', ['$scope','RouteService', function ($scope, RouteService){
 
        /*create route page navbar fuctions*/
       var selected = this;
@@ -129,7 +129,7 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                 description: $scope.description.route_description,
                 url_title: 'url_title',
                 places: places
-            };
+            }
             console.log(routeJSON);
             RouteService.createRoute(routeJSON).then(function(res) {
                 console.log("Res:"+ res.config.data.id);
