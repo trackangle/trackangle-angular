@@ -68,21 +68,33 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
       $scope.result_nightlife = { nightlife_result: "" };
       $scope.options_nightlife = {};
       $scope.details_nightlife = { nightlife_details: "" };
+      $scope.nightlife_star_rating = { star_rating: ""};
+      $scope.nightlife_budget = {budget: ""};
+      $scope.nightlife_comment = {comment: ""};
 
         /*Entertainment and Arts Details*/
       $scope.result_entertainment_arts = { entertainment_arts_result: "" };
       $scope.options_entertainment_arts = {};
       $scope.details_entertainment_arts = { entertainment_arts_details: "" };
+      $scope.entertainment_arts_star_rating = { star_rating: ""};
+      $scope.entertainment_arts_budget = {budget: ""};
+      $scope.entertainment_arts_comment = {comment: ""};
 
         /*Architecture and Buildings Details */
       $scope.result_architecture_buildings = { architecture_buildings_result: "" };
       $scope.options_architecture_buildings = {};
       $scope.details_architecture_buildings = { architecture_buildings_details: "" };
+      $scope.architecture_buildings_star_rating = { star_rating: ""};
+      $scope.architecture_buildings_budget = {budget: ""};
+      $scope.architecture_buildings_comment = {comment: ""};
 
         /*Outdoor Details*/
       $scope.result_outdoor = { outdoor_result: "" };
       $scope.options_outdoor = {};
       $scope.details_outdoor = { outdoor_details: "" };
+      $scope.outdoor_star_rating = { star_rating: ""};
+      $scope.outdoor_budget = {budget: ""};
+      $scope.outdoor_comment = {comment: ""};
 
       $scope.$watch('details_city.route_details', function(){
         if($scope.details_city.route_details) {
@@ -119,10 +131,7 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                 places: places
             };
             console.log(routeJSON);
-            RouteService.createRoute(routeJSON).then(function(res) {
-                console.log("Res:"+ res.config.data.id);
-                console.log("Res:"+ res.config.data.title);
-            })
+            RouteService.createRoute(routeJSON);
       }
   }]);
 });

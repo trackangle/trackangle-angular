@@ -11,13 +11,11 @@ require.config({
     'ngAutocomplete': '../bower_components/ngAutocomplete/src/ngAutocomplete',
     'jquery': '../bower_components/jquery/dist/jquery',
     'bootstrap': '../bower_components/bootstrap/dist/js/bootstrap',
+    'bootstrap-material-designer' : '../bower_components/bootstrap-material-design/dist/js/ripples',
     'underscore': '../bower_components/underscore/underscore',
     'ngDialog': '../bower_components/ngDialog/js/ngDialog',
     'snackbar': '../lib/snackbarjs/snackbar.min',
-    'uiBootstrap': '../bower_components/angular-bootstrap/ui-bootstrap.min',
-    'ngAnimate':'../bower_components/angular-animate/angular-animate',
-    'google-maps': 'http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false'
-
+    'google-maps': 'http://maps.googleapis.com/maps/api/js?key=AIzaSyAEIv2pKK8byL7QqmPWq1a2m1D2ONT17_c&libraries=places'
   },
 
   // Add angular modules that does not support AMD out of the box, put it in a shim
