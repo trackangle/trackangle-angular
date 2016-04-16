@@ -131,7 +131,10 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                 places: places
             };
             console.log(routeJSON);
-            RouteService.createRoute(routeJSON);
+            RouteService.createRoute(routeJSON).then(function(res) {
+                console.log("Res:"+ res.config.data.id);
+                console.log("Res:"+ res.config.data.title);
+            })
       }
   }]);
 });
