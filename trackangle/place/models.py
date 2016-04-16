@@ -21,6 +21,7 @@ class Place(models.Model):
     location_lng = models.CharField(max_length=100)
     type = models.IntegerField(choices=PLACE_TYPES)
     rating = models.FloatField()
+    budget = models.FloatField()
     comment = models.CharField(max_length=1000)
 
     objects = PlaceManager()
