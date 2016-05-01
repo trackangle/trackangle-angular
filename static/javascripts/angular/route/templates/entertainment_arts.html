@@ -1,0 +1,36 @@
+<div>
+    <label class="control-label label_color col-lg-12 col-md-12 col-sm-12 col-xs-12">Help travelers to experience best food locations</label>
+    <span>Help traveller</span>
+    <div data-ng-repeat="choice in choices">
+        <hr style="height: 0%; width: 99%; line-height:0;border-bottom:1px solid #D6D5D5;border-top: 0px; background:none;"/>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <label class="control-label label_color">Name</label>
+                <input class="form-control"type="text" />
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <label class="control-label label_color ">star</label>
+                <input class="form-control" ng-model="placestarfield"/>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <label class="control-label label_color ">Budget</label>
+                <div class="input-group">
+                    <span class="input-group-addon">$</span>
+                    <input type="text" class="form-control"/>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label label_color ">Comment</label>
+            <textarea class="form-control" rows="3"></textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div>
+            <button ng-click="next_tab()" type="button" class="btn btn-primary pull-right next_button">Next</button>
+        </div>
+        <div class="back_button">
+            <a href class="back_link" ng-click="previous_tab()">Back</a>
+        </div>
+    </div>
+</div>
