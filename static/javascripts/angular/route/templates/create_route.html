@@ -24,55 +24,13 @@
     <div class="form-group create_route_div  fixed-width col-lg-6 col-md-6 col-sm-6 col-xs-6" >
 
 
+
         <div  class="fixed-width" >
-            <div ng-include src="get_partial()">
+            <div ng-include src="get_partial()"></div>
+        </div>
+        <div  class="fixed-width" >
+            <div smap zoom=13 lat=-33.8688 lng=151.2195 clickable=true autocomplete=true autocompletetype="cities" id="map"></div>
+            <!--div ng-include src="get_partial()"></div-->
         </div>
     </div>
 </div>
-<!--div class="ribbon col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right" style="margin-top: 300px">
-            <h3>Header text</h3>
-            <p>Body text</p>
-</div-->
-<!--form class="form-horizontal" role="form">
-  <div class="form-group">
-    <label class="control-label col-sm-2" for="route_title">Title</label>
-    <div class="col-sm-10">
-      <input type="text" id="route_title" ng-model="title"/>
-    </div>
-  </div>
-  <div class="form-group">
-    <label class="control-label col-sm-2" for="route_desc">Description</label>
-    <div class="col-sm-10">
-     <input type="text" id="route_desc" ng-model="description"/>
-    </div>
-  </div>
-  <div class="form-group">
-    <label class="control-label col-sm-2" for="AutocompleteCity">City</label>
-    <div class="col-sm-10">
-      <input type="text" id="AutocompleteCity" ng-autocomplete="result_city" details="details_city" options="options_city" ng-model="country"/>
-    </div>
-  </div>
-  <div class="form-group" ng-show="details_city.address_components[0].short_name != null">
-    <label class="control-label col-sm-2" for="AutocompleteMuseum">Museum</label>
-    <div class="col-sm-10">
-     <input type="text" id="AutocompleteMuseum" ng-autocomplete="result_museum" details="details_museum" options="options_museum" ng-model="museum"/>
-    </div>
-  </div>
-  <div class="form-group" ng-show="details_city.address_components[0].short_name != null">
-    <label class="control-label col-sm-2" for="AutocompleteFood">Food</label>
-    <div class="col-sm-10">
-     <input type="text" id="AutocompleteFood" ng-autocomplete="result_food" details="details_food" options="options_food" ng-model="food"/>
-    </div>
-  </div>
-  <div class="form-group" ng-show="details_city.address_components[0].short_name != null">
-    <label class="control-label col-sm-2" for="AutocompleteShop">Shop</label>
-    <div class="col-sm-10">
-     <input type="text" id="AutocompleteShop" ng-autocomplete="result_shop" details="details_shop" options="options_shop" ng-model="shop"/>
-    </div>
-  </div>
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-		<button class="btn btn-success" ng-click="saveRoute()">Save</button>
-    </div>
-  </div>
-</form-->

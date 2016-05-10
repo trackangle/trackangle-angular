@@ -1,4 +1,4 @@
-define(['trackangle', '/static/javascripts/angular/route/services/route.service.js', 'ngAutocomplete'], function (trackangle) {
+define(['trackangle', '/static/javascripts/angular/route/services/route.service.js', 'google-maps', '/static/javascripts/angular/route/directives/smap.js'], function (trackangle) {
     trackangle.register.controller('CreateRouteController', ['$scope','RouteService', function ($scope, RouteService){
 
        /*create route page navbar fuctions*/
