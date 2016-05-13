@@ -2,8 +2,22 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
     trackangle.register.controller('CreateRouteController', ['$scope','RouteService', function ($scope, RouteService){
 
        /*create route page navbar fuctions*/
+        $scope.markers_city = {};
+        $scope.markers_food = {};
+        $scope.markers_accomodation = {};
+
+
         var selected = this;
         $scope.set_right_navbar = function (asd) {
+            for (var key in $scope.markers_city) {
+                if ($scope.markers_city.hasOwnProperty(key)) {
+                    $scope.bounds = {"lat":$scope.markers_city[key].position.lat(), "lng":$scope.markers_city[key].position.lng()}
+                }
+            }
+            if($scope.bounds){
+                $scope.lat = $scope.bounds.lat;
+                $scope.lng = $scope.bounds.lng;
+            }
             selected.li = asd;
         };
         $scope.get_partial = function (){
@@ -104,16 +118,7 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
         $scope.outdoor_budget = {budget: ""};
         $scope.outdoor_comment = {comment: ""};
 
-        $scope.$watch('details_city.route_details', function(){
-            if($scope.details_city.route_details) {
-                var country_index = $scope.details_city.route_details.address_components.length - 1;
-                    $scope.options_food = {
-                    watchEnter: true,
-                    type: 'establishment',
-                    country: $scope.details_city.route_details.address_components[country_index].short_name.toLowerCase()
-                };
-            }
-        });
+
         $scope.saveRoute = function() {
               var places = [];
               places.push({
