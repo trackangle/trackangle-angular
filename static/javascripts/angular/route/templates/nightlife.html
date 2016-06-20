@@ -25,12 +25,13 @@
             <textarea class="form-control" rows="3"></textarea>
         </div>
     </div>
-        <div class="row">
-            <div>
-                <button ng-click="next_tab()" type="button" class="btn btn-primary pull-right next_button">Next</button>
-            </div>
-            <div class="back_button">
-                <a href class="back_link" ng-click="previous_tab()">Back</a>
-            </div>
+    <div ng-map zoom=13 lat="lat" lng="lng"  autocomplete=true autocompletetype="establishment" id="map" markers="markers_nightlife"></div>
+    <div class="row">
+        <div>
+            <button ng-click="next_tab()" type="button" class="btn btn-primary pull-right next_button">Next</button>
         </div>
+        <div class="back_button">
+            <a href class="back_link" ng-click="previous_tab()">Back</a>
+        </div>
+    </div>
 </div>

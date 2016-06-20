@@ -1,11 +1,14 @@
-define(['trackangle', '/static/javascripts/angular/route/services/route.service.js', 'google-maps', '/static/javascripts/angular/route/directives/smap.js'], function (trackangle) {
+define(['trackangle', '/static/javascripts/angular/route/services/route.service.js', 'google-maps', 'ngMap'], function (trackangle) {
     trackangle.register.controller('CreateRouteController', ['$scope','RouteService', function ($scope, RouteService){
 
        /*create route page navbar fuctions*/
         $scope.markers_city = {};
         $scope.markers_food = {};
         $scope.markers_accomodation = {};
-
+        $scope.markers_nightlife = {};
+        $scope.markers_entertainment = {};
+        $scope.markers_architecture = {};
+        $scope.markers_outdoor = {};
 
         var selected = this;
         $scope.set_right_navbar = function (asd) {
@@ -120,7 +123,10 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
 
 
         $scope.saveRoute = function() {
-              var places = [];
+            var places = [];
+            console.log($scope.markers_accomodation);
+            //places.push
+              /*var places = [];
               places.push({
                   id: $scope.details_food.food_details.place_id,
                   type:0,
@@ -140,7 +146,7 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
               RouteService.createRoute(routeJSON).then(function(res) {
                   console.log("Res:"+ res.config.data.id);
                   console.log("Res:"+ res.config.data.title);
-              })
+              })*/
         }
       }]);
 });

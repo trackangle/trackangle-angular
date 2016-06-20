@@ -1,6 +1,6 @@
 'use strict';
 define(['trackangle', 'jquery'], function (trackangle) {
-    trackangle.register.directive('smap', ['$compile', function ($compile) {
+    trackangle.register.directive('ngMap', ['$compile', function ($compile) {
      return {
          restrict: 'A',
          replace: false,
@@ -12,23 +12,22 @@ define(['trackangle', 'jquery'], function (trackangle) {
              lng: '=',
              markers: '=?'
          },
-         templateUrl: "/static/javascripts/angular/route/templates/smap.html",
+         templateUrl: "/static/javascripts/angular/route/templates/ngmap.html",
          link: function (scope, element, attrs) {
-
-             console.log(scope.lat);
-             console.log(scope.lng);
 
              if(!scope.markers){
                  scope.markers = {};
              }
+
              var map;
              var bounds;
              var service;
              var map_element = element[0].querySelector(".map_canvas");
              var autocomplete_input = element[0].querySelector('#pac-input');
+             var geocoder = new google.maps.Geocoder;
 
 
-             function initialize() {
+             scope.initialize = function() {
                  var myOptions = {
                      zoom:  parseInt(attrs.zoom, 10),
                      center: new google.maps.LatLng(scope.lat, scope.lng),
@@ -46,26 +45,30 @@ define(['trackangle', 'jquery'], function (trackangle) {
                 if(scope.places){
                     var marker;
                     for(var i=0; i<scope.places.length; i++) {
-                        marker = addMarker(scope.places[i].location_lat, scope.places[i].location_lng);
-                        bounds.extend(marker.getPosition());
-                        map.fitBounds(bounds);
-                 }
+                        addMarker(scope.places[i].location_lat, scope.places[i].location_lng);
+                    }
+                }
+
+                if(scope.markers){
+                    for(var key in scope.markers){
+                        addMarker(key.split("_")[0], key.split("_")[1]);
+                    }
 
                 }
+
                 if(attrs.clickable) {
                     addClickListener();
                 }
 
 
                 if(attrs.autocomplete){
-                    initializeAutocomplete();
+                    scope.initializeAutocomplete();
                 }
                 else{
                     $(autocomplete_input).hide();
                 }
 
              }
-
 
 
              function addClickListener(){
@@ -75,7 +78,7 @@ define(['trackangle', 'jquery'], function (trackangle) {
                          lat: e.latLng.lat(),
                          lng: e.latLng.lng()
                      });
-                         console.log(e);
+                     console.log(e);
                  });
                 });
              }
@@ -94,20 +97,65 @@ define(['trackangle', 'jquery'], function (trackangle) {
                  var markerId = getMarkerUniqueId(lat, lng);
 
                  scope.markers[markerId] = marker;
+
+                 if(Object.keys(scope.markers).length == 1) {
+                         bounds.extend(marker.getPosition());
+                         map.setCenter(marker.getPosition());
+                         map.setZoom(17);
+                 }
+                 else {
+                     bounds.extend(marker.getPosition());
+                     map.fitBounds(bounds);
+                 }
+
+                 var latlng = {lat:lat, lng:lng};
+
+                 var loca = new google.maps.LatLng(lat,lng);
+                 var requested = {
+                     location: loca,
+                     radius:.1,
+                     //keyword:"library"//,
+                     types : [scope.autocompletetype]
+
+                 };
+                 service.search(requested, function(results, status){
+                     if (status == google.maps.places.PlacesServiceStatus.OK) {
+                         var place = results[0];
+
+                         var address = '';
+                         if (place.address_components) {
+                             address = [
+                                    (place.address_components[0] && place.address_components[0].short_name || ''),
+                                    (place.address_components[1] && place.address_components[1].short_name || ''),
+                                    (place.address_components[2] && place.address_components[2].short_name || '')
+                                   ].join(' ');
+                         }
+                         marker.setIcon(({
+                             url: place.icon,
+                             size: new google.maps.Size(71, 71),
+                             origin: new google.maps.Point(0, 0),
+                             anchor: new google.maps.Point(17, 34),
+                             scaledSize: new google.maps.Size(35, 35)
+                         }));
+                         scope.addInfoWindow(place.name, marker, place.vicinity);
+                     }
+                 });
+
+
                  if(attrs.clickable) {
-                     bindMarkerEvents(marker);
+                     google.maps.event.addListener(marker, "rightclick", function (point) {
+                         var markerId = getMarkerUniqueId(point.latLng.lat(), point.latLng.lng()); // get marker id by using clicked point's coordinate
+                         var marker = scope.markers[markerId]; // find marker
+                         removeMarker(marker, markerId); // remove it
+                     });
+                     google.maps.event.addListener(marker, "click", function (point) {
+                         var markerId = getMarkerUniqueId(point.latLng.lat(), point.latLng.lng()); // get marker id by using clicked point's coordinate
+                         var marker = scope.markers[markerId]; // find marker
+                     });
                  }
                  return marker;
              } //end addMarker
 
-
-             function bindMarkerEvents(marker) {
-                 google.maps.event.addListener(marker, "rightclick", function (point) {
-                     var markerId = getMarkerUniqueId(point.latLng.lat(), point.latLng.lng()); // get marker id by using clicked point's coordinate
-                     var marker = scope.markers[markerId]; // find marker
-                     removeMarker(marker, markerId); // remove it
-                 });
-             };
 
              function removeMarker(marker, markerId) {
                  marker.setMap(null); // set markers setMap to null to remove it from map
@@ -115,14 +163,16 @@ define(['trackangle', 'jquery'], function (trackangle) {
              };
 
 
-             function addInfoWindow(text, marker, address){
-                 var infowindow = new google.maps.InfoWindow();
-                 infowindow.setContent('<div><strong>' + text + '</strong></div>' + address);
-                 infowindow.open(map, marker);
+             scope.addInfoWindow = function(text, marker, address){
+
+                 scope.$apply(function () {
+                     var infowindow = new google.maps.InfoWindow();
+                     infowindow.setContent('<div><strong>' + text + '</strong></div>' + address);
+                     infowindow.open(map, marker);
+                 });
              }
 
-
-             function initializeAutocomplete(){
+             scope.initializeAutocomplete = function(){
 
                  var options = {
                      types: [ scope.autocompletetype ]
@@ -145,38 +195,15 @@ define(['trackangle', 'jquery'], function (trackangle) {
                      }
 
                      var marker = addMarker(place.geometry.location.lat(), place.geometry.location.lng());
-                     if(Object.keys(scope.markers).length == 1) {
-                         bounds.extend(marker.getPosition());
-                         map.setCenter(place.geometry.location);
-                         map.setZoom(17);
-                     }
-                     else {
-                         bounds.extend(marker.getPosition());
-                         map.fitBounds(bounds);
-                     }
 
-                     var address = '';
-                     if (place.address_components) {
-                         address = [
-                                    (place.address_components[0] && place.address_components[0].short_name || ''),
-                                    (place.address_components[1] && place.address_components[1].short_name || ''),
-                                    (place.address_components[2] && place.address_components[2].short_name || '')
-                                   ].join(' ');
-                     }
-                     marker.setIcon(({
-                         url: place.icon,
-                         size: new google.maps.Size(71, 71),
-                         origin: new google.maps.Point(0, 0),
-                         anchor: new google.maps.Point(17, 34),
-                         scaledSize: new google.maps.Size(35, 35)
-                     }));
-                     addInfoWindow(place.name, marker, address);
+
+
                  });
 
              }
 
              scope.$watch('zoom',function(newValue){
-                 initialize();
+                 scope.initialize();
              });
 
          }
