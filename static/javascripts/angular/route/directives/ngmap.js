@@ -6,17 +6,16 @@ define(['trackangle', 'jquery'], function (trackangle) {
          replace: false,
          transclude: true,
          scope:{
-             places: '=',
+             places: '=?',
              autocompletetype: '@',
              lat: '=',
-             lng: '=',
-             markers: '=?'
+             lng: '='
          },
          templateUrl: "/static/javascripts/angular/route/templates/ngmap.html",
          link: function (scope, element, attrs) {
 
-             if(!scope.markers){
-                 scope.markers = {};
+             if(!scope.places){
+                 scope.places = [];
              }
 
              var map;
@@ -43,23 +42,10 @@ define(['trackangle', 'jquery'], function (trackangle) {
                  service = new google.maps.places.PlacesService(map);
 
                 if(scope.places){
-                    var marker;
                     for(var i=0; i<scope.places.length; i++) {
-                        addMarker(scope.places[i].location_lat, scope.places[i].location_lng);
+                        addMarker(scope.places[i].location_lat, scope.places[i].location_lng, false);
                     }
                 }
-
-                if(scope.markers){
-                    for(var key in scope.markers){
-                        addMarker(key.split("_")[0], key.split("_")[1]);
-                    }
-
-                }
-
-                if(attrs.clickable) {
-                    addClickListener();
-                }
-
 
                 if(attrs.autocomplete){
                     scope.initializeAutocomplete();
@@ -71,34 +57,17 @@ define(['trackangle', 'jquery'], function (trackangle) {
              }
 
 
-             function addClickListener(){
-                 google.maps.event.addListener(map, 'click', function (e) {
-                    scope.$apply(function () {
-                     addMarker({
-                         lat: e.latLng.lat(),
-                         lng: e.latLng.lng()
-                     });
-                     console.log(e);
-                 });
-                });
-             }
 
-             function getMarkerUniqueId(lat, lng) {
-                 return lat + '_' + lng;
-             }
-
-             function addMarker(lat, lng) {
+             function addMarker(lat, lng, fromAutocomplete) {
                  var myLatlng = new google.maps.LatLng(lat, lng);
                  var marker = new google.maps.Marker({
                      position: myLatlng,
                      map: map,
                      //title: "Hello World!"
                  });
-                 var markerId = getMarkerUniqueId(lat, lng);
 
-                 scope.markers[markerId] = marker;
 
-                 if(Object.keys(scope.markers).length == 1) {
+                 if(scope.places.length == 1) {
                          bounds.extend(marker.getPosition());
                          map.setCenter(marker.getPosition());
                          map.setZoom(17);
@@ -108,7 +77,6 @@ define(['trackangle', 'jquery'], function (trackangle) {
                      map.fitBounds(bounds);
                  }
 
-                 var latlng = {lat:lat, lng:lng};
 
                  var loca = new google.maps.LatLng(lat,lng);
                  var requested = {
@@ -122,14 +90,17 @@ define(['trackangle', 'jquery'], function (trackangle) {
                      if (status == google.maps.places.PlacesServiceStatus.OK) {
                          var place = results[0];
 
-                         var address = '';
-                         if (place.address_components) {
-                             address = [
-                                    (place.address_components[0] && place.address_components[0].short_name || ''),
-                                    (place.address_components[1] && place.address_components[1].short_name || ''),
-                                    (place.address_components[2] && place.address_components[2].short_name || '')
-                                   ].join(' ');
+                         if(fromAutocomplete) {
+                             var tmp_place = {
+                                 id: place.id,
+                                 type: parseInt(attrs.placetype),
+                                 location_lat: place.geometry.location.lat(),
+                                 location_lng: place.geometry.location.lng()
+                             };
+                             scope.places.push(tmp_place);
                          }
+
+
                          marker.setIcon(({
                              url: place.icon,
                              size: new google.maps.Size(71, 71),
@@ -141,26 +112,8 @@ define(['trackangle', 'jquery'], function (trackangle) {
                      }
                  });
 
-
-                 if(attrs.clickable) {
-                     google.maps.event.addListener(marker, "rightclick", function (point) {
-                         var markerId = getMarkerUniqueId(point.latLng.lat(), point.latLng.lng()); // get marker id by using clicked point's coordinate
-                         var marker = scope.markers[markerId]; // find marker
-                         removeMarker(marker, markerId); // remove it
-                     });
-                     google.maps.event.addListener(marker, "click", function (point) {
-                         var markerId = getMarkerUniqueId(point.latLng.lat(), point.latLng.lng()); // get marker id by using clicked point's coordinate
-                         var marker = scope.markers[markerId]; // find marker
-                     });
-                 }
-                 return marker;
              } //end addMarker
 
-
-             function removeMarker(marker, markerId) {
-                 marker.setMap(null); // set markers setMap to null to remove it from map
-                 delete scope.markers[markerId]; // delete marker instance from markers object
-             };
 
 
              scope.addInfoWindow = function(text, marker, address){
@@ -194,7 +147,7 @@ define(['trackangle', 'jquery'], function (trackangle) {
                          return;
                      }
 
-                     var marker = addMarker(place.geometry.location.lat(), place.geometry.location.lng());
+                     var marker = addMarker(place.geometry.location.lat(), place.geometry.location.lng(), true);
 
 
 

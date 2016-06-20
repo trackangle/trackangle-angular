@@ -2,20 +2,23 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
     trackangle.register.controller('CreateRouteController', ['$scope','RouteService', function ($scope, RouteService){
 
        /*create route page navbar fuctions*/
-        $scope.markers_city = {};
-        $scope.markers_food = {};
-        $scope.markers_accomodation = {};
-        $scope.markers_nightlife = {};
-        $scope.markers_entertainment = {};
-        $scope.markers_architecture = {};
-        $scope.markers_outdoor = {};
+        $scope.markers_city = [];
+        $scope.markers_food = [];
+        $scope.markers_accomodation = [];
+        $scope.markers_nightlife = [];
+        $scope.markers_entertainment = [];
+        $scope.markers_architecture = [];
+        $scope.markers_outdoor = [];
 
         var selected = this;
         $scope.set_right_navbar = function (asd) {
-            for (var key in $scope.markers_city) {
+            /*for (var key in $scope.markers_city) {
                 if ($scope.markers_city.hasOwnProperty(key)) {
                     $scope.bounds = {"lat":$scope.markers_city[key].position.lat(), "lng":$scope.markers_city[key].position.lng()}
                 }
+            }*/
+            for(var i=0; i< $scope.markers_city.length; i++) {
+                $scope.bounds = {"lat":$scope.markers_city[i].location_lat, "lng":$scope.markers_city[i].location_lng}
             }
             if($scope.bounds){
                 $scope.lat = $scope.bounds.lat;
@@ -124,18 +127,14 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
 
         $scope.saveRoute = function() {
             var places = [];
-            console.log($scope.markers_accomodation);
-            //places.push
-              /*var places = [];
-              places.push({
-                  id: $scope.details_food.food_details.place_id,
-                  type:0,
-                  location_lat:$scope.details_food.food_details.geometry.location.lat(),
-                  location_lng:$scope.details_food.food_details.geometry.location.lng(),
-                  rating: $scope.food_star_rating.star_rating,
-                  budget: $scope.food_budget.budget,
-                  comment: $scope.food_comment.comment
-              });
+            places = places.concat($scope.markers_accomodation)
+            .concat($scope.markers_architecture)
+            .concat($scope.markers_entertainment)
+            .concat($scope.markers_food)
+            .concat($scope.markers_nightlife)
+            .concat($scope.markers_outdoor);
+            console.log(places);
+
               var routeJSON = {
                   title: $scope.title.route_title,
                   description: $scope.description.route_description,
@@ -146,7 +145,7 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
               RouteService.createRoute(routeJSON).then(function(res) {
                   console.log("Res:"+ res.config.data.id);
                   console.log("Res:"+ res.config.data.title);
-              })*/
+              })
         }
       }]);
 });

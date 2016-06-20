@@ -2,13 +2,20 @@ from django.db import models
 from trackangle.place.managers import PlaceManager
 
 
-SHOP = 0
-MUSEUM = 1
-FOOD = 2
+ACCOMODATION = 0
+ARCHITECTURE = 1
+ENTERTAINMENT = 2
+FOOD = 3
+NIGHTLIFE = 4
+OUTDOOR = 5
+
 PLACE_TYPES = (
-    (SHOP, 'shop'),
-    (MUSEUM, 'museum'),
+    (ACCOMODATION, 'accomodation'),
+    (ARCHITECTURE, 'architecture'),
+    (ENTERTAINMENT, 'entertainment'),
     (FOOD, 'food'),
+    (NIGHTLIFE, 'nightlife'),
+    (OUTDOOR, 'outdoor'),
 )
 
 
