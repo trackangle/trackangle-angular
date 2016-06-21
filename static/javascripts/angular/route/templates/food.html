@@ -1,13 +1,13 @@
-<div>
+<div class="form-group create_route_div  fixed-width col-lg-6 col-md-6 col-sm-6 col-xs-6" >
+    <div ng-map zoom=13 lat="lat" lng="lng"  autocomplete=true autocompletetype="establishment" id="map" places="markers_food" placetype=3></div>
+</div>
+<div class="form-group create_route_div fixed-width col-lg-6 col-md-6 col-sm-6 col-xs-6" style="left:1100px;">
     <label class="control-label label_color col-lg-12 col-md-12 col-sm-12 col-xs-12">Help travelers to experience best food locations</label>
         <span>Help traveller</span>
         <div data-ng-repeat="choice in choices">
             <hr style="height: 0%; width: 99%; line-height:0;border-bottom:1px solid #D6D5D5;border-top: 0px; background:none;"/>
             <div class="row">
-                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                    <label class="control-label label_color">Name</label>
-                    <input class="form-control"type="text" id="food_place" ng-autocomplete ng-model="result_food.food_result" details="details_food.food_details" options="options_food"/>
-                </div>
+
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                     <label class="control-label label_color ">star</label>
                     <input class="form-control" ng-model="food_star_rating.star_rating"/>
@@ -27,7 +27,7 @@
             </div>
         </div>
 
-        <div ng-map zoom=13 lat="lat" lng="lng"  autocomplete=true autocompletetype="establishment" id="map" places="markers_food" placetype=3></div>
+
         <div class="row">
 
             <div>

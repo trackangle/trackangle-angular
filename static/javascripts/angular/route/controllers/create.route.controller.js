@@ -11,12 +11,8 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
         $scope.markers_outdoor = [];
 
         var selected = this;
-        $scope.set_right_navbar = function (asd) {
-            /*for (var key in $scope.markers_city) {
-                if ($scope.markers_city.hasOwnProperty(key)) {
-                    $scope.bounds = {"lat":$scope.markers_city[key].position.lat(), "lng":$scope.markers_city[key].position.lng()}
-                }
-            }*/
+        $scope.set_right_navbar = function (placetype) {
+
             for(var i=0; i< $scope.markers_city.length; i++) {
                 $scope.bounds = {"lat":$scope.markers_city[i].location_lat, "lng":$scope.markers_city[i].location_lng}
             }
@@ -24,7 +20,7 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                 $scope.lat = $scope.bounds.lat;
                 $scope.lng = $scope.bounds.lng;
             }
-            selected.li = asd;
+            selected.li = placetype;
         };
         $scope.get_partial = function (){
             return "/static/javascripts/angular/route/templates/"+selected.li+".html";
@@ -76,53 +72,6 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
           /*Route Essentials*/
         $scope.title = { route_title: "" };
         $scope.description = { route_description: "" };
-        $scope.result_city = { route_result: "" };
-        $scope.options_city =
-        {
-            watchEnter: true,
-            types: '(cities)'
-        };
-        $scope.details_city = { route_details: "" };
-
-          /* Fodd Details*/
-        $scope.result_food = { food_result: "" };
-        $scope.options_food = {};
-        $scope.details_food = { food_details: "" };
-        $scope.food_star_rating = { star_rating: ""};
-        $scope.food_budget = {budget: ""};
-        $scope.food_comment = {comment: ""};
-
-          /*Nightlife Details*/
-        $scope.result_nightlife = { nightlife_result: "" };
-        $scope.options_nightlife = {};
-        $scope.details_nightlife = { nightlife_details: "" };
-        $scope.nightlife_star_rating = { star_rating: ""};
-        $scope.nightlife_budget = {budget: ""};
-        $scope.nightlife_comment = {comment: ""};
-
-          /*Entertainment and Arts Details*/
-        $scope.result_entertainment_arts = { entertainment_arts_result: "" };
-        $scope.options_entertainment_arts = {};
-        $scope.details_entertainment_arts = { entertainment_arts_details: "" };
-        $scope.entertainment_arts_star_rating = { star_rating: ""};
-        $scope.entertainment_arts_budget = {budget: ""};
-        $scope.entertainment_arts_comment = {comment: ""};
-
-          /*Architecture and Buildings Details */
-        $scope.result_architecture_buildings = { architecture_buildings_result: "" };
-        $scope.options_architecture_buildings = {};
-        $scope.details_architecture_buildings = { architecture_buildings_details: "" };
-        $scope.architecture_buildings_star_rating = { star_rating: ""};
-        $scope.architecture_buildings_budget = {budget: ""};
-        $scope.architecture_buildings_comment = {comment: ""};
-
-          /*Outdoor Details*/
-        $scope.result_outdoor = { outdoor_result: "" };
-        $scope.options_outdoor = {};
-        $scope.details_outdoor = { outdoor_details: "" };
-        $scope.outdoor_star_rating = { star_rating: ""};
-        $scope.outdoor_budget = {budget: ""};
-        $scope.outdoor_comment = {comment: ""};
 
 
         $scope.saveRoute = function() {

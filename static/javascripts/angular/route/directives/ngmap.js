@@ -23,6 +23,7 @@ define(['trackangle', 'jquery'], function (trackangle) {
              var service;
              var map_element = element[0].querySelector(".map_canvas");
              var autocomplete_input = element[0].querySelector('#pac-input');
+
              var geocoder = new google.maps.Geocoder;
 
 
@@ -34,8 +35,10 @@ define(['trackangle', 'jquery'], function (trackangle) {
                  };
 
                  map = new google.maps.Map(map_element, myOptions);
+
                  google.maps.event.trigger(map, 'resize');
                  map.setZoom( map.getZoom() );
+
 
 
                  bounds = new google.maps.LatLngBounds();
@@ -46,6 +49,7 @@ define(['trackangle', 'jquery'], function (trackangle) {
                         addMarker(scope.places[i].location_lat, scope.places[i].location_lng, false);
                     }
                 }
+
 
                 if(attrs.autocomplete){
                     scope.initializeAutocomplete();
@@ -120,7 +124,11 @@ define(['trackangle', 'jquery'], function (trackangle) {
 
                  scope.$apply(function () {
                      var infowindow = new google.maps.InfoWindow();
-                     infowindow.setContent('<div><strong>' + text + '</strong></div>' + address);
+                     var content = '<div><strong>' + text + '</strong></div>' + address;
+                     if(attrs.clickable){
+                        content = '<div><a href="#">' + text + '</a></div>' + address;
+                     }
+                     infowindow.setContent(content);
                      infowindow.open(map, marker);
                  });
              }
@@ -135,6 +143,7 @@ define(['trackangle', 'jquery'], function (trackangle) {
                  );
                  options['bounds'] = a_bounds;
 
+                 //map.controls[google.maps.ControlPosition.TOP_LEFT].push(autocomplete_input);
                  var autocomplete = new google.maps.places.Autocomplete(autocomplete_input, options);
                  autocomplete.bindTo('bounds', map);
 
