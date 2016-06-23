@@ -1,8 +1,11 @@
 define(['trackangle', '/static/javascripts/angular/route/services/route.service.js', 'angular-google-maps', 'jquery'], function (trackangle) {
-    trackangle.register.controller('CreateRouteController', ['$scope','RouteService', function ($scope, RouteService){
+    trackangle.register.controller('CreateRouteController', ['$scope', '$routeParams', 'RouteService', function ($scope, $routeParams, RouteService){
+
+
+        var geocoder = new google.maps.Geocoder;
+        var placeId = $routeParams.placeId;
 
        /*create route page navbar fuctions*/
-        $scope.markers_city = [];
         $scope.markers_food = [];
         $scope.markers_accomodation = [];
         $scope.markers_nightlife = [];
@@ -10,12 +13,7 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
         $scope.markers_architecture = [];
         $scope.markers_outdoor = [];
 
-        $scope.defaultBounds = new google.maps.LatLngBounds(
-            new google.maps.LatLng(40.82148, -73.66450),
-            new google.maps.LatLng(40.66541, -74.31715));
-
-
-
+        var clickedMarkerId = -1;
 
         $scope.map = {
             control: {},
@@ -28,7 +26,12 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
             markersEvents: {
                 click: function(marker, eventName, model) {
                     console.log(marker);
-                    console.log(model);
+                    clickedMarkerId = model.id;
+                    $scope.map.window.templateParameter = {
+                        rating: model.rating,
+                        budget: model.budget,
+                        comment: model.comment
+                    }
                     $scope.map.window.model = model;
                     $scope.map.window.show = true;
                 }
@@ -41,18 +44,12 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                 },
                 options: {}, // define when map is ready
                 templateUrl: '/static/javascripts/angular/route/templates/infowindow.html',
-                templateParameter: {
-                    rating:'inputRating',
-                    budget: '$5',
-                    comment: 'nayso'
-                }
             },
             searchbox: {
                 template: '/static/javascripts/angular/route/templates/searchbox.html',
                 options: {
                     autocomplete:true,
-                    //types: ['(cities)', 'establishment']
-                    //types: ['establishment']
+                    types: ['establishment']
                 },
                 position:"TOP_LEFT",
                 control: {},
@@ -71,7 +68,10 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                         var marker = {
                             id: marker_id,
                             latitude: place.geometry.location.lat(),
-                            longitude: place.geometry.location.lng()
+                            longitude: place.geometry.location.lng(),
+                            comment: "",
+                            rating: "",
+                            budget: ""
                         };
 
                         $scope.map.markers.push(marker);
@@ -80,9 +80,39 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
             }
         }; //TODO:  set location based on users current gps location
 
+        geocoder.geocode({'placeId': placeId}, function(results, status) {
+            if (status === google.maps.GeocoderStatus.OK) {
+              if (results[0]) {
+                  var city = results[0];
+                  var bounds = new google.maps.LatLngBounds();
+                  var position = new google.maps.LatLng(city.geometry.location.lat(), city.geometry.location.lng());
+                  bounds.extend(position); // your marker position, must be a LatLng instance
+                  $scope.map.searchbox.options.bounds = new google.maps.LatLngBounds(bounds.getSouthWest(), bounds.getNorthEast());
+                  $scope.map.center = {
+                      latitude: bounds.getCenter().lat(),
+                      longitude: bounds.getCenter().lng()
+                  }
+              }
+              else {
+                window.alert('No results found');
+              }
+            }
+            else {
+              window.alert('Geocoder failed due to: ' + status);
+            }
+        });
+
         $scope.savePlaceDetails = function(){
-            console.log("AAAAAAAAAAAAAAAAAAAAa");
-            console.log($("#inputRating").val());
+            for(var i = 0; i < $scope.map.markers.length; i++){
+                var marker_id = $scope.map.markers[i].id;
+                if(marker_id == clickedMarkerId){
+                    $scope.map.markers[i].comment = $("#inputComment").val();
+                    $scope.map.markers[i].rating = $("#inputRating").val();
+                    $scope.map.markers[i].budget = $("#inputBudget").val();
+                    break;
+                }
+            }
+            $scope.map.window.closeClick();
         };
 
 
@@ -92,16 +122,7 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
 
             $scope.map.window.closeClick();
 
-            if($scope.get_right_navbar() == "route_essentials"){
-
-                $scope.markers_city = $scope.map.markers;
-                var bounds = new google.maps.LatLngBounds();
-                for (var i in $scope.markers_city) { // your marker list here
-                    var position = new google.maps.LatLng($scope.markers_city[i].latitude, $scope.markers_city[i].longitude);
-                    bounds.extend(position); // your marker position, must be a LatLng instance
-                }
-                $scope.map.searchbox.options.bounds = new google.maps.LatLngBounds(bounds.getSouthWest(), bounds.getNorthEast());
-            }else if($scope.get_right_navbar() == "accomodation"){
+            if($scope.get_right_navbar() == "accomodation"){
                 $scope.markers_accomodation = $scope.map.markers;
             }else if($scope.get_right_navbar() == "food"){
                 $scope.markers_food = $scope.map.markers;
@@ -118,37 +139,19 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
             }
 
 
-            if(placetype == "route_essentials"){
-                $scope.map.markers = $scope.markers_city;
-                console.log($scope.map.searchbox.options.bounds);
-                delete $scope.map.searchbox.options["bounds"];
-                console.log($scope.map.searchbox.options.bounds);
-                //$scope.map.searchbox.options.types =['(cities)'];
-            }else if(placetype == "accomodation"){
+            if(placetype == "accomodation"){
                 $scope.map.markers = $scope.markers_accomodation;
-                //$scope.map.searchbox.options.types =['establishment'];
             }else if(placetype == "food"){
                 $scope.map.markers = $scope.markers_food;
-                //$scope.map.searchbox.options.types =['establishment'];
             }else if(placetype == "nightlife"){
                 $scope.map.markers = $scope.markers_nightlife;
-                //$scope.map.searchbox.options.types =['establishment'];
             }else if(placetype == "entertainment_arts"){
                 $scope.map.markers = $scope.markers_entertainment;
-                //$scope.map.searchbox.options.types =['establishment'];
             }else if(placetype == "outdoor"){
                 $scope.map.markers = $scope.markers_outdoor;
-                //$scope.map.searchbox.options.types =['establishment'];
             }
 
 
-            for(var i=0; i< $scope.markers_city.length; i++) {
-                $scope.bounds = {"lat":$scope.markers_city[i].location_lat, "lng":$scope.markers_city[i].location_lng}
-            }
-            if($scope.bounds){
-                $scope.lat = $scope.bounds.lat;
-                $scope.lng = $scope.bounds.lng;
-            }
             selected.li = placetype;
         };
         $scope.get_partial = function (){
