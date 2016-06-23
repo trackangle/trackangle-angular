@@ -1,11 +1,10 @@
-define(['angularAMD', 'angular-route', 'angular-cookies'], function (angularAMD) {
+define(['angularAMD', 'angular-route', 'angular-cookies', 'angular-google-maps'], function (angularAMD) {
     'use strict';
 
-  var trackangle = angular.module("trackangle", ['ngRoute', 'ngCookies']);
+  var trackangle = angular.module("trackangle", ['ngRoute', 'ngCookies', 'uiGmapgoogle-maps']);
 
   trackangle.controller('NavbarController', function ($scope, $http, $cookies) {
       $scope.logout = function() {
-          console.log("asdasd");
           return $http.post('/api/v1/auth/logout/')
               .then(logoutSuccessFn, logoutErrorFn);
 

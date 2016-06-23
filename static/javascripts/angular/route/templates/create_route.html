@@ -22,6 +22,14 @@
         </ul>
     </div>
     <div class="row">
-        <div ng-include src="get_partial()"></div>
+        <div class="form-group create_route_div  fixed-width col-lg-6 col-md-6 col-sm-6 col-xs-6" >
+            <ui-gmap-google-map control='map.control' center="map.center" zoom='map.zoom'>
+                <ui-gmap-search-box options="map.searchbox.options" template="map.searchbox.template" events="map.searchbox.events" position="map.searchbox.position"></ui-gmap-search-box>
+                <ui-gmap-window show="map.window.show" coords="map.window.model" options="map.window.options" templateUrl="map.window.templateUrl" templateParameter="map.window.templateParameter" closeClick="map.window.closeClick()">
+                </ui-gmap-window>
+                <ui-gmap-markers idkey="marker.id" models="map.markers" coords="'self'" doCluster="false" fit="'true'" icon="'icon'" events="map.markersEvents" options="'options'"></ui-gmap-markers>
+            </ui-gmap-google-map>
+        </div>
+        <!--div ng-include src="get_partial()"></div-->
     </div>
 </div>

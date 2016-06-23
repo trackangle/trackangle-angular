@@ -23,7 +23,7 @@ define(['trackangle', 'jquery'], function (trackangle) {
              var service;
              var map_element = element[0].querySelector(".map_canvas");
              var autocomplete_input = element[0].querySelector('#pac-input');
-
+             var infowindow = new google.maps.InfoWindow();
              var geocoder = new google.maps.Geocoder;
 
 
@@ -123,7 +123,7 @@ define(['trackangle', 'jquery'], function (trackangle) {
              scope.addInfoWindow = function(text, marker, address){
 
                  scope.$apply(function () {
-                     var infowindow = new google.maps.InfoWindow();
+
                      var content = '<div><strong>' + text + '</strong></div>' + address;
                      if(attrs.clickable){
                         content = '<div><a href="#">' + text + '</a></div>' + address;

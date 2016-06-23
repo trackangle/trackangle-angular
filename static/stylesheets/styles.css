@@ -123,7 +123,7 @@ li.navbar_active {
 
 .create_route_div {
     background-color: #FFFFFF;
-    width: 818px;
+    width: 1300px;
     top: 110px;
     left: 225px;
     overflow-y: auto;
@@ -414,41 +414,15 @@ li.navbar_active {
 .btn-arrow-left:after {
     background-color: #565a5c;
 }
-.map_canvas {
-    height: 300px;
-    /*width:300px;*/
-}
+
 .columns {
   columns: 3;
 }
 
-.controls {
-    margin-top: 10px;
-    border: 1px solid transparent;
-    border-radius: 2px 0 0 2px;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    height: 32px;
-    outline: none;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-}
+.angular-google-map-container { height: 800px; }
 
-#pac-input {
-    background-color: #fff;
-    font-family: Roboto;
-    font-size: 15px;
-    font-weight: 300;
-    margin-left: 12px;
-    padding: 0 11px 0 13px;
-    text-overflow: ellipsis;
-    width: 300px;
+.autocomplete-box{
+    top: 10px !important;;
+    width: 75%;
+    height:31px;
 }
-
-#pac-input:focus {
-    border-color: #4d90fe;
-}
-
-.pac-container {
-    font-family: Roboto;
-}
-
