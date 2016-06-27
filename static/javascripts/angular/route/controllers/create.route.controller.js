@@ -3,7 +3,13 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
 
 
         var geocoder = new google.maps.Geocoder;
-        var placeId = $routeParams.placeId;
+        $scope.cityNames = [];
+
+        placeIdArr = $routeParams.placeId.split("|")
+        for(var i = 0; i < placeIdArr.length; i++){
+            getPlaceFromId(placeIdArr[i]);
+        }
+
 
        /*create route page navbar fuctions*/
         $scope.markers_food = [];
@@ -80,27 +86,30 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
             }
         }; //TODO:  set location based on users current gps location
 
-        geocoder.geocode({'placeId': placeId}, function(results, status) {
-            if (status === google.maps.GeocoderStatus.OK) {
-              if (results[0]) {
-                  var city = results[0];
-                  var bounds = new google.maps.LatLngBounds();
-                  var position = new google.maps.LatLng(city.geometry.location.lat(), city.geometry.location.lng());
-                  bounds.extend(position); // your marker position, must be a LatLng instance
-                  $scope.map.searchbox.options.bounds = new google.maps.LatLngBounds(bounds.getSouthWest(), bounds.getNorthEast());
-                  $scope.map.center = {
-                      latitude: bounds.getCenter().lat(),
-                      longitude: bounds.getCenter().lng()
-                  }
-              }
-              else {
-                window.alert('No results found');
-              }
-            }
-            else {
-              window.alert('Geocoder failed due to: ' + status);
-            }
-        });
+        function getPlaceFromId(placeId) {
+            geocoder.geocode({'placeId': placeId}, function (results, status) {
+                if (status === google.maps.GeocoderStatus.OK) {
+                    if (results[0]) {
+                        var city = results[0];
+                        $scope.cityNames.push(city.formatted_address.split(',')[0]);
+                        var bounds = new google.maps.LatLngBounds();
+                        var position = new google.maps.LatLng(city.geometry.location.lat(), city.geometry.location.lng());
+                        bounds.extend(position); // your marker position, must be a LatLng instance
+                        $scope.map.searchbox.options.bounds = new google.maps.LatLngBounds(bounds.getSouthWest(), bounds.getNorthEast());
+                        $scope.map.center = {
+                            latitude: bounds.getCenter().lat(),
+                            longitude: bounds.getCenter().lng()
+                        }
+                    }
+                    else {
+                        window.alert('No results found');
+                    }
+                }
+                else {
+                    window.alert('Geocoder failed due to: ' + status);
+                }
+            });
+        }
 
         $scope.savePlaceDetails = function(){
             for(var i = 0; i < $scope.map.markers.length; i++){

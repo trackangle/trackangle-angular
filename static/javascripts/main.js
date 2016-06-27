@@ -11,6 +11,7 @@ require.config({
     'jquery': '../bower_components/jquery/dist/jquery',
     'bootstrap': '../bower_components/bootstrap/dist/js/bootstrap',
     'bootstrap-material-designer' : '../bower_components/bootstrap-material-design/dist/js/ripples',
+    'ngAutocomplete': '../bower_components/ngAutocomplete/src/ngAutocomplete',
     'underscore': '../bower_components/underscore/underscore',
     'ngDialog': '../bower_components/ngDialog/js/ngDialog',
     'snackbar': '../lib/snackbarjs/snackbar.min',
@@ -18,7 +19,7 @@ require.config({
     'ngMap': '../javascripts/angular/route/directives/ngmap',
     'lodash': '../bower_components/lodash/dist/lodash.min',
     'angular-simple-logger': '../bower_components/angular-simple-logger/dist/angular-simple-logger.min',
-    'angular-google-maps': '../bower_components/angular-google-maps/dist/angular-google-maps.min'
+    'angular-google-maps': '../bower_components/angular-google-maps/dist/angular-google-maps.min',
   },
 
   // Add angular modules that does not support AMD out of the box, put it in a shim
@@ -28,7 +29,10 @@ require.config({
     'angular-cookies': ['angular'],
     'angular-simple-logger': ['angular'],
     'angular-google-maps': ['angular', 'angular-simple-logger','google-maps', 'underscore'],
-    'bootstrap': ['jquery']
+    'bootstrap': ['jquery'],
+    'ngAutocomplete': {
+                        deps: ['angular', 'jquery', 'google-maps']
+    }
   },
 
   // kick start application
