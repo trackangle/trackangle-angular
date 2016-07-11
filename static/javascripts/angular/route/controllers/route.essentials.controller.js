@@ -1,4 +1,4 @@
-define(['trackangle', '/static/javascripts/angular/route/services/route.service.js', 'google-maps', 'jquery'], function (trackangle) {
+define(['trackangle', '/static/javascripts/angular/route/services/route.service.js', '/static/javascripts/angular/route/directives/repeatDirective.js', 'google-maps', 'jquery'], function (trackangle) {
     trackangle.register.controller('RouteEssentialsController', ['$scope', '$timeout', '$window', function ($scope, $timeout, $window){
 
         //$scope.details1 = '';
@@ -15,18 +15,15 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
         };
 
         $scope.addNewAutocomplete = function() {
-
+            var id = "autocomplete_" + ($scope.numberOfCities);
             $scope.numberOfCities += 1;
-            var id = "autocomplete_" + ($scope.numberOfCities-1);
-            $timeout(function() {
-                var input = document.getElementById(id);
-                var autocomplete = new google.maps.places.Autocomplete(input, options);
-                autocompleteArray.push(autocomplete);
-            }, 1000);
-
         };
-
         $scope.addNewAutocomplete();
+
+
+        $scope.ctrlFn = function(autocomplete) {
+            autocompleteArray.push(autocomplete);
+        }
 
         $scope.addRouteDetails = function(){
 
@@ -39,12 +36,7 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                 placeIdStr += autocompleteArray[i].getPlace().place_id;
                 placeIdArray.push(autocompleteArray[i].getPlace().place_id);
             }
-            console.log(placeIdArray);
-            console.log(JSON.stringify(placeIdArray));
-            console.log(placeIdStr);
-            //$window.open("/route/create/details/" + JSON.stringify(placeIdArray));
             $window.location.href = "/route/create/details/" + placeIdStr;
-            //"/route/create/details/{{placeId}}"
         }
 
     }]);

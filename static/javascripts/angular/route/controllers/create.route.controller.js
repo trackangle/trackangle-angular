@@ -3,21 +3,21 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
 
 
         var geocoder = new google.maps.Geocoder;
-        $scope.cityNames = [];
+        $scope.cityList = [];
 
-        placeIdArr = $routeParams.placeId.split("|")
-        for(var i = 0; i < placeIdArr.length; i++){
-            getPlaceFromId(placeIdArr[i]);
-        }
+
+        placeIdArr = $routeParams.placeId.split("|");
+        getPlaceFromId(placeIdArr[0]);
+
 
 
        /*create route page navbar fuctions*/
-        $scope.markers_food = [];
-        $scope.markers_accomodation = [];
-        $scope.markers_nightlife = [];
-        $scope.markers_entertainment = [];
-        $scope.markers_architecture = [];
-        $scope.markers_outdoor = [];
+        $scope.markers_food = {};
+        $scope.markers_accomodation = {};
+        $scope.markers_nightlife = {};
+        $scope.markers_entertainment = {};
+        $scope.markers_architecture = {};
+        $scope.markers_outdoor = {};
 
         var clickedMarkerId = -1;
 
@@ -31,7 +31,6 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
             markers: [],
             markersEvents: {
                 click: function(marker, eventName, model) {
-                    console.log(marker);
                     clickedMarkerId = model.id;
                     $scope.map.window.templateParameter = {
                         rating: model.rating,
@@ -90,15 +89,21 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
             geocoder.geocode({'placeId': placeId}, function (results, status) {
                 if (status === google.maps.GeocoderStatus.OK) {
                     if (results[0]) {
-                        var city = results[0];
-                        $scope.cityNames.push(city.formatted_address.split(',')[0]);
-                        var bounds = new google.maps.LatLngBounds();
-                        var position = new google.maps.LatLng(city.geometry.location.lat(), city.geometry.location.lng());
-                        bounds.extend(position); // your marker position, must be a LatLng instance
-                        $scope.map.searchbox.options.bounds = new google.maps.LatLngBounds(bounds.getSouthWest(), bounds.getNorthEast());
-                        $scope.map.center = {
-                            latitude: bounds.getCenter().lat(),
-                            longitude: bounds.getCenter().lng()
+                        $scope.cityList.push(results[0]);
+                        var cityName = results[0].formatted_address.split(',')[0]
+
+                        $scope.markers_food[cityName] = [];
+                        $scope.markers_accomodation[cityName] = [];
+                        $scope.markers_nightlife[cityName] = [];
+                        $scope.markers_entertainment[cityName] = [];
+                        $scope.markers_architecture[cityName] = [];
+                        $scope.markers_outdoor[cityName] = [];
+
+                        if($scope.cityList.length == 1) {
+                            $scope.changeCity(0);
+                        }
+                        if($scope.cityList.length != placeIdArr.length) {
+                            getPlaceFromId(placeIdArr[placeIdArr.indexOf(placeId) + 1]);
                         }
                     }
                     else {
@@ -109,6 +114,30 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                     window.alert('Geocoder failed due to: ' + status);
                 }
             });
+        }
+
+        $scope.$watch('currentCityIndex', function(currentCityIndex) {
+            if(currentCityIndex != undefined) {
+                var city = $scope.cityList[currentCityIndex];
+                var bounds = new google.maps.LatLngBounds();
+                var position = new google.maps.LatLng(city.geometry.location.lat(), city.geometry.location.lng());
+                bounds.extend(position); // your marker position, must be a LatLng instance
+                $scope.map.searchbox.options.bounds = new google.maps.LatLngBounds(bounds.getSouthWest(), bounds.getNorthEast());
+                $scope.map.center = {
+                    latitude: bounds.getCenter().lat(),
+                    longitude: bounds.getCenter().lng()
+                }
+            }
+        });
+
+        $scope.changeCity = function(cityIndex){
+            $scope.previousCityIndex = $scope.currentCityIndex;
+            if($scope.previousCityIndex == undefined){
+                $scope.previousCityIndex = cityIndex;
+            }
+            $scope.currentCityIndex = cityIndex;
+            $scope.set_right_navbar("accomodation");
+            $scope.previousCityIndex = cityIndex;
         }
 
         $scope.savePlaceDetails = function(){
@@ -128,36 +157,38 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
         var selected = this;
         $scope.set_right_navbar = function (placetype) {
 
-
+            $scope.map.zoom = 12;
             $scope.map.window.closeClick();
+            var previousCityName = $scope.cityList[$scope.previousCityIndex].formatted_address.split(',')[0];
+            var currentCityName = $scope.cityList[$scope.currentCityIndex].formatted_address.split(',')[0];
 
             if($scope.get_right_navbar() == "accomodation"){
-                $scope.markers_accomodation = $scope.map.markers;
+                $scope.markers_accomodation[previousCityName] = $scope.map.markers;
             }else if($scope.get_right_navbar() == "food"){
-                $scope.markers_food = $scope.map.markers;
+                $scope.markers_food[previousCityName] = $scope.map.markers;
             }else if($scope.get_right_navbar() == "nightlife"){
-                $scope.markers_nightlife = $scope.map.markers;
+                $scope.markers_nightlife[previousCityName] = $scope.map.markers;
             }else if($scope.get_right_navbar() == "entertainment_arts"){
-                $scope.markers_entertainment = $scope.map.markers;
+                $scope.markers_entertainment[previousCityName] = $scope.map.markers;
             }else if($scope.get_right_navbar() == "architecture_buildings"){
-                $scope.markers_architecture = $scope.map.markers;
-            }else if($scope.get_right_navbar() == "architecture_buildings"){
-                $scope.markers_architecture = $scope.map.markers;
+                $scope.markers_architecture[previousCityName] = $scope.map.markers;
             }else if($scope.get_right_navbar() == "outdoor"){
-                $scope.markers_outdoor = $scope.map.markers;
+                $scope.markers_outdoor[previousCityName] = $scope.map.markers;
             }
 
 
             if(placetype == "accomodation"){
-                $scope.map.markers = $scope.markers_accomodation;
+                $scope.map.markers = $scope.markers_accomodation[currentCityName];
             }else if(placetype == "food"){
-                $scope.map.markers = $scope.markers_food;
+                $scope.map.markers = $scope.markers_food[currentCityName];
             }else if(placetype == "nightlife"){
-                $scope.map.markers = $scope.markers_nightlife;
+                $scope.map.markers = $scope.markers_nightlife[currentCityName];
             }else if(placetype == "entertainment_arts"){
-                $scope.map.markers = $scope.markers_entertainment;
+                $scope.map.markers = $scope.markers_entertainment[currentCityName];
+            }else if(placetype == "architecture_buildings"){
+                $scope.map.markers = $scope.markers_architecture[currentCityName];
             }else if(placetype == "outdoor"){
-                $scope.map.markers = $scope.markers_outdoor;
+                $scope.map.markers = $scope.markers_outdoor[currentCityName];
             }
 
 

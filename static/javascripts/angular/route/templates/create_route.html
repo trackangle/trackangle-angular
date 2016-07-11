@@ -1,11 +1,11 @@
 <div class="kinda_bar navbar col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
     <div class="step_buttons">
-        <button ng-repeat="cityName in cityNames" type="button" class="btn btn-primary outline btn_top btn-arrow-right">{{cityName}}</button>
+        <button ng-repeat="city in cityList" ng-click="changeCity($index)" type="button" class="btn btn-primary outline btn_top btn-arrow-right">{{city.formatted_address.split(',')[0]}}</button>
     </div>
 
 </div>
-<div class="form-group" ng-init="set_right_navbar('accomodation')">
+<div class="form-group">
     <div >
         <ul class="nav navbar-nav side-nav col-lg-2 col-md-2 col-sm-2 col-xs-2">
             <li ng-click="set_right_navbar('accomodation')" ng-class="{'active':get_right_navbar() == 'accomodation' }"><a href=""><i class="fa fa-fw fa-home"></i>Accomodation</a></li>

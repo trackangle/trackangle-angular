@@ -8,8 +8,8 @@
             </ui-gmap-google-map>
     </div-->
 
-    <div ng-repeat="i in getNumber() track by $index" class="row">
-        <input type="text" id="autocomplete_{{$index}}" size="50" placeholder="Enter a city"/>
+    <div ng-repeat="i in getNumber() track by $index" class="row" >
+        <input type="text" id="autocomplete_{{$index}}" size="50" placeholder="Enter a city" repeat-directive callback-fn="ctrlFn(arg1)" />
     </div>
     <!--div id="autocompleteDiv" class="row"></div-->
     <div class="row">
