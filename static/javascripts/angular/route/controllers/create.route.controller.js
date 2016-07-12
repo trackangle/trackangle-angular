@@ -36,7 +36,7 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                         rating: model.rating,
                         budget: model.budget,
                         comment: model.comment
-                    }
+                    };
                     $scope.map.window.model = model;
                     $scope.map.window.show = true;
                 }
@@ -156,6 +156,7 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
         });
 
         $scope.changeCity = function(cityIndex){
+            //console.log($event.currentTarget);
             $scope.previousCityIndex = $scope.currentCityIndex;
             if($scope.previousCityIndex == undefined){
                 $scope.previousCityIndex = cityIndex;
@@ -163,7 +164,11 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
             $scope.currentCityIndex = cityIndex;
             $scope.set_right_navbar("accomodation");
             $scope.previousCityIndex = cityIndex;
-        }
+        };
+
+        $scope.isCitySelected = function(cityIndex){
+            return $scope.currentCityIndex === cityIndex;
+        };
 
         $scope.savePlaceDetails = function(){
             for(var i = 0; i < $scope.map.markers.length; i++){
@@ -182,6 +187,7 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
         var selected = this;
         $scope.set_right_navbar = function (placetype) {
 
+            $(".autocomplete-box").val("");
             $scope.map.zoom = 12;
             $scope.map.window.closeClick();
             var previousCityName = $scope.cityList[$scope.previousCityIndex].formatted_address.split(',')[0];
