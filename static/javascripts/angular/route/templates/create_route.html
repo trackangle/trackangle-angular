@@ -2,6 +2,7 @@
 
     <div class="step_buttons">
         <button ng-repeat="city in cityList" ng-click="changeCity($index)" type="button" class="btn btn-primary outline btn_top btn-arrow-right">{{city.formatted_address.split(',')[0]}}</button>
+        <button ng-click="saveRoute()" type="button" class="btn btn-primary">Save</button>
     </div>
 
 </div>

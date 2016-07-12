@@ -70,10 +70,14 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                             marker_id = $scope.map.markers[$scope.map.markers.length - 1].id + 1
                         }
 
+                        var marker_type = getPlaceType();
+
                         var marker = {
                             id: marker_id,
                             latitude: place.geometry.location.lat(),
                             longitude: place.geometry.location.lng(),
+                            type: marker_type,
+                            place_id: place.place_id,
                             comment: "",
                             rating: "",
                             budget: ""
@@ -114,6 +118,27 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                     window.alert('Geocoder failed due to: ' + status);
                 }
             });
+        }
+
+        function getPlaceType(){
+            if($scope.get_right_navbar() == "accomodation"){
+                return 0;
+            }
+            else if($scope.get_right_navbar() == "food"){
+                return 3;
+            }
+            else if($scope.get_right_navbar() == "nightlife"){
+                return 4;
+            }
+            else if($scope.get_right_navbar() == "entertainment_arts"){
+                return 2;
+            }
+            else if($scope.get_right_navbar() == "architecture_buildings"){
+                return 1;
+            }
+            else if($scope.get_right_navbar() == "outdoor"){
+                return 5;
+            }
         }
 
         $scope.$watch('currentCityIndex', function(currentCityIndex) {
@@ -242,32 +267,42 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
             {types: 'couchsurfings', displayName: 'Couchsurfing'}
         ];
         $scope.selectedAccomodationType = $scope.accomodationTypes[0];
-          /*Route Essentials*/
-        $scope.title = { route_title: "" };
-        $scope.description = { route_description: "" };
 
 
         $scope.saveRoute = function() {
-            var places = [];
-            places = places.concat($scope.markers_accomodation)
-            .concat($scope.markers_architecture)
-            .concat($scope.markers_entertainment)
-            .concat($scope.markers_food)
-            .concat($scope.markers_nightlife)
-            .concat($scope.markers_outdoor);
-            console.log(places);
+            var markers = [];
 
-              var routeJSON = {
-                  title: $scope.title.route_title,
-                  description: $scope.description.route_description,
-                  url_title: 'url_title',
-                  places: places
-              }
-              console.log(routeJSON);
-              RouteService.createRoute(routeJSON).then(function(res) {
-                  console.log("Res:"+ res.config.data.id);
-                  console.log("Res:"+ res.config.data.title);
-              })
+            for(var i = 0; i < $scope.cityList.length; i++) {
+                var cityName = $scope.cityList[i].formatted_address.split(',')[0];
+                markers = markers.concat($scope.markers_accomodation[cityName])
+                    .concat($scope.markers_architecture[cityName])
+                    .concat($scope.markers_entertainment[cityName])
+                    .concat($scope.markers_food[cityName])
+                    .concat($scope.markers_nightlife[cityName])
+                    .concat($scope.markers_outdoor[cityName]);
+            }
+            var places = [];
+            for(var i = 0; i < markers.length; i++){
+                var place = {
+                    id: markers[i].place_id,
+                    location_lat: markers[i].latitude,
+                    location_lng: markers[i].longitude,
+                    type: markers[i].type
+                }
+                places.push(place);
+            }
+
+            var routeJSON = {
+                title: "title1",
+                description: "desc1",
+                url_title: 'url_title',
+                places: places
+            }
+            console.log(routeJSON);
+            RouteService.createRoute(routeJSON).then(function(res) {
+                console.log("Res:"+ res.config.data.id);
+                console.log("Res:"+ res.config.data.title);
+            })
         }
       }]);
 });

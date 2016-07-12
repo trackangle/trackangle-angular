@@ -421,6 +421,8 @@ li.navbar_active {
 
 .angular-google-map-container { height: 800px; }
 
+.col-md-4 .angular-google-map-container {height: 300px;}
+
 .autocomplete-box{
     top: 10px !important;;
     width: 75%;
