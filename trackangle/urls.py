@@ -4,6 +4,7 @@ from trackangle.views import IndexView
 from trackangle.user.api.v1.urls import user_router
 from trackangle.authentication.urls import account_router
 from trackangle.route.api.v1.urls import route_router
+from trackangle.user.api.v1.urls import user_router
 from trackangle.authentication.views import LoginView, LogoutView
 
 api_urls = [

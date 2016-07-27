@@ -60,6 +60,11 @@ define(['angularAMD', 'angular-route', 'angular-cookies', 'angular-google-maps']
         controller: 'RouteController',
         controllerUrl: '/static/javascripts/angular/route/controllers/route.controller.js'
     }))
+    .when("/user", angularAMD.route({
+        templateUrl: '/static/javascripts/angular/user/templates/user_home.html',
+        controller: 'UserProfileController',
+        controllerUrl: '/static/javascripts/angular/user/controllers/user.profile.controller.js'
+    }))
     .otherwise({redirectTo: "/routes"});
   });
 
