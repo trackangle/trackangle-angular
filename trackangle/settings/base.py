@@ -45,7 +45,8 @@ INSTALLED_APPS = (
     'trackangle.authentication',
     'trackangle.route',
     'trackangle.place',
-    'trackangle.utils'
+    'trackangle.utils',
+    'trackangle.user'
 )
 
 MIDDLEWARE_CLASSES = (
