@@ -1,4 +1,3 @@
-
 define(['trackangle', 'google-maps', 'ngMap'], function (trackangle) {
     trackangle.register.controller('RoutesController', function ($scope, $http) {
 

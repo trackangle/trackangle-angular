@@ -13,12 +13,12 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
     def list(self, request, *args, **kwargs):
-        queryset = Route.objects.filter(routehasowners__owner=Account.username)
+        queryset = Route.objects.filter(routehasowners__owner=Account.objects.get())
         serializer = RouteSerializer(queryset, many=True)
         return response.Response(serializer.data)
 
     def retrieve(self, request, id):
-        queryset = Route.objects.filter(routehasowners__owner=Account.username)
+        queryset = Route.objects.filter(routehasowners__owner=Account.objects.get())
         route = get_object_or_404(queryset, pk=id)
         serializer = RouteSerializer(route)
         return response.Response(serializer.data)

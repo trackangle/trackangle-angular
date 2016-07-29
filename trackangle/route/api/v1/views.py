@@ -1,5 +1,6 @@
 from rest_framework import viewsets, response, status
 
+from trackangle.authentication.models import Account
 from trackangle.route.api.v1.serializers import RouteSerializer
 from trackangle.route.models import Route
 from django.shortcuts import get_object_or_404
@@ -19,6 +20,7 @@ class RouteViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         print("create");
+        print(Account.objects.get());
         print(request.data);
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
