@@ -20,12 +20,12 @@ class RouteViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         print("create");
-        print(Account.objects.get());
-        print(request.data);
+        #print(Account.objects.get(id=request.user.id).id)
+        #print(Route.objects.filter(routehasowners__owner_id=Account.objects.get(id=request.user.id).id))
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             places = serializer.validated_data.pop('places')
-            print(places);
+            #print(places);
 
             route = Route.objects.create_route(**serializer.validated_data)
             routehasowners = RouteHasOwners(route=route, owner=request.user)

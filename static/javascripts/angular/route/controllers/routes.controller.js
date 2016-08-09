@@ -15,7 +15,7 @@ define(['trackangle', 'google-maps', 'ngMap'], function (trackangle) {
                     zoom: 12,
                     markers: []
                 }
-                console.log(data.data);
+                //console.log(data.data);
 
                 for(var j = 0; j < data.data[i].places.length; j++) {
                     var place = data.data[i].places[j];
