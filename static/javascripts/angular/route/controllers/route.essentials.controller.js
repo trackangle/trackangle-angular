@@ -1,7 +1,8 @@
 define(['trackangle', '/static/javascripts/angular/route/services/route.service.js', '/static/javascripts/angular/route/directives/repeatDirective.js', 'google-maps', 'jquery'], function (trackangle) {
-    trackangle.register.controller('RouteEssentialsController', ['$scope', '$timeout', '$window', function ($scope, $timeout, $window){
+    trackangle.register.controller('RouteEssentialsController', ['$scope', '$routeParams', '$window', function ($scope, $routeParams, $window){
 
         //$scope.details1 = '';
+        console.log($routeParams.id);
         $scope.placeId;
         $scope.numberOfCities = 0;
         $scope.getNumber = function() {

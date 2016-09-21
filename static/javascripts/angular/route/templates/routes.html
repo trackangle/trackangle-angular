@@ -22,7 +22,10 @@
                     <ui-gmap-markers idkey="route.marker.id" models="route.map.markers" coords="'self'" doCluster="false" fit="'true'" icon="'icon'"></ui-gmap-markers>
                 </ui-gmap-google-map>
 
-                <div class="panel-footer text-muted"><a href="route/{{ route.id }}">{{route.title}}</a></div>
+                <div class="panel-footer text-muted">
+                    <a href="route/{{ route.id }}">{{route.title}}</a>
+                    <a href="route/create/{{ route.id }}" style="float:right;">Edit</a>
+                </div>
 
             </div>
         </div>

@@ -11,7 +11,7 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
 
 
 
-       /*create route page navbar fuctions*/
+        /*create route page navbar fuctions*/
         $scope.markers_food = {};
         $scope.markers_accomodation = {};
         $scope.markers_nightlife = {};
@@ -65,34 +65,39 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                             console.log('no place data :(');
                             return;
                         }
-                        var marker_id = 0
-                        if($scope.map.markers.length != 0){
-                            marker_id = $scope.map.markers[$scope.map.markers.length - 1].id + 1
-                        }
-
-                        var marker_type = getPlaceType();
-
-                        var marker = {
-                            id: marker_id,
-                            latitude: place.geometry.location.lat(),
-                            longitude: place.geometry.location.lng(),
-                            type: marker_type,
-                            place_id: place.place_id,
-                            comment: "",
-                            rating: "",
-                            budget: ""
-                        };
-
-                        $scope.map.markers.push(marker);
+                        addMarker(place)
                     }
                 }
             }
         }; //TODO:  set location based on users current gps location
 
+        function addMarker(place){
+            var marker_id = 0;
+            if($scope.map.markers.length != 0){
+                marker_id = $scope.map.markers[$scope.map.markers.length - 1].id + 1
+            }
+
+            var marker_type = getPlaceType();
+
+            var marker = {
+                id: marker_id,
+                latitude: place.geometry.location.lat(),
+                longitude: place.geometry.location.lng(),
+                type: marker_type,
+                place_id: place.place_id,
+                comment: "",
+                rating: "",
+                budget: ""
+            };
+
+            $scope.map.markers.push(marker);
+        }
+
         function getPlaceFromId(placeId) {
             geocoder.geocode({'placeId': placeId}, function (results, status) {
                 if (status === google.maps.GeocoderStatus.OK) {
                     if (results[0]) {
+                        console.log(results);
                         $scope.cityList.push(results[0]);
                         var cityName = results[0].formatted_address.split(',')[0]
 
