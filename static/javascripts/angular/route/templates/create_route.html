@@ -9,12 +9,12 @@
 <div class="form-group">
     <div >
         <ul class="nav navbar-nav side-nav col-lg-2 col-md-2 col-sm-2 col-xs-2">
-            <li ng-click="set_right_navbar('accomodation')" ng-class="{'active':get_right_navbar() == 'accomodation' }"><a href=""><i class="fa fa-fw fa-home"></i>Accomodation</a></li>
-            <li ng-click="set_right_navbar('food')" ng-class="{'active':get_right_navbar() == 'food' }"><a href=""><i class="fa fa-fw fa-cutlery"></i>Food</a></li>
-            <li ng-click="set_right_navbar('nightlife')" ng-class="{'active':get_right_navbar() == 'nightlife' }"><a href=""><i class="fa fa-fw fa-glass"></i>Nightlife</a></li>
-            <li ng-click="set_right_navbar('entertainment_arts')" ng-class="{'active':get_right_navbar() == 'entertainment_arts' }"><a href=""><i class="fa fa-fw fa-paint-brush"></i> Entertainment & Arts</a></li>
-            <li ng-click="set_right_navbar('architecture_buildings')" ng-class="{'active':get_right_navbar() == 'architecture_buildings' }"><a href=""><i class="fa fa-fw fa-university"></i> Architecture</a></li>
-            <li ng-click="set_right_navbar('outdoor')" ng-class="{'active':get_right_navbar() == 'outdoor' }"><a href=""><i class="fa fa-fw fa-bicycle"></i> Outdoor</a></li>
+            <li ng-click="set_right_navbar(placeTypes.accomodation)" ng-class="{'active':get_right_navbar() == placeTypes.accomodation }"><a href=""><i class="fa fa-fw fa-home"></i>Accomodation</a></li>
+            <li ng-click="set_right_navbar(placeTypes.food)" ng-class="{'active':get_right_navbar() == placeTypes.food }"><a href=""><i class="fa fa-fw fa-cutlery"></i>Food</a></li>
+            <li ng-click="set_right_navbar(placeTypes.nightlife)" ng-class="{'active':get_right_navbar() == placeTypes.nightlife }"><a href=""><i class="fa fa-fw fa-glass"></i>Nightlife</a></li>
+            <li ng-click="set_right_navbar(placeTypes.entertainment)" ng-class="{'active':get_right_navbar() == placeTypes.entertainment }"><a href=""><i class="fa fa-fw fa-paint-brush"></i> Entertainment & Arts</a></li>
+            <li ng-click="set_right_navbar(placeTypes.architecture)" ng-class="{'active':get_right_navbar() == placeTypes.architecture }"><a href=""><i class="fa fa-fw fa-university"></i> Architecture</a></li>
+            <li ng-click="set_right_navbar(placeTypes.outdoor)" ng-class="{'active':get_right_navbar() == placeTypes.outdoor }"><a href=""><i class="fa fa-fw fa-bicycle"></i> Outdoor</a></li>
 
         </ul>
     </div>

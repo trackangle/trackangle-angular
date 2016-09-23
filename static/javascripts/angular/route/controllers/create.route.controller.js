@@ -6,6 +6,23 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
         $scope.cityList = [];
         initMap();
 
+        var accomodation = 0;
+        var architecture = 1;
+        var entertainment = 2;
+        var food = 3;
+        var nightlife = 4;
+        var outdoor = 5;
+
+        $scope.placeTypes = {
+            'accomodation': accomodation,
+            'architecture': architecture,
+            'entertainment': entertainment,
+            'food': food,
+            'nightlife': nightlife,
+            'outdoor': outdoor
+        }
+
+
         $scope.markers = [];
 
         var clickedMarkerId = -1;
@@ -16,7 +33,7 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                 marker_id = $scope.map.markers[$scope.map.markers.length - 1].id + 1
             }
 
-            var marker_type = getPlaceType();
+            var marker_type = $scope.get_right_navbar();
 
             var marker = {
                 id: marker_id,
@@ -114,31 +131,9 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
 
         }
 
-        function getPlaceType(){
-            if($scope.get_right_navbar() == "accomodation"){
-                return 0;
-            }
-            else if($scope.get_right_navbar() == "food"){
-                return 3;
-            }
-            else if($scope.get_right_navbar() == "nightlife"){
-                return 4;
-            }
-            else if($scope.get_right_navbar() == "entertainment_arts"){
-                return 2;
-            }
-            else if($scope.get_right_navbar() == "architecture_buildings"){
-                return 1;
-            }
-            else if($scope.get_right_navbar() == "outdoor"){
-                return 5;
-            }
-        }
-
-
         $scope.changeCity = function(cityIndex){
             $scope.currentCityIndex = cityIndex;
-            $scope.set_right_navbar("accomodation");
+            $scope.set_right_navbar(accomodation);
 
             var city = $scope.cityList[$scope.currentCityIndex];
             var bounds = new google.maps.LatLngBounds();
@@ -181,7 +176,7 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
 
             selected.li = placetype;
             $scope.map.markers = $scope.markers[currentCityName].filter(function (el) {
-                return el.type == getPlaceType();
+                return el.type == $scope.get_right_navbar();
             });
         };
         $scope.get_partial = function (){
