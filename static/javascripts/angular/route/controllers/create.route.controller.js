@@ -78,6 +78,7 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
             }
 
             var marker_type = getPlaceType();
+            console.log($scope.cityList);
 
             var marker = {
                 id: marker_id,
@@ -85,6 +86,7 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                 longitude: place.geometry.location.lng(),
                 type: marker_type,
                 place_id: place.place_id,
+                city: $scope.cityList[$scope.currentCityIndex].formatted_address.split(',')[0],
                 comment: "",
                 rating: "",
                 budget: ""
@@ -99,7 +101,7 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                     if (results[0]) {
                         console.log(results);
                         $scope.cityList.push(results[0]);
-                        var cityName = results[0].formatted_address.split(',')[0]
+                        var cityName = results[0].formatted_address.split(',')[0];
 
                         $scope.markers_food[cityName] = [];
                         $scope.markers_accomodation[cityName] = [];
@@ -298,8 +300,9 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                     id: markers[i].place_id,
                     location_lat: markers[i].latitude,
                     location_lng: markers[i].longitude,
+                    city: markers[i].city,
                     type: markers[i].type
-                }
+                };
                 places.push(place);
             }
 

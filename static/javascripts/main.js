@@ -19,7 +19,7 @@ require.config({
     'ngMap': '../javascripts/angular/route/directives/ngmap',
     'lodash': '../bower_components/lodash/dist/lodash.min',
     'angular-simple-logger': '../bower_components/angular-simple-logger/dist/angular-simple-logger.min',
-    'angular-google-maps': '../bower_components/angular-google-maps/dist/angular-google-maps.min',
+    'angular-google-maps': '../bower_components/angular-google-maps/dist/angular-google-maps.min'
   },
 
   // Add angular modules that does not support AMD out of the box, put it in a shim

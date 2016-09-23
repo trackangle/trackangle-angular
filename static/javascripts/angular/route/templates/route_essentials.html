@@ -1,21 +1,7 @@
-    <!--div class="row">
-
-            <ui-gmap-google-map control='map.control' center="map.center" zoom='map.zoom'>
-                <ui-gmap-search-box options="map.searchbox.options" template="map.searchbox.template" events="map.searchbox.events" position="map.searchbox.position"></ui-gmap-search-box>
-                <ui-gmap-window show="map.window.show" coords="map.window.model" options="map.window.options" templateUrl="map.window.templateUrl" templateParameter="map.window.templateParameter" closeClick="map.window.closeClick()">
-                </ui-gmap-window>
-                <ui-gmap-markers idkey="marker.id" models="map.markers" coords="'self'" doCluster="false" fit="'true'" icon="'icon'" events="map.markersEvents" options="'options'"></ui-gmap-markers>
-            </ui-gmap-google-map>
-    </div-->
-
-    <div ng-repeat="i in getNumber() track by $index" class="row" >
-        <input type="text" id="autocomplete_{{$index}}" size="50" placeholder="Enter a city" repeat-directive callback-fn="ctrlFn(arg1)" />
-    </div>
-    <!--div id="autocompleteDiv" class="row"></div-->
+    <div class="row autocomplete-container"></div>
     <div class="row">
         <a href="#" ng-click="addNewAutocomplete()">Add More City</a>
     </div>
     <div class="row">
-        <!--a href="/route/create/details/{{placeId}}">Continue</a-->
         <a href="#" ng-click="addRouteDetails()">Continue</a>
     </div>
