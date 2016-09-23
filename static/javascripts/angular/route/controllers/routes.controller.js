@@ -1,8 +1,8 @@
 
-define(['trackangle', 'google-maps', 'ngMap'], function (trackangle) {
-    trackangle.register.controller('RoutesController', function ($scope, $http) {
+define(['trackangle', '/static/javascripts/angular/route/services/route.service.js', 'google-maps', 'ngMap'], function (trackangle) {
+    trackangle.register.controller('RoutesController', ['$scope', 'RouteService', function ($scope, RouteService){
 
-        $http.get('/api/v1/route/').then(getSuccessFunction, errorFunction);
+        RouteService.routes().then(getSuccessFunction, errorFunction);
 
         function getSuccessFunction(data, status, headers, config) {
 
@@ -15,7 +15,7 @@ define(['trackangle', 'google-maps', 'ngMap'], function (trackangle) {
                     },
                     zoom: 12,
                     markers: []
-                }
+                };
 
                 for(var j = 0; j < data.data[i].places.length; j++) {
                     var place = data.data[i].places[j];
@@ -32,11 +32,11 @@ define(['trackangle', 'google-maps', 'ngMap'], function (trackangle) {
             $scope.routes = data.data;
 
 
-        };
+        }
 
         function errorFunction(data, status, headers, config) {
             console.log("An error occured: " + data.error);
         }
 
-  });
+  }]);
 });

@@ -59,7 +59,11 @@ define(['angularAMD', 'angular-route', 'angular-cookies', 'angular-google-maps']
         controller: 'CreateRouteController',
         controllerUrl: '/static/javascripts/angular/route/controllers/create.route.controller.js'
     }))
-
+    .when("/route/create/details/:placeId/:routeId", angularAMD.route({
+        templateUrl: '/static/javascripts/angular/route/templates/create_route.html',
+        controller: 'CreateRouteController',
+        controllerUrl: '/static/javascripts/angular/route/controllers/create.route.controller.js'
+    }))
     .when("/route/:id", angularAMD.route({
         templateUrl: '/static/javascripts/angular/route/templates/route_details.html',
         controller: 'RouteController',

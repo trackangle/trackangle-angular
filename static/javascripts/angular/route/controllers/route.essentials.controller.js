@@ -1,11 +1,15 @@
-define(['trackangle', '/static/javascripts/angular/route/services/route.service.js', '/static/javascripts/angular/route/directives/repeatDirective.js', 'google-maps', 'jquery'], function (trackangle) {
-    trackangle.register.controller('RouteEssentialsController', ['$scope', '$http', '$routeParams', '$window', '$compile', function ($scope, $http, $routeParams, $window, $compile){
+define(['trackangle', '/static/javascripts/angular/route/services/route.service.js', 'google-maps', 'jquery'], function (trackangle) {
+    trackangle.register.controller('RouteEssentialsController', ['$scope', 'RouteService', '$routeParams', '$window', '$compile', function ($scope, RouteService, $routeParams, $window, $compile){
 
         var geocoder = new google.maps.Geocoder;
         var autocompleteArray = [];
 
 
         $scope.addNewAutocomplete = function(cityName) {
+            if($(".autocomplete-container").children().length){
+                var br = document.createElement("br");
+                $(".autocomplete-container").append(br);
+            }
             var el = $compile("<input type='text' size='50' placeholder='Enter a city' />")($scope);
             $(".autocomplete-container").append(el);
             var options = {
@@ -16,7 +20,6 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                 geocoder.geocode({'address': cityName}, function (results, status) {
                     if (status === google.maps.GeocoderStatus.OK) {
                         if (results[0]) {
-                            console.log(results[0]);
                             $(el[0]).val(cityName);
                             autocomplete.set("place", results[0]);
                         }
@@ -29,7 +32,7 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
 
         if($routeParams.id){
 
-            $http.get('/api/v1/route/' + $routeParams.id + '/').then(getSuccessFunction, errorFunction);
+            RouteService.route($routeParams.id).then(getSuccessFunction, errorFunction);
             function getSuccessFunction(data, status, headers, config) {
 
                 var cities = [];
@@ -62,7 +65,13 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                 placeIdStr += autocompleteArray[i].getPlace().place_id;
                 placeIdArray.push(autocompleteArray[i].getPlace().place_id);
             }
-            $window.location.href = "/route/create/details/" + placeIdStr;
+            if($routeParams.id){
+                $window.location.href = "/route/create/details/" + placeIdStr + "/" + $routeParams.id;
+            }
+            else{
+                $window.location.href = "/route/create/details/" + placeIdStr;
+            }
+
         }
 
     }]);

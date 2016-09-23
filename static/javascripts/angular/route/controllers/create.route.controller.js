@@ -7,7 +7,7 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
 
 
         placeIdArr = $routeParams.placeId.split("|");
-        getPlaceFromId(placeIdArr[0]);
+        initMap(placeIdArr[0]);
 
 
 
@@ -95,8 +95,8 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
             $scope.map.markers.push(marker);
         }
 
-        function getPlaceFromId(placeId) {
-            geocoder.geocode({'placeId': placeId}, function (results, status) {
+        function initMap(cityId) {
+            geocoder.geocode({'placeId': cityId}, function (results, status) {
                 if (status === google.maps.GeocoderStatus.OK) {
                     if (results[0]) {
                         console.log(results);
@@ -114,7 +114,7 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                             $scope.changeCity(0);
                         }
                         if($scope.cityList.length != placeIdArr.length) {
-                            getPlaceFromId(placeIdArr[placeIdArr.indexOf(placeId) + 1]);
+                            initMap(placeIdArr[placeIdArr.indexOf(cityId) + 1]);
                         }
                     }
                     else {
@@ -163,7 +163,6 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
         });
 
         $scope.changeCity = function(cityIndex){
-            //console.log($event.currentTarget);
             $scope.previousCityIndex = $scope.currentCityIndex;
             if($scope.previousCityIndex == undefined){
                 $scope.previousCityIndex = cityIndex;
@@ -311,7 +310,7 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                 description: "desc1",
                 url_title: 'url_title',
                 places: places
-            }
+            };
             console.log(routeJSON);
             RouteService.createRoute(routeJSON).then(function(res) {
                 console.log("Res:"+ res.config.data.id);
