@@ -415,9 +415,6 @@ li.navbar_active {
     background-color: #565a5c;
 }
 
-.columns {
-  columns: 3;
-}
 
 .angular-google-map-container { height: 800px; }
 
