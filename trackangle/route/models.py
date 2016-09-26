@@ -22,6 +22,9 @@ class RouteHasOwners(models.Model):
     route = models.ForeignKey(Route, db_column='route_id')
     owner = models.ForeignKey(Account, db_column='owner_id')
 
+    class Meta:
+        unique_together = ("route", "owner",)
+
 
 class RouteHasPlaces(models.Model):
     route = models.ForeignKey(Route, db_column='route_id')

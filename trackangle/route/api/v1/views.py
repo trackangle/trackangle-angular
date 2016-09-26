@@ -6,7 +6,8 @@ from django.shortcuts import get_object_or_404
 from trackangle.route.models import RouteHasPlaces
 from trackangle.route.models import RouteHasOwners
 from trackangle.place.models import Place
-
+from django.db import IntegrityError
+from django.forms.models import model_to_dict
 
 class RouteViewSet(viewsets.ModelViewSet):
 
@@ -19,21 +20,27 @@ class RouteViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         print("create")
-        print(request.data)
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             places = serializer.validated_data.pop('places')
-            print(places)
 
-            route = Route.objects.create_route(**serializer.validated_data)
-            routehasowners = RouteHasOwners(route=route, owner=request.user)
-            routehasowners.save()
+            route = Route.objects.create(**serializer.validated_data)
+            #print(model_to_dict(route))
 
+            try:
+                routehasowners = RouteHasOwners(route=route, owner=request.user)
+                routehasowners.save()
+            except IntegrityError as e:
+                print "Duplicate route owner"
 
             for place in places:
                 p = Place.objects.create(**place)
-                routehasplaces = RouteHasPlaces(route=route, place=p)
-                routehasplaces.save()
+                try:
+                    routehasplaces = RouteHasPlaces(route=route, place=p)
+                    routehasplaces.save()
+                except IntegrityError as e:
+                    print "Duplicate route place entry"
+
 
             return response.Response(status=status.HTTP_201_CREATED)
         return response.Response(status=status.HTTP_400_BAD_REQUEST)

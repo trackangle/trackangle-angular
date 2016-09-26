@@ -5,6 +5,7 @@ from trackangle.authentication.serializers import AccountSerializer
 
 
 class RouteSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
     places = PlaceSerializer(many=True, required=False,)
     owners = AccountSerializer(many=True, required=False,)
 
