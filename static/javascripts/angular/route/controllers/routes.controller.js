@@ -2,7 +2,7 @@
 define(['trackangle', '/static/javascripts/angular/route/services/route.service.js', 'google-maps', 'ngMap'], function (trackangle) {
     trackangle.register.controller('RoutesController', ['$scope', 'RouteService', function ($scope, RouteService){
 
-        function initPage(){
+        $scope.init = function(){
             RouteService.routes().then(getSuccessFunction, getErrorFunction);
 
             function getSuccessFunction(data, status, headers, config) {
@@ -38,14 +38,13 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                 console.log("An error occured: " + data.error);
             }
         }
-        initPage();
 
         $scope.delete_route = function(id){
             console.log(id);
             RouteService.delete(id).then(deleteSuccessFunction, deleteErrorFunction);
             function deleteSuccessFunction(data, status, headers, config) {
                 console.log("Successfully removed");
-                initPage();
+                $scope.init();
             }
             function deleteErrorFunction(data, status, headers, config) {
                 console.log("An error occured: " + data.error);

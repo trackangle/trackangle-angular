@@ -4,8 +4,8 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
 
         var geocoder = new google.maps.Geocoder;
         $scope.cityList = [];
-        initMap();
-
+        $scope.markers = [];
+        var clickedMarkerId = -1;
         var accomodation = 0;
         var architecture = 1;
         var entertainment = 2;
@@ -13,46 +13,16 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
         var nightlife = 4;
         var outdoor = 5;
 
-        $scope.placeTypes = {
-            'accomodation': accomodation,
-            'architecture': architecture,
-            'entertainment': entertainment,
-            'food': food,
-            'nightlife': nightlife,
-            'outdoor': outdoor
-        };
+        $scope.init = function() {
 
-
-        $scope.markers = [];
-
-        var clickedMarkerId = -1;
-
-        function addMarker(place, cityIndex){
-            var marker_id = 0;
-            if($scope.map.markers.length != 0){
-                marker_id = $scope.map.markers[$scope.map.markers.length - 1].id + 1
-            }
-
-            var marker = {
-                id: marker_id,
-                latitude: place.location_lat,
-                longitude: place.location_lng,
-                type: place.type,
-                place_id: place.id,
-                city: $scope.cityList[cityIndex].formatted_address.split(',')[0],
-                comment: "",
-                rating: "",
-                budget: ""
+            $scope.placeTypes = {
+                'accomodation': accomodation,
+                'architecture': architecture,
+                'entertainment': entertainment,
+                'food': food,
+                'nightlife': nightlife,
+                'outdoor': outdoor
             };
-
-
-            if($scope.currentCityIndex == cityIndex && place.type == $scope.get_right_navbar()){
-                $scope.map.markers.push(marker);
-            }
-            $scope.markers[cityIndex].push(marker);
-        }
-
-        function initMap() {
 
             $scope.map = {
                 control: {},
@@ -137,27 +107,54 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                 });
             }
 
-            function initMarkers() {
-                if($routeParams.routeId) {
-                    RouteService.route($routeParams.routeId).then(getSuccessFunction, errorFunction);
-                    function getSuccessFunction(data, status, headers, config) {
-                        var route = data.data;
-                        var cityNameList = [];
-                        for (var i = 0; i < $scope.cityList.length; i++) {
-                            cityNameList.push($scope.cityList[i].formatted_address.split(',')[0])
-                        }
-                        for (var i = 0; i < route.places.length; i++) {
-                            var cityIndex = cityNameList.indexOf(route.places[i].city);
-                            addMarker(route.places[i], cityIndex);
-                        }
-                    }
 
-                    function errorFunction(data, status, headers, config) {
-                        console.log("An error occured: " + data.error);
+
+        };
+
+        function initMarkers() {
+            if($routeParams.routeId) {
+                RouteService.route($routeParams.routeId).then(getSuccessFunction, errorFunction);
+                function getSuccessFunction(data, status, headers, config) {
+                    var route = data.data;
+                    var cityNameList = [];
+                    for (var i = 0; i < $scope.cityList.length; i++) {
+                        cityNameList.push($scope.cityList[i].formatted_address.split(',')[0])
+                    }
+                    for (var i = 0; i < route.places.length; i++) {
+                        var cityIndex = cityNameList.indexOf(route.places[i].city);
+                        addMarker(route.places[i], cityIndex);
                     }
                 }
+
+                function errorFunction(data, status, headers, config) {
+                    console.log("An error occured: " + data.error);
+                }
+            }
+        }
+
+        function addMarker(place, cityIndex){
+            var marker_id = 0;
+            if($scope.map.markers.length != 0){
+                marker_id = $scope.map.markers[$scope.map.markers.length - 1].id + 1
             }
 
+            var marker = {
+                id: marker_id,
+                latitude: place.location_lat,
+                longitude: place.location_lng,
+                type: place.type,
+                place_id: place.id,
+                city: $scope.cityList[cityIndex].formatted_address.split(',')[0],
+                comment: "",
+                rating: "",
+                budget: ""
+            };
+
+
+            if($scope.currentCityIndex == cityIndex && place.type == $scope.get_right_navbar()){
+                $scope.map.markers.push(marker);
+            }
+            $scope.markers[cityIndex].push(marker);
         }
 
         $scope.changeCity = function(cityIndex){
@@ -211,34 +208,6 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
         };
         $scope.get_right_navbar = function (){
             return selected.li;
-        };
-
-          /*create route page tab changing buttons*/
-        $scope.previous_tab = function() {
-            if($scope.get_right_navbar() == "food"){
-              $scope.set_right_navbar("accomodation");
-            }else if($scope.get_right_navbar() == "nightlife"){
-              $scope.set_right_navbar("food");
-            }else if($scope.get_right_navbar() == "entertainment_arts"){
-              $scope.set_right_navbar("nightlife");
-            }else if($scope.get_right_navbar() == "architecture_buildings"){
-              $scope.set_right_navbar("entertainment_arts");
-            }else if($scope.get_right_navbar() == "outdoor"){
-              $scope.set_right_navbar("architecture_buildings");
-            }
-        };
-        $scope.next_tab = function() {
-            if($scope.get_right_navbar() == "accomodation"){
-              $scope.set_right_navbar("food");
-            }else if($scope.get_right_navbar() == "food"){
-              $scope.set_right_navbar("nightlife");
-            }else if($scope.get_right_navbar() == "nightlife"){
-              $scope.set_right_navbar("entertainment_arts");
-            }else if($scope.get_right_navbar() == "entertainment_arts"){
-              $scope.set_right_navbar("architecture_buildings");
-            }else if($scope.get_right_navbar() == "architecture_buildings"){
-              $scope.set_right_navbar("outdoor");
-            }
         };
 
 
