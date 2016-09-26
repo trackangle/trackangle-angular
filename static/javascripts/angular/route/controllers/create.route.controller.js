@@ -262,19 +262,25 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                 title: "title1",
                 description: "desc1",
                 url_title: 'url_title',
-                places: places,
-                id: -1
+                places: places
             };
+            console.log(routeJSON);
 
             if($routeParams.routeId){
-                routeJSON.id = $routeParams.routeId;
+                RouteService.update($routeParams.routeId, routeJSON).then(function(res) {
+                    console.log("Res:"+ res.config.data.id);
+                    console.log("Res:"+ res.config.data.title);
+                })
+            }
+            else{
+                RouteService.create(routeJSON).then(function(res) {
+                    console.log("Res:"+ res.config.data.id);
+                    console.log("Res:"+ res.config.data.title);
+                })
+
             }
 
-            console.log(routeJSON);
-            RouteService.createRoute(routeJSON).then(function(res) {
-                console.log("Res:"+ res.config.data.id);
-                console.log("Res:"+ res.config.data.title);
-            })
+
         }
       }]);
 });

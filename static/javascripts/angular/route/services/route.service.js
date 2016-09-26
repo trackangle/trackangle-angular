@@ -10,8 +10,14 @@ define(['trackangle'], function (trackangle) {
         routes:function getRoutes() {
             return $http.get('/api/v1/route/');
         },
-        createRoute:function createRoute(routeJSON) {
+        create:function createRoute(routeJSON) {
             return $http.post('/api/v1/route/', routeJSON);
+        },
+        update:function updateRoute(id, routeJSON) {
+            return $http.put('/api/v1/route/' + id + '/', routeJSON);
+        },
+        delete:function deleteRoute(id) {
+            return $http.delete('/api/v1/route/' + id + '/');
         }
     };
     return RouteService;

@@ -2,40 +2,54 @@
 define(['trackangle', '/static/javascripts/angular/route/services/route.service.js', 'google-maps', 'ngMap'], function (trackangle) {
     trackangle.register.controller('RoutesController', ['$scope', 'RouteService', function ($scope, RouteService){
 
-        RouteService.routes().then(getSuccessFunction, errorFunction);
+        function initPage(){
+            RouteService.routes().then(getSuccessFunction, getErrorFunction);
 
-        function getSuccessFunction(data, status, headers, config) {
+            function getSuccessFunction(data, status, headers, config) {
 
-            for(var i = 0; i < data.data.length; i++){
-                data.data[i].map = {
-                    control: {},
-                    center: {
-                        latitude: 52.47491894326404,
-                        longitude: -1.8684210293371217
-                    },
-                    zoom: 12,
-                    markers: []
-                };
+                $scope.routes = data.data;
 
-                for(var j = 0; j < data.data[i].places.length; j++) {
-                    var place = data.data[i].places[j];
-                    var marker = {
-                        id: j,
-                        latitude: place.location_lat,
-                        longitude: place.location_lng
+                for(var i = 0; i < $scope.routes.length; i++){
+                    $scope.routes[i].map = {
+                        control: {},
+                        center: {
+                            latitude: 52.47491894326404,
+                            longitude: -1.8684210293371217
+                        },
+                        zoom: 12,
+                        markers: []
                     };
-                    data.data[i].map.markers.push(marker);
+
+                    for(var j = 0; j <$scope.routes[i].places.length; j++) {
+                        var place = $scope.routes[i].places[j];
+                        var marker = {
+                            id: j,
+                            latitude: place.location_lat,
+                            longitude: place.location_lng
+                        };
+                        $scope.routes[i].map.markers.push(marker);
+                    }
+
                 }
 
             }
 
-            $scope.routes = data.data;
-
-
+            function getErrorFunction(data, status, headers, config) {
+                console.log("An error occured: " + data.error);
+            }
         }
+        initPage();
 
-        function errorFunction(data, status, headers, config) {
-            console.log("An error occured: " + data.error);
+        $scope.delete_route = function(id){
+            console.log(id);
+            RouteService.delete(id).then(deleteSuccessFunction, deleteErrorFunction);
+            function deleteSuccessFunction(data, status, headers, config) {
+                console.log("Successfully removed");
+                initPage();
+            }
+            function deleteErrorFunction(data, status, headers, config) {
+                console.log("An error occured: " + data.error);
+            }
         }
 
   }]);
