@@ -7,6 +7,7 @@ from trackangle.route.models import RouteHasPlaces
 from trackangle.route.models import RouteHasOwners
 from trackangle.place.models import Place
 from django.db import IntegrityError
+from django.db import transaction
 from django.forms.models import model_to_dict
 
 
@@ -19,6 +20,7 @@ class RouteViewSet(viewsets.ModelViewSet):
     # def get_permissions(self):
     #     return (True,)
 
+    @transaction.atomic()
     def create(self, request, *args, **kwargs):
         print("create")
         serializer = self.serializer_class(data=request.data)
@@ -38,6 +40,7 @@ class RouteViewSet(viewsets.ModelViewSet):
             return response.Response(status=status.HTTP_201_CREATED)
         return response.Response(status=status.HTTP_400_BAD_REQUEST)
 
+    @transaction.atomic()
     def update(self, request, *args, **kwargs):
         print("update")
         serializer = self.serializer_class(data=request.data)
