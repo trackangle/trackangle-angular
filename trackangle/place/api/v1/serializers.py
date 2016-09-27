@@ -1,6 +1,5 @@
 from rest_framework import serializers
-
-from trackangle.route.models import Place
+from trackangle.place.models import Place
 
 
 class PlaceSerializer(serializers.ModelSerializer):

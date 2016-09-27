@@ -1,8 +1,8 @@
 from rest_framework import viewsets, response, status
 
-from trackangle.route.api.v1.serializers import PlaceSerializer
+from trackangle.place.api.v1.serializers import PlaceSerializer
 from django.shortcuts import get_object_or_404
-from trackangle.route.models import Place
+from trackangle.place.models import Place
 
 
 class PlaceViewSet(viewsets.ModelViewSet):
@@ -16,11 +16,11 @@ class PlaceViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         queryset = Place.objects.all()
-        serializer = PlaceSerializer(queryset, many=True)
+        serializer = self.serializer_class(queryset, many=True)
         return response.Response(serializer.data)
 
     def retrieve(self, request, id):
         queryset = Place.objects.all()
         place = get_object_or_404(queryset, pk=id)
-        serializer = PlaceSerializer(place)
+        serializer = self.serializer_class(place)
         return response.Response(serializer.data)
