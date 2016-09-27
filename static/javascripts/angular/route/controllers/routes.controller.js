@@ -1,5 +1,5 @@
 
-define(['trackangle', '/static/javascripts/angular/route/services/route.service.js', 'google-maps', 'ngMap'], function (trackangle) {
+define(['trackangle', '/static/javascripts/angular/route/services/route.service.js', 'google-maps'], function (trackangle) {
     trackangle.register.controller('RoutesController', ['$scope', 'RouteService', function ($scope, RouteService){
 
         $scope.init = function(){

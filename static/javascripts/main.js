@@ -16,7 +16,6 @@ require.config({
     'ngDialog': '../bower_components/ngDialog/js/ngDialog',
     'snackbar': '../lib/snackbarjs/snackbar.min',
     'google-maps': 'http://maps.googleapis.com/maps/api/js?key=AIzaSyAEIv2pKK8byL7QqmPWq1a2m1D2ONT17_c&libraries=places',
-    'ngMap': '../javascripts/angular/route/directives/ngmap',
     'lodash': '../bower_components/lodash/dist/lodash.min',
     'angular-simple-logger': '../bower_components/angular-simple-logger/dist/angular-simple-logger.min',
     'angular-google-maps': '../bower_components/angular-google-maps/dist/angular-google-maps.min'

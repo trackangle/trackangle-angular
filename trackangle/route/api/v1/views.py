@@ -48,11 +48,16 @@ class RouteViewSet(viewsets.ModelViewSet):
             route = Route.objects.update(kwargs['id'], **serializer.validated_data)
             #print(model_to_dict(route))
 
+
             try:
                 routehasowners = RouteHasOwners(route=route, owner=request.user)
                 routehasowners.save()
             except IntegrityError as e:
                 print "Duplicate route owner"
+
+            currentPlaceList = RouteHasPlaces.objects.filter(route=route)
+            for place in currentPlaceList:
+                place.delete()
 
             for place in places:
                 p = Place.objects.create(**place)

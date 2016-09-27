@@ -73,7 +73,7 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                                 location_lat: place.geometry.location.lat(),
                                 location_lng: place.geometry.location.lng(),
                                 type: $scope.get_right_navbar()
-                            }
+                            };
                             addMarker(placeObj, $scope.currentCityIndex);
                         }
                     }
@@ -156,6 +156,15 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
             }
             $scope.markers[cityIndex].push(marker);
         }
+
+        $scope.removeMarker = function(){
+            $scope.map.markers = $scope.map.markers.filter(function( obj ) {
+                return obj.id != clickedMarkerId;
+            });
+            $scope.markers[$scope.currentCityIndex] = $scope.markers[$scope.currentCityIndex].filter(function (obj) {
+                return obj.id != clickedMarkerId;
+            });
+        };
 
         $scope.changeCity = function(cityIndex){
             $scope.currentCityIndex = cityIndex;
@@ -248,9 +257,8 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                 })
 
             }
-
-
         }
-      }]);
+
+    }]);
 });
 
