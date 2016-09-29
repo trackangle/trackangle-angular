@@ -72,7 +72,10 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                                 id: place.place_id,
                                 location_lat: place.geometry.location.lat(),
                                 location_lng: place.geometry.location.lng(),
-                                type: $scope.get_right_navbar()
+                                type: $scope.get_right_navbar(),
+                                comments: [{
+                                    text:""
+                                }]
                             };
                             addMarker(placeObj, $scope.currentCityIndex);
                         }
@@ -133,6 +136,7 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
         }
 
         function addMarker(place, cityIndex){
+            console.log(place);
             var marker_id = 0;
             if($scope.map.markers.length != 0){
                 marker_id = $scope.map.markers[$scope.map.markers.length - 1].id + 1
@@ -145,7 +149,7 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                 type: place.type,
                 place_id: place.id,
                 city: $scope.cityList[cityIndex].formatted_address.split(',')[0],
-                comment: "",
+                comment: place.comments[0].text,
                 rating: "",
                 budget: ""
             };
@@ -230,7 +234,10 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                         location_lat: $scope.markers[i][j].latitude,
                         location_lng: $scope.markers[i][j].longitude,
                         city: $scope.markers[i][j].city,
-                        type: $scope.markers[i][j].type
+                        type: $scope.markers[i][j].type,
+                        comments: [{
+                            text: $scope.markers[i][j].comment
+                        }]
                     };
                     places.push(place);
                 }

@@ -1,5 +1,7 @@
 from django.db import models
 from trackangle.place.managers import PlaceManager
+from trackangle.authentication.models import Account
+from datetime import datetime
 
 
 ACCOMODATION = 0
@@ -27,3 +29,16 @@ class Place(models.Model):
     type = models.IntegerField(choices=PLACE_TYPES)
 
     objects = PlaceManager()
+
+
+class Comment(models.Model):
+    place = models.ForeignKey(Place, db_column="place_id", related_name="comments")
+    text = models.CharField(max_length=100, unique_for_date="created")
+    author = models.ForeignKey(Account, db_column="author_id", related_name="comments")
+    created = models.DateTimeField(default=datetime.now)
+
+    class Meta:
+        unique_together = ("author", "place",)
+
+    def __unicode__(self):
+        return '%s' % (self.text)
