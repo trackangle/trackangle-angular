@@ -1,7 +1,7 @@
 from django.db import models
 from datetime import datetime
 from django.utils import timezone
-from django.forms.models import model_to_dict
+from trackangle.place.models import Place
 
 
 class RouteManager(models.Manager):
@@ -15,7 +15,9 @@ class RouteManager(models.Manager):
         now = timezone.make_aware(now, timezone.get_current_timezone())
         route = self.model(title=title, description=description, url_title=url_title,
                        created=now, updated=now)
+
         route.save()
+
         return route
 
     def update(self, id, title, description, url_title, **kwargs):

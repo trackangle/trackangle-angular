@@ -142,6 +142,11 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                 marker_id = $scope.map.markers[$scope.map.markers.length - 1].id + 1
             }
 
+            var comment = ""
+            if(place.comments.length > 0){
+                comment = place.comments[0].text
+            }
+
             var marker = {
                 id: marker_id,
                 latitude: place.location_lat,
@@ -149,7 +154,7 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                 type: place.type,
                 place_id: place.id,
                 city: $scope.cityList[cityIndex].formatted_address.split(',')[0],
-                comment: place.comments[0].text,
+                comment: comment,
                 rating: "",
                 budget: ""
             };

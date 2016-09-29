@@ -31,11 +31,12 @@ class PlaceSerializer(serializers.ModelSerializer):
 
 
     def get_comments(self, obj):
-        comments = Comment.objects.filter(place_id=obj.id)
+        comments = []
+        if self.context and self.context['request']:
+            comments = Comment.objects.filter(place_id=obj.id, author_id=self.context['request'].user.id)
+        else:
+            comments = Comment.objects.filter(place_id=obj.id)
         if len(comments) != 0:
-            returnArr = []
-            for comment in comments:
-                serialized = CommentSerializer(comment)
-                returnArr.append(serialized.data)
-            return returnArr
+            serialized = CommentSerializer(comments, many=True)
+            return serialized.data
         return []

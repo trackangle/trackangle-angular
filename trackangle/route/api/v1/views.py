@@ -21,32 +21,28 @@ class RouteViewSet(viewsets.ModelViewSet):
     # def get_permissions(self):
     #     return (True,)
 
+    def get_serializer_context(self):
+        return {'request': self.request}
+
     #@transaction.atomic()
     def create(self, request, *args, **kwargs):
         try:
-            print("create")
-            print request.data
-
             serializer = self.serializer_class(data=request.data)
-            places = request.data['places']
             if serializer.is_valid():
-                print serializer.validated_data
-                #places = serializer.validated_data.pop('places')
-                print places
+                places = serializer.validated_data.pop('places')
 
                 route = Route.objects.create(**serializer.validated_data)
 
                 routehasowners = RouteHasOwners(route=route, owner=request.user)
                 routehasowners.save()
 
-
                 for place in places:
-
                     p = Place.objects.create(**place)
                     comments = place.pop('comments')
                     for commentObj in comments:
-                        comment = Comment(text=commentObj['text'], place=p, author=request.user)
-                        comment.save()
+                        if commentObj['text']:
+                            comment = Comment(text=commentObj['text'], place=p, author=request.user)
+                            comment.save()
                     routehasplaces = RouteHasPlaces(route=route, place=p)
                     routehasplaces.save()
 
@@ -59,13 +55,10 @@ class RouteViewSet(viewsets.ModelViewSet):
     #@transaction.atomic()
     def update(self, request, *args, **kwargs):
         try:
-            print("update")
             serializer = self.serializer_class(data=request.data)
             if serializer.is_valid():
 
                 places = serializer.validated_data.pop('places')
-                print places
-
                 route = Route.objects.update(kwargs['id'], **serializer.validated_data)
 
                 try:
@@ -80,6 +73,14 @@ class RouteViewSet(viewsets.ModelViewSet):
 
                 for place in places:
                     p = Place.objects.create(**place)
+                    currentComments = Comment.objects.filter(place=p, author=request.user)
+                    if len(currentComments) > 0:
+                        currentComments[0].delete()
+                    comments = place.pop('comments')
+                    for commentObj in comments:
+                        if commentObj['text']:
+                            comment = Comment(text=commentObj['text'], place=p, author=request.user)
+                            comment.save()
                     try:
                         routehasplaces = RouteHasPlaces(route=route, place=p)
                         routehasplaces.save()
@@ -107,7 +108,8 @@ class RouteViewSet(viewsets.ModelViewSet):
         route = get_object_or_404(queryset, pk=id)
         places = route.places.all()
         try:
-            serializer = self.serializer_class(route)
+            context = self.get_serializer_context()
+            serializer = self.serializer_class(route, context=context)
             return response.Response(serializer.data)
         except Exception, e:
             print str(e)

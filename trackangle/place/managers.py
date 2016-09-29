@@ -1,5 +1,7 @@
 from django.db import models
 from datetime import datetime
+#from trackangle.place.models import Comment
+
 
 
 class PlaceManager(models.Manager):
