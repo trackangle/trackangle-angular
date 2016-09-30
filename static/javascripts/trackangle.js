@@ -44,25 +44,16 @@ define(['angularAMD', 'angular-route', 'angular-cookies', 'angular-google-maps']
         controller: 'RoutesController',
         controllerUrl: '/static/javascripts/angular/route/controllers/routes.controller.js'
     }))
-    .when("/route/create", angularAMD.route({
+    .when("/route/create/:id?", angularAMD.route({
         templateUrl: '/static/javascripts/angular/route/templates/route_essentials.html',
         controller: 'RouteEssentialsController',
         controllerUrl: '/static/javascripts/angular/route/controllers/route.essentials.controller.js'
     }))
-    .when("/route/create/:id", angularAMD.route({
-        templateUrl: '/static/javascripts/angular/route/templates/route_essentials.html',
-        controller: 'RouteEssentialsController',
-        controllerUrl: '/static/javascripts/angular/route/controllers/route.essentials.controller.js'
-    }))
-    .when("/route/create/details/:placeId", angularAMD.route({
+    .when("/route/create/details/:placeId/:routeId?", angularAMD.route({
         templateUrl: '/static/javascripts/angular/route/templates/create_route.html',
         controller: 'CreateRouteController',
-        controllerUrl: '/static/javascripts/angular/route/controllers/create.route.controller.js'
-    }))
-    .when("/route/create/details/:placeId/:routeId", angularAMD.route({
-        templateUrl: '/static/javascripts/angular/route/templates/create_route.html',
-        controller: 'CreateRouteController',
-        controllerUrl: '/static/javascripts/angular/route/controllers/create.route.controller.js'
+        controllerUrl: '/static/javascripts/angular/route/controllers/create.route.controller.js',
+        reloadOnSearch: false
     }))
     .when("/route/:id", angularAMD.route({
         templateUrl: '/static/javascripts/angular/route/templates/route_details.html',

@@ -1,5 +1,5 @@
 define(['trackangle', '/static/javascripts/angular/route/services/route.service.js', 'angular-google-maps', 'jquery'], function (trackangle) {
-    trackangle.register.controller('CreateRouteController', ['$scope', '$routeParams', 'RouteService', function ($scope, $routeParams, RouteService){
+    trackangle.register.controller('CreateRouteController', ['$scope', '$routeParams', '$window', 'RouteService', function ($scope, $routeParams, $window, RouteService){
 
 
         var geocoder = new google.maps.Geocoder;
@@ -12,6 +12,7 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
         var food = 3;
         var nightlife = 4;
         var outdoor = 5;
+
 
         $scope.init = function() {
 
@@ -263,7 +264,7 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
 
             }
             function postSuccessFunction(data, status, headers, config){
-                console.log("Res:"+ data);
+                $window.location.href = "/routes"
             }
             function postErrorFunction(data, status, headers, config){
                 console.log("An error occured: " + data.error);
