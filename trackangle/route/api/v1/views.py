@@ -50,15 +50,16 @@ class RouteViewSet(viewsets.ModelViewSet):
             print str(e)
             return response.Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    # TODO: make update function transactional
     #@transaction.atomic()
-    def update(self, request, *args, **kwargs):
+    def update(self, request, id, *args, **kwargs):
         try:
             #with transaction.atomic():
             serializer = self.serializer_class(data=request.data)
             if serializer.is_valid():
 
                 places = serializer.validated_data.pop('places')
-                route = Route.objects.update(kwargs['id'], **serializer.validated_data)
+                route = Route.objects.update(id, **serializer.validated_data)
 
                 try:
                     routehasowners = RouteHasOwners(route=route, owner=request.user)
@@ -95,8 +96,8 @@ class RouteViewSet(viewsets.ModelViewSet):
             return response.Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-    def destroy(self, request, *args, **kwargs):
-        Route.objects.filter(pk=kwargs['id']).delete()
+    def destroy(self, request, id, *args, **kwargs):
+        Route.objects.filter(pk=id).delete()
         return response.Response(status=status.HTTP_200_OK)
 
     def list(self, request, *args, **kwargs):
