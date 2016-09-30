@@ -255,19 +255,18 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                 places: places
             };
             console.log(routeJSON);
-
             if($routeParams.routeId){
-                RouteService.update($routeParams.routeId, routeJSON).then(function(res) {
-                    console.log("Res:"+ res.config.data.id);
-                    console.log("Res:"+ res.config.data.title);
-                })
+                RouteService.update($routeParams.routeId, routeJSON).then(postSuccessFunction, postErrorFunction);
             }
             else{
-                RouteService.create(routeJSON).then(function(res) {
-                    console.log("Res:"+ res.config.data.id);
-                    console.log("Res:"+ res.config.data.title);
-                })
+                RouteService.create(routeJSON).then(postSuccessFunction, postErrorFunction);
 
+            }
+            function postSuccessFunction(data, status, headers, config){
+                console.log("Res:"+ data);
+            }
+            function postErrorFunction(data, status, headers, config){
+                console.log("An error occured: " + data.error);
             }
         }
 

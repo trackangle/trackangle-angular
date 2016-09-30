@@ -6,10 +6,7 @@ from django.shortcuts import get_object_or_404
 from trackangle.route.models import RouteHasPlaces
 from trackangle.route.models import RouteHasOwners
 from trackangle.place.models import Place, Comment
-from trackangle.place.api.v1.serializers import PlaceSerializer
-from django.db import IntegrityError
-from django.db import transaction
-from django.forms.models import model_to_dict
+from django.db import IntegrityError, transaction
 
 
 class RouteViewSet(viewsets.ModelViewSet):
@@ -27,34 +24,36 @@ class RouteViewSet(viewsets.ModelViewSet):
     #@transaction.atomic()
     def create(self, request, *args, **kwargs):
         try:
-            serializer = self.serializer_class(data=request.data)
-            if serializer.is_valid():
-                places = serializer.validated_data.pop('places')
+            with transaction.atomic():
+                serializer = self.serializer_class(data=request.data)
+                if serializer.is_valid():
+                    places = serializer.validated_data.pop('places')
 
-                route = Route.objects.create(**serializer.validated_data)
+                    route = Route.objects.create(**serializer.validated_data)
 
-                routehasowners = RouteHasOwners(route=route, owner=request.user)
-                routehasowners.save()
+                    routehasowners = RouteHasOwners(route=route, owner=request.user)
+                    routehasowners.save()
 
-                for place in places:
-                    p = Place.objects.create(**place)
-                    comments = place.pop('comments')
-                    for commentObj in comments:
-                        if commentObj['text']:
-                            comment = Comment(text=commentObj['text'], place=p, author=request.user)
-                            comment.save()
-                    routehasplaces = RouteHasPlaces(route=route, place=p)
-                    routehasplaces.save()
+                    for place in places:
+                        p = Place.objects.create(**place)
+                        comments = place.pop('comments')
+                        for commentObj in comments:
+                            if commentObj['text']:
+                                comment = Comment(text=commentObj['text'], place=p, author=request.user)
+                                comment.save()
+                        routehasplaces = RouteHasPlaces(route=route, place=p)
+                        routehasplaces.save()
 
-                return response.Response(status=status.HTTP_201_CREATED)
-            return response.Response(status=status.HTTP_400_BAD_REQUEST)
+                    return response.Response(status=status.HTTP_201_CREATED)
+                return response.Response(status=status.HTTP_400_BAD_REQUEST)
         except Exception,e :
             print str(e)
-            return response.Response(status=status.HTTP_400_BAD_REQUEST)
+            return response.Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     #@transaction.atomic()
     def update(self, request, *args, **kwargs):
         try:
+            #with transaction.atomic():
             serializer = self.serializer_class(data=request.data)
             if serializer.is_valid():
 
@@ -67,15 +66,17 @@ class RouteViewSet(viewsets.ModelViewSet):
                 except IntegrityError as e:
                     print "Duplicate route owner"
 
-                currentPlaceList = RouteHasPlaces.objects.filter(route=route)
-                for place in currentPlaceList:
-                    place.delete()
+                RouteHasPlaces.objects.filter(route=route).delete()
+                #currentPlaceList = RouteHasPlaces.objects.filter(route=route)
+                #for place in currentPlaceList:
+                #    place.delete()
 
                 for place in places:
                     p = Place.objects.create(**place)
-                    currentComments = Comment.objects.filter(place=p, author=request.user)
-                    if len(currentComments) > 0:
-                        currentComments[0].delete()
+                    Comment.objects.filter(place=p, author=request.user).delete()
+                    #currentComments = Comment.objects.filter(place=p, author=request.user)
+                    #if len(currentComments) > 0:
+                    #    currentComments[0].delete()
                     comments = place.pop('comments')
                     for commentObj in comments:
                         if commentObj['text']:
@@ -91,7 +92,7 @@ class RouteViewSet(viewsets.ModelViewSet):
             return response.Response(status=status.HTTP_400_BAD_REQUEST)
         except Exception, e:
             print str(e)
-            return response.Response(status=status.HTTP_400_BAD_REQUEST)
+            return response.Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
     def destroy(self, request, *args, **kwargs):
