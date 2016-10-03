@@ -76,6 +76,12 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                                 type: $scope.get_right_navbar(),
                                 comments: [{
                                     text:""
+                                }],
+                                ratings: [{
+                                    rate:""
+                                }],
+                                budgets: [{
+                                    budget:""
                                 }]
                             };
                             addMarker(placeObj, $scope.currentCityIndex);
@@ -118,6 +124,7 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                 RouteService.route($routeParams.routeId).then(getSuccessFunction, errorFunction);
                 function getSuccessFunction(data, status, headers, config) {
                     var route = data.data;
+                    console.log(route);
                     var cityNameList = [];
                     for (var i = 0; i < $scope.cityList.length; i++) {
                         cityNameList.push($scope.cityList[i].formatted_address.split(',')[0])
@@ -142,7 +149,15 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
 
             var comment = "";
             if(place.comments.length > 0){
-                comment = place.comments[0].text
+                comment = place.comments[0].text;
+            }
+            var rating = "";
+            if(place.ratings.length > 0){
+                rating = place.ratings[0].rate;
+            }
+            var budget = "";
+            if(place.budgets.length > 0){
+                budget = place.budgets[0].budget
             }
 
             var marker = {
@@ -153,8 +168,8 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                 place_id: place.id,
                 city: $scope.cityList[cityIndex].formatted_address.split(',')[0],
                 comment: comment,
-                rating: "",
-                budget: ""
+                rating: rating,
+                budget: budget
             };
 
 
@@ -195,12 +210,30 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
 
 
         $scope.savePlaceComment = function(){
-            console.log("SAVE PLACE COMMENT");
-            console.log($scope.map.window.templateParameter.comment);
             for(var i = 0; i < $scope.map.markers.length; i++){
                 var marker_id = $scope.map.markers[i].id;
                 if(marker_id == clickedMarkerId){
                     $scope.map.markers[i].comment = $scope.map.window.templateParameter.comment;
+                    break;
+                }
+            }
+        };
+
+        $scope.savePlaceRating = function(){
+            for(var i = 0; i < $scope.map.markers.length; i++){
+                var marker_id = $scope.map.markers[i].id;
+                if(marker_id == clickedMarkerId){
+                    $scope.map.markers[i].rating = $scope.map.window.templateParameter.rating;
+                    break;
+                }
+            }
+        };
+
+        $scope.savePlaceBudget = function(){
+            for(var i = 0; i < $scope.map.markers.length; i++){
+                var marker_id = $scope.map.markers[i].id;
+                if(marker_id == clickedMarkerId){
+                    $scope.map.markers[i].budget = $scope.map.window.templateParameter.budget;
                     break;
                 }
             }
@@ -240,6 +273,12 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                         type: $scope.markers[i][j].type,
                         comments: [{
                             text: $scope.markers[i][j].comment
+                        }],
+                        ratings: [{
+                            rate: $scope.markers[i][j].rating
+                        }],
+                        budgets: [{
+                            budget: $scope.markers[i][j].budget
                         }]
                     };
                     places.push(place);

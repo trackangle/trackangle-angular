@@ -22,6 +22,7 @@ PLACE_TYPES = (
 
 
 class Place(models.Model):
+    #TODO id field might be changed to unique field instead of primary key
     id = models.CharField(max_length=100, primary_key=True)
     location_lat = models.CharField(max_length=100)
     location_lng = models.CharField(max_length=100)
@@ -33,7 +34,7 @@ class Place(models.Model):
 
 class Comment(models.Model):
     place = models.ForeignKey(Place, db_column="place_id", related_name="comments")
-    text = models.CharField(max_length=100, unique_for_date="created")
+    text = models.CharField(max_length=255)
     author = models.ForeignKey(Account, db_column="author_id", related_name="comments")
     created = models.DateTimeField(default=datetime.now)
 
@@ -43,3 +44,26 @@ class Comment(models.Model):
     def __unicode__(self):
         return '%s' % (self.text)
 
+
+class Rating(models.Model):
+    place = models.ForeignKey(Place, db_column="place_id", related_name="ratings")
+    rate = models.IntegerField()
+    rater = models.ForeignKey(Account, db_column="rater_id", related_name="ratings")
+
+    class Meta:
+        unique_together = ("rater", "place",)
+
+    def __unicode__(self):
+        return '%d' % (self.rate)
+
+
+class Budget(models.Model):
+    place = models.ForeignKey(Place, db_column="place_id", related_name="budgets")
+    budget = models.IntegerField()
+    owner = models.ForeignKey(Account, db_column="owner_id", related_name="budgets")
+
+    class Meta:
+        unique_together = ("owner", "place",)
+
+    def __unicode__(self):
+        return '%d' % (self.budget)

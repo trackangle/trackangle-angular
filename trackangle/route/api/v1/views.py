@@ -5,7 +5,7 @@ from trackangle.route.models import Route
 from django.shortcuts import get_object_or_404
 from trackangle.route.models import RouteHasPlaces
 from trackangle.route.models import RouteHasOwners
-from trackangle.place.models import Place, Comment
+from trackangle.place.models import Place, Comment, Budget, Rating
 from django.db import IntegrityError, transaction
 
 
@@ -21,7 +21,6 @@ class RouteViewSet(viewsets.ModelViewSet):
     def get_serializer_context(self):
         return {'request': self.request}
 
-    #@transaction.atomic()
     def create(self, request, *args, **kwargs):
         try:
             with transaction.atomic():
@@ -36,11 +35,24 @@ class RouteViewSet(viewsets.ModelViewSet):
 
                     for place in places:
                         p = Place.objects.create(**place)
+                        Comment.objects.filter(place=p, author=request.user).delete()
                         comments = place.pop('comments')
                         for commentObj in comments:
                             if commentObj['text']:
                                 comment = Comment(text=commentObj['text'], place=p, author=request.user)
                                 comment.save()
+                        Rating.objects.filter(place=p, rater=request.user).delete()
+                        ratings = place.pop('ratings')
+                        for ratingObj in ratings:
+                            if ratingObj['rate']:
+                                rating = Rating(rate=ratingObj['rate'], place=p, rater=request.user)
+                                rating.save()
+                        Budget.objects.filter(place=p, owner=request.user).delete()
+                        budgets = place.pop('budgets')
+                        for budgetObj in budgets:
+                            if budgetObj['budget']:
+                                budget = Budget(budget=budgetObj['budget'], place=p, owner=request.user)
+                                budget.save()
                         routehasplaces = RouteHasPlaces(route=route, place=p)
                         routehasplaces.save()
 
@@ -50,7 +62,7 @@ class RouteViewSet(viewsets.ModelViewSet):
             print str(e)
             return response.Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    # TODO: make update function transactional
+    #TODO: make update function transactional
     #@transaction.atomic()
     def update(self, request, id, *args, **kwargs):
         try:
@@ -68,21 +80,27 @@ class RouteViewSet(viewsets.ModelViewSet):
                     print "Duplicate route owner"
 
                 RouteHasPlaces.objects.filter(route=route).delete()
-                #currentPlaceList = RouteHasPlaces.objects.filter(route=route)
-                #for place in currentPlaceList:
-                #    place.delete()
 
                 for place in places:
                     p = Place.objects.create(**place)
                     Comment.objects.filter(place=p, author=request.user).delete()
-                    #currentComments = Comment.objects.filter(place=p, author=request.user)
-                    #if len(currentComments) > 0:
-                    #    currentComments[0].delete()
                     comments = place.pop('comments')
                     for commentObj in comments:
                         if commentObj['text']:
                             comment = Comment(text=commentObj['text'], place=p, author=request.user)
                             comment.save()
+                    Rating.objects.filter(place=p, rater=request.user).delete()
+                    ratings = place.pop('ratings')
+                    for ratingObj in ratings:
+                        if ratingObj['rate']:
+                            rating = Rating(rate=ratingObj['rate'], place=p, rater=request.user)
+                            rating.save()
+                    Budget.objects.filter(place=p, owner=request.user).delete()
+                    budgets = place.pop('budgets')
+                    for budgetObj in budgets:
+                        if budgetObj['budget']:
+                            budget = Budget(rate=budgetObj['budget'], place=p, owner=request.user)
+                            budget.save()
                     try:
                         routehasplaces = RouteHasPlaces(route=route, place=p)
                         routehasplaces.save()
@@ -108,7 +126,6 @@ class RouteViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, id):
         queryset = Route.objects.all()
         route = get_object_or_404(queryset, pk=id)
-        places = route.places.all()
         try:
             context = self.get_serializer_context()
             serializer = self.serializer_class(route, context=context)
