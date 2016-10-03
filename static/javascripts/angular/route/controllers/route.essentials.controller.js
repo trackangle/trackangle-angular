@@ -65,6 +65,8 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                 placeIdStr += autocompleteArray[i].getPlace().place_id;
                 placeIdArray.push(autocompleteArray[i].getPlace().place_id);
             }
+
+            // TODO: save the place first, then redirect with id only
             if($routeParams.id){
                 $window.location.href = "/route/create/details/" + placeIdStr + "/" + $routeParams.id;
             }
