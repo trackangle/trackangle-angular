@@ -111,8 +111,6 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                 });
             }
 
-
-
         };
 
         function initMarkers() {
@@ -137,13 +135,12 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
         }
 
         function addMarker(place, cityIndex){
-            console.log(place);
             var marker_id = 0;
             if($scope.map.markers.length != 0){
                 marker_id = $scope.map.markers[$scope.map.markers.length - 1].id + 1
             }
 
-            var comment = ""
+            var comment = "";
             if(place.comments.length > 0){
                 comment = place.comments[0].text
             }
@@ -196,17 +193,17 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
             return $scope.currentCityIndex === cityIndex;
         };
 
-        $scope.savePlaceDetails = function(){
+
+        $scope.savePlaceComment = function(){
+            console.log("SAVE PLACE COMMENT");
+            console.log($scope.map.window.templateParameter.comment);
             for(var i = 0; i < $scope.map.markers.length; i++){
                 var marker_id = $scope.map.markers[i].id;
                 if(marker_id == clickedMarkerId){
-                    $scope.map.markers[i].comment = $("#inputComment").val();
-                    $scope.map.markers[i].rating = $("#inputRating").val();
-                    $scope.map.markers[i].budget = $("#inputBudget").val();
+                    $scope.map.markers[i].comment = $scope.map.window.templateParameter.comment;
                     break;
                 }
             }
-            $scope.map.window.closeClick();
         };
 
 
