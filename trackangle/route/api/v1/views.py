@@ -56,14 +56,14 @@ class RouteViewSet(viewsets.ModelViewSet):
                         routehasplaces = RouteHasPlaces(route=route, place=p)
                         routehasplaces.save()
 
-                    return response.Response(status=status.HTTP_201_CREATED)
+                    content = {id:route.pk}
+                    return response.Response(content)
                 return response.Response(status=status.HTTP_400_BAD_REQUEST)
         except Exception,e :
             print str(e)
             return response.Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     #TODO: make update function transactional
-    #@transaction.atomic()
     def update(self, request, id, *args, **kwargs):
         try:
             #with transaction.atomic():
@@ -107,7 +107,8 @@ class RouteViewSet(viewsets.ModelViewSet):
                     except IntegrityError as e:
                         print "Duplicate route place entry"
 
-                return response.Response(status=status.HTTP_201_CREATED)
+                content = {id:route.pk}
+                return response.Response(content)
             return response.Response(status=status.HTTP_400_BAD_REQUEST)
         except Exception, e:
             print str(e)
