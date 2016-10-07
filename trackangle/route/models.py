@@ -1,6 +1,6 @@
 from django.db import models
 from trackangle.authentication.models import Account
-from trackangle.place.models import Place
+from trackangle.place.models import Place, City
 from trackangle.route.managers import RouteManager
 
 
@@ -32,3 +32,11 @@ class RouteHasPlaces(models.Model):
 
     class Meta:
         unique_together = ("route", "place",)
+
+
+class RouteHasCities(models.Model):
+    route = models.ForeignKey(Route, db_column='route_id')
+    city = models.ForeignKey(City, db_column='city_id')
+
+    class Meta:
+        unique_together = ("route", "city",)

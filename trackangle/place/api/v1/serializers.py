@@ -1,46 +1,64 @@
 from rest_framework import serializers
-from trackangle.place.models import Place, Comment, Rating, Budget
+from trackangle.place.models import Place, Comment, Rating, Budget, City
+from trackangle.route.models import RouteHasPlaces
 
+
+class CitySerializer(serializers.ModelSerializer):
+    id = serializers.CharField(max_length=100)
+    name = serializers.CharField(max_length=100)
+    location_lat = serializers.CharField(max_length=100)
+    location_lng = serializers.CharField(max_length=100)
+    places = serializers.SerializerMethodField()
+
+    class Meta:
+        model = City
+        fields = ('id', 'name', 'location_lat', 'location_lng', 'places')
+
+    def get_places(self, obj):
+        route_places = RouteHasPlaces.objects.filter(route_id=self.context['route_id'])
+        places = []
+        for route_place in route_places:
+            places += Place.objects.filter(id=route_place.place_id, city_id=obj.id)
+        if len(places) != 0:
+            serialized = PlaceSerializer(places, context=self.context, many=True)
+            return serialized.data
+        return []
 
 class CommentSerializer(serializers.ModelSerializer):
 
     text = serializers.CharField(max_length=100)
-    place = serializers.PrimaryKeyRelatedField(required=False, read_only=True)
     author = serializers.PrimaryKeyRelatedField(required=False, read_only=True)
     created = serializers.DateTimeField(required=False)
 
     class Meta:
         model = Comment
-        fields = ('text', 'author', 'place', 'created')
+        fields = ('text', 'author', 'created')
 
 
 class RatingSerializer(serializers.ModelSerializer):
 
     rate = serializers.IntegerField()
-    place = serializers.PrimaryKeyRelatedField(required=False, read_only=True)
     rater = serializers.PrimaryKeyRelatedField(required=False, read_only=True)
 
     class Meta:
         model = Rating
-        fields = ('rate', 'rater', 'place')
+        fields = ('rate', 'rater')
 
 
 class BudgetSerializer(serializers.ModelSerializer):
 
     budget = serializers.IntegerField()
-    place = serializers.PrimaryKeyRelatedField(required=False, read_only=True)
     owner = serializers.PrimaryKeyRelatedField(required=False, read_only=True)
 
     class Meta:
         model = Budget
-        fields = ('budget', 'owner', 'place')
+        fields = ('budget', 'owner')
 
 
 class PlaceSerializer(serializers.ModelSerializer):
-    id = serializers.CharField()
-    location_lat = serializers.CharField()
-    location_lng = serializers.CharField()
-    city = serializers.CharField()
+    id = serializers.CharField(max_length=100)
+    location_lat = serializers.CharField(max_length=100)
+    location_lng = serializers.CharField(max_length=100)
     type = serializers.IntegerField()
     comments = serializers.SerializerMethodField()
     ratings = serializers.SerializerMethodField()
@@ -48,38 +66,38 @@ class PlaceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Place
-        fields = ('id', 'location_lat', 'location_lng', 'city', 'type', 'comments', 'ratings', 'budgets')
+        fields = ('id', 'location_lat', 'location_lng', 'type', 'comments', 'ratings', 'budgets')
 
     def get_comments(self, obj):
         #TODO: multiple/single comment/rating/budget issue must be solved with good practice
         comments = []
-        if self.context and self.context['request']:
+        if self.context and 'request' in self.context:
             comments = Comment.objects.filter(place_id=obj.id, author_id=self.context['request'].user.id)
         else:
             comments = Comment.objects.filter(place_id=obj.id)
         if len(comments) != 0:
-            serialized = CommentSerializer(comments, many=True)
+            serialized = CommentSerializer(comments[0])
             return serialized.data
-        return []
+        return {}
 
     def get_ratings(self, obj):
         ratings = []
-        if self.context and self.context['request']:
+        if self.context and 'request' in self.context:
             ratings = Rating.objects.filter(place_id=obj.id, rater_id=self.context['request'].user.id)
         else:
             ratings = Rating.objects.filter(place_id=obj.id)
         if len(ratings) != 0:
-            serialized = RatingSerializer(ratings, many=True)
+            serialized = RatingSerializer(ratings[0])
             return serialized.data
-        return []
+        return {}
 
     def get_budgets(self, obj):
         budgets = []
-        if self.context and self.context['request']:
+        if self.context and 'request' in self.context:
             budgets = Budget.objects.filter(place_id=obj.id, owner_id=self.context['request'].user.id)
         else:
             budgets = Budget.objects.filter(place_id=obj.id)
         if len(budgets) != 0:
-            serialized = BudgetSerializer(budgets, many=True)
+            serialized = BudgetSerializer(budgets[0])
             return serialized.data
-        return []
+        return {}

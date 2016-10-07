@@ -1,21 +1,20 @@
 from rest_framework import serializers
-from trackangle.route.models import Route, RouteHasPlaces
-from trackangle.place.models import Place
-from trackangle.place.api.v1.serializers import PlaceSerializer
+from trackangle.route.models import Route, RouteHasPlaces, RouteHasCities
+from trackangle.place.models import Place, City
+from trackangle.place.api.v1.serializers import PlaceSerializer, CitySerializer
 from trackangle.authentication.serializers import AccountSerializer
 from django.core.exceptions import ValidationError
 import collections
 
 
 class RouteSerializer(serializers.ModelSerializer):
-    #places = PlaceSerializer(many=True, required=False,)
-    places = serializers.SerializerMethodField()
+    cities = serializers.SerializerMethodField()
     owners = AccountSerializer(many=True, required=False,)
 
     class Meta:
         model = Route
         fields = ('id', 'title', 'description', 'url_title', 'owners',
-                  'created', 'updated', 'places',)
+                  'created', 'updated', 'cities')
         read_only_fields = ('created', 'updated',)
 
     def to_internal_value(self, data):
@@ -23,7 +22,7 @@ class RouteSerializer(serializers.ModelSerializer):
         title = data.get('title')
         description = data.get('description')
         url_title = data.get('url_title')
-        places = data.get('places')
+        cities = data.get('cities')
 
         #Perform data validation
         if not title:
@@ -57,16 +56,27 @@ class RouteSerializer(serializers.ModelSerializer):
             'title': title,
             'description': description,
             'url_title': url_title,
-            'places': places
+            'cities': cities
         }
 
-    def get_places(self, obj):
-        route_places = RouteHasPlaces.objects.filter(route_id=obj.id)
-        places = []
-        for route_place in route_places:
-            places += Place.objects.filter(id=route_place.place_id)
-        if len(places) != 0:
-            serialized = PlaceSerializer(places, context=self.context, many=True)
+    #def get_places(self, obj):
+     #   route_places = RouteHasPlaces.objects.filter(route_id=obj.id)
+     #   places = []
+     #   for route_place in route_places:
+     #       places += Place.objects.filter(id=route_place.place_id)
+     #   if len(places) != 0:
+     #       serialized = PlaceSerializer(places, context=self.context, many=True)
+     #       return serialized.data
+     #   return []
+
+    def get_cities(self, obj):
+        route_cities = RouteHasCities.objects.filter(route_id=obj.id)
+        cities = []
+        for route_city in route_cities:
+            cities += City.objects.filter(id=route_city.city_id)
+        if len(cities) != 0:
+            self.context['route_id'] = obj.id
+            serialized = CitySerializer(cities, context=self.context, many=True)
             return serialized.data
         return []
 

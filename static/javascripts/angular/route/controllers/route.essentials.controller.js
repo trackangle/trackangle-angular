@@ -1,8 +1,9 @@
-define(['trackangle', '/static/javascripts/angular/route/services/route.service.js', 'google-maps', 'jquery'], function (trackangle) {
-    trackangle.register.controller('RouteEssentialsController', ['$scope', 'RouteService', '$routeParams', '$window', '$compile', function ($scope, RouteService, $routeParams, $window, $compile){
+define(['trackangle', 'route', 'google-maps', 'jquery'], function (trackangle) {
+    trackangle.register.controller('RouteEssentialsController', ['$scope', 'Route', '$routeParams', '$window', '$compile', function ($scope, Route, $routeParams, $window, $compile){
 
         var geocoder = new google.maps.Geocoder;
         var autocompleteArray = [];
+        var route;
 
 
         $scope.addNewAutocomplete = function(cityName) {
@@ -32,16 +33,13 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
 
         if($routeParams.id){
 
-            RouteService.route($routeParams.id).then(getSuccessFunction, errorFunction);
+            Route.route($routeParams.id).then(getSuccessFunction, errorFunction);
             function getSuccessFunction(data, status, headers, config) {
 
-                var cities = [];
-                for(var i = 0; i < data.data.places.length; i++) {
-                    var cityName = data.data.places[i].city;
-                    if (cities.indexOf(cityName) == -1) {
-                        cities.push(cityName);
-                        $scope.addNewAutocomplete(cityName);
-                    }
+                route = data.data;
+                for(var i = 0; i < route.cities.length; i++) {
+                    var cityName = route.cities[i].name;
+                    $scope.addNewAutocomplete(cityName);
                 }
             }
 
@@ -56,22 +54,65 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
 
         $scope.addRouteDetails = function(){
 
-            placeIdArray = [];
-            var placeIdStr = "";
-            for(var i = 0; i < autocompleteArray.length; i++){
-                if(i != 0){
-                   placeIdStr += "|"
-                }
-                placeIdStr += autocompleteArray[i].getPlace().place_id;
-                placeIdArray.push(autocompleteArray[i].getPlace().place_id);
-            }
 
-            // TODO: save the place first, then redirect with id only
+
             if($routeParams.id){
-                $window.location.href = "/route/create/details/" + placeIdStr + "/" + $routeParams.id;
+
+                var cityArray = [];
+                for(var i = 0; i < autocompleteArray.length; i++){
+                    var place = autocompleteArray[i].getPlace();
+                    var existingCityArr = route.cities.filter(function (el) {
+                        return el.id === place.place_id;
+                    });
+                    if(existingCityArr.length > 0){
+                        cityArray.push(existingCityArr[0]);
+                    }
+                    else{
+                        var cityObj = {
+                            id: place.place_id,
+                            name: place.name,
+                            location_lat: place.geometry.location.lat(),
+                            location_lng: place.geometry.location.lng(),
+                            places: []
+                        };
+                        cityArray.push(cityObj);
+                    }
+                }
+                route.title = "title1";
+                route.description = "desc1";
+                route.url_title = "url_title";
+                route.cities = cityArray;
+                Route.update($routeParams.id, route).then(postSuccessFunction, postErrorFunction);
             }
             else{
-                $window.location.href = "/route/create/details/" + placeIdStr;
+                var cityArray = [];
+                for(var i = 0; i < autocompleteArray.length; i++){
+                    var place = autocompleteArray[i].getPlace();
+                    var cityObj = {
+                        id: place.place_id,
+                        name: place.name,
+                        location_lat: place.geometry.location.lat(),
+                        location_lng: place.geometry.location.lng(),
+                        places: []
+                    };
+                    cityArray.push(cityObj);
+                }
+                var routeJSON = {
+                    title: "title1",
+                    description: "desc1",
+                    url_title: 'url_title',
+                    cities: cityArray
+                };
+                Route.create(routeJSON).then(postSuccessFunction, postErrorFunction);
+            }
+
+            function postSuccessFunction(data, status, headers, config){
+                var routeId = data.data.id;
+                $window.location.href = "/route/create/details/" + routeId;
+            }
+            function postErrorFunction(data, status, headers, config){
+                console.log(data);
+                console.log("An error occured: " + data.error);
             }
 
         }

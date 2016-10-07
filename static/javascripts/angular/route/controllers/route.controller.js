@@ -1,8 +1,8 @@
 
-define(['trackangle', '/static/javascripts/angular/route/services/route.service.js'], function (trackangle) {
-    trackangle.register.controller('RouteController', ['$scope', '$routeParams', 'RouteService', function ($scope, $routeParams, RouteService){
+define(['trackangle', 'route'], function (trackangle) {
+    trackangle.register.controller('RouteController', ['$scope', '$routeParams', 'Route', function ($scope, $routeParams, Route){
 
-      RouteService.route($routeParams.id).then(getSuccessFunction, errorFunction);
+      Route.route($routeParams.id).then(getSuccessFunction, errorFunction);
 
       function getSuccessFunction(data, status, headers, config) {
           $scope.route = data.data;

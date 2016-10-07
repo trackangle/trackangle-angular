@@ -1,15 +1,19 @@
 
-define(['trackangle', '/static/javascripts/angular/route/services/route.service.js', 'google-maps'], function (trackangle) {
-    trackangle.register.controller('RoutesController', ['$scope', 'RouteService', function ($scope, RouteService){
+define(['trackangle', 'route', 'google-maps'], function (trackangle) {
+    trackangle.register.controller('RoutesController', ['$scope', 'Route', function ($scope, Route){
 
         $scope.init = function(){
-            RouteService.routes().then(getSuccessFunction, getErrorFunction);
+            Route.routes().then(getSuccessFunction, getErrorFunction);
 
             function getSuccessFunction(data, status, headers, config) {
 
                 $scope.routes = data.data;
+                console.log($scope.routes);
+
 
                 for(var i = 0; i < $scope.routes.length; i++){
+
+                    var route = $scope.routes[i];
                     $scope.routes[i].map = {
                         control: {},
                         center: {
@@ -20,14 +24,17 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
                         markers: []
                     };
 
-                    for(var j = 0; j <$scope.routes[i].places.length; j++) {
-                        var place = $scope.routes[i].places[j];
-                        var marker = {
-                            id: j,
-                            latitude: place.location_lat,
-                            longitude: place.location_lng
-                        };
-                        $scope.routes[i].map.markers.push(marker);
+                    for(var j = 0; j < route.cities.length; j++) {
+                        var city = route.cities[j];
+                        for(var k = 0; k < city.places.length; k++) {
+                            var place = city.places[k];
+                            var marker = {
+                                id: j*k + k,
+                                latitude: place.location_lat,
+                                longitude: place.location_lng
+                            };
+                            $scope.routes[i].map.markers.push(marker);
+                        }
                     }
 
                 }
@@ -37,11 +44,11 @@ define(['trackangle', '/static/javascripts/angular/route/services/route.service.
             function getErrorFunction(data, status, headers, config) {
                 console.log("An error occured: " + data.error);
             }
-        }
+        };
 
         $scope.delete_route = function(id){
             console.log(id);
-            RouteService.delete(id).then(deleteSuccessFunction, deleteErrorFunction);
+            Route.delete(id).then(deleteSuccessFunction, deleteErrorFunction);
             function deleteSuccessFunction(data, status, headers, config) {
                 console.log("Successfully removed");
                 $scope.init();

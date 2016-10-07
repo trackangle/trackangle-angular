@@ -16,7 +16,7 @@ define(['angularAMD', 'angular-route', 'angular-cookies', 'angular-google-maps']
           function logoutErrorFn(data, status, headers, config) {
               console.error('Epic failure!');
           }
-      }
+      };
       function unauthenticate() {
         delete $cookies.authenticatedAccount;
     }
@@ -49,7 +49,7 @@ define(['angularAMD', 'angular-route', 'angular-cookies', 'angular-google-maps']
         controller: 'RouteEssentialsController',
         controllerUrl: '/static/javascripts/angular/route/controllers/route.essentials.controller.js'
     }))
-    .when("/route/create/details/:placeId/:routeId?", angularAMD.route({
+    .when("/route/create/details/:routeId", angularAMD.route({
         templateUrl: '/static/javascripts/angular/route/templates/create_route.html',
         controller: 'CreateRouteController',
         controllerUrl: '/static/javascripts/angular/route/controllers/create.route.controller.js',

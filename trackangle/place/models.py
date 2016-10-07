@@ -4,6 +4,12 @@ from trackangle.authentication.models import Account
 from datetime import datetime
 
 
+class City(models.Model):
+    id = models.CharField(max_length=100, primary_key=True)
+    name = models.CharField(max_length=100)
+    location_lat = models.CharField(max_length=100)
+    location_lng = models.CharField(max_length=100)
+
 ACCOMODATION = 0
 ARCHITECTURE = 1
 ENTERTAINMENT = 2
@@ -26,7 +32,7 @@ class Place(models.Model):
     id = models.CharField(max_length=100, primary_key=True)
     location_lat = models.CharField(max_length=100)
     location_lng = models.CharField(max_length=100)
-    city = models.CharField(max_length=100)
+    city = models.ForeignKey(City, db_column="city_id", related_name="places")
     type = models.IntegerField(choices=PLACE_TYPES)
 
     objects = PlaceManager()

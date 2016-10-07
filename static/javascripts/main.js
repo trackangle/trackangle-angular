@@ -18,7 +18,9 @@ require.config({
     'google-maps': 'http://maps.googleapis.com/maps/api/js?key=AIzaSyAEIv2pKK8byL7QqmPWq1a2m1D2ONT17_c&libraries=places',
     'lodash': '../bower_components/lodash/dist/lodash.min',
     'angular-simple-logger': '../bower_components/angular-simple-logger/dist/angular-simple-logger.min',
-    'angular-google-maps': '../bower_components/angular-google-maps/dist/angular-google-maps.min'
+    'angular-google-maps': '../bower_components/angular-google-maps/dist/angular-google-maps.min',
+    'authentication': '../javascripts/angular/authentication/services/authentication.service',
+    'route': '../javascripts/angular/route/services/route.service'
   },
 
   // Add angular modules that does not support AMD out of the box, put it in a shim

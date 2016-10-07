@@ -1,6 +1,6 @@
 
 define(['trackangle'], function (trackangle) {
-    trackangle.register.factory('RouteService', ['$http', function ($http){
+    trackangle.register.factory('Route', ['$http', function ($http){
 
     var RouteService = {
 
