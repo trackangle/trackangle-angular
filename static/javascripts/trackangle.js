@@ -44,18 +44,18 @@ define(['angularAMD', 'angular-route', 'angular-cookies', 'angular-google-maps']
         controller: 'RoutesController',
         controllerUrl: '/static/javascripts/angular/route/controllers/routes.controller.js'
     }))
-    .when("/route/create/:id?", angularAMD.route({
+    .when("/route/create/:url_title?", angularAMD.route({
         templateUrl: '/static/javascripts/angular/route/templates/route_essentials.html',
         controller: 'RouteEssentialsController',
         controllerUrl: '/static/javascripts/angular/route/controllers/route.essentials.controller.js'
     }))
-    .when("/route/create/details/:routeId", angularAMD.route({
+    .when("/route/create/details/:url_title", angularAMD.route({
         templateUrl: '/static/javascripts/angular/route/templates/create_route.html',
         controller: 'CreateRouteController',
         controllerUrl: '/static/javascripts/angular/route/controllers/create.route.controller.js',
         reloadOnSearch: false
     }))
-    .when("/route/:id", angularAMD.route({
+    .when("/route/:url_title", angularAMD.route({
         templateUrl: '/static/javascripts/angular/route/templates/route_details.html',
         controller: 'RouteController',
         controllerUrl: '/static/javascripts/angular/route/controllers/route.controller.js'

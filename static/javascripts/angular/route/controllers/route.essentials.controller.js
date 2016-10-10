@@ -3,7 +3,7 @@ define(['trackangle', 'route', 'google-maps', 'jquery'], function (trackangle) {
 
         var geocoder = new google.maps.Geocoder;
         var autocompleteArray = [];
-        var route;
+        $scope.route = {};
 
 
         $scope.addNewAutocomplete = function(cityName) {
@@ -31,14 +31,14 @@ define(['trackangle', 'route', 'google-maps', 'jquery'], function (trackangle) {
         };
 
 
-        if($routeParams.id){
+        if($routeParams.url_title){
 
-            Route.route($routeParams.id).then(getSuccessFunction, errorFunction);
+            Route.route($routeParams.url_title).then(getSuccessFunction, errorFunction);
             function getSuccessFunction(data, status, headers, config) {
 
-                route = data.data;
-                for(var i = 0; i < route.cities.length; i++) {
-                    var cityName = route.cities[i].name;
+                $scope.route = data.data;
+                for(var i = 0; i < $scope.route.cities.length; i++) {
+                    var cityName = $scope.route.cities[i].name;
                     $scope.addNewAutocomplete(cityName);
                 }
             }
@@ -54,14 +54,12 @@ define(['trackangle', 'route', 'google-maps', 'jquery'], function (trackangle) {
 
         $scope.addRouteDetails = function(){
 
-
-
-            if($routeParams.id){
+            if($routeParams.url_title){
 
                 var cityArray = [];
                 for(var i = 0; i < autocompleteArray.length; i++){
                     var place = autocompleteArray[i].getPlace();
-                    var existingCityArr = route.cities.filter(function (el) {
+                    var existingCityArr = $scope.route.cities.filter(function (el) {
                         return el.id === place.place_id;
                     });
                     if(existingCityArr.length > 0){
@@ -78,11 +76,8 @@ define(['trackangle', 'route', 'google-maps', 'jquery'], function (trackangle) {
                         cityArray.push(cityObj);
                     }
                 }
-                route.title = "title1";
-                route.description = "desc1";
-                route.url_title = "url_title";
-                route.cities = cityArray;
-                Route.update($routeParams.id, route).then(postSuccessFunction, postErrorFunction);
+                $scope.route.cities = cityArray;
+                Route.update($routeParams.url_title, $scope.route).then(postSuccessFunction, postErrorFunction);
             }
             else{
                 var cityArray = [];
@@ -98,20 +93,18 @@ define(['trackangle', 'route', 'google-maps', 'jquery'], function (trackangle) {
                     cityArray.push(cityObj);
                 }
                 var routeJSON = {
-                    title: "title1",
-                    description: "desc1",
-                    url_title: 'url_title',
+                    title: $scope.route.title,
+                    description: $scope.route.description,
                     cities: cityArray
                 };
                 Route.create(routeJSON).then(postSuccessFunction, postErrorFunction);
             }
 
             function postSuccessFunction(data, status, headers, config){
-                var routeId = data.data.id;
-                $window.location.href = "/route/create/details/" + routeId;
+                var url_title = data.data.url_title;
+                $window.location.href = "/route/create/details/" + url_title;
             }
             function postErrorFunction(data, status, headers, config){
-                console.log(data);
                 console.log("An error occured: " + data.error);
             }
 

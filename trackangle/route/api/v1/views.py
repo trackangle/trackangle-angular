@@ -11,7 +11,7 @@ from django.db import IntegrityError, transaction
 
 class RouteViewSet(viewsets.ModelViewSet):
 
-    lookup_field = 'id'
+    lookup_field = 'url_title'
     serializer_class = RouteSerializer
     queryset = Route.objects.all()
 
@@ -39,7 +39,7 @@ class RouteViewSet(viewsets.ModelViewSet):
                         route_has_cities = RouteHasCities(route=route, city=city)
                         route_has_cities.save()
 
-                    content = {"id": route.id}
+                    content = {"url_title": route.url_title}
                     print content
                     return response.Response(content, status=status.HTTP_201_CREATED)
                     #return route.id
@@ -50,14 +50,14 @@ class RouteViewSet(viewsets.ModelViewSet):
             return response.Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     #TODO: make update function transactional
-    def update(self, request, id, *args, **kwargs):
+    def update(self, request, url_title, *args, **kwargs):
         try:
             #with transaction.atomic():
             serializer = self.serializer_class(data=request.data)
             if serializer.is_valid():
 
                 cities = serializer.validated_data.pop('cities')
-                route = Route.objects.update(id, **serializer.validated_data)
+                route = Route.objects.update(url_title, **serializer.validated_data)
 
                 try:
                     route_has_owners = RouteHasOwners(route=route, owner=request.user)
@@ -101,7 +101,7 @@ class RouteViewSet(viewsets.ModelViewSet):
                             print "Duplicate route owner"
 
 
-                content = {"id": route.id}
+                content = {"url_title": route.url_title}
                 print content
                 return response.Response(content, status=status.HTTP_201_CREATED)
             return response.Response(status=status.HTTP_400_BAD_REQUEST)
@@ -110,8 +110,8 @@ class RouteViewSet(viewsets.ModelViewSet):
             return response.Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-    def destroy(self, request, id, *args, **kwargs):
-        Route.objects.filter(pk=id).delete()
+    def destroy(self, request, url_title, *args, **kwargs):
+        Route.objects.filter(url_title=url_title).delete()
         return response.Response(status=status.HTTP_200_OK)
 
     def list(self, request, *args, **kwargs):
@@ -119,9 +119,9 @@ class RouteViewSet(viewsets.ModelViewSet):
         serializer = self.serializer_class(queryset, many=True)
         return response.Response(serializer.data)
 
-    def retrieve(self, request, id):
+    def retrieve(self, request, url_title):
         queryset = Route.objects.all()
-        route = get_object_or_404(queryset, pk=id)
+        route = get_object_or_404(queryset, url_title=url_title)
         try:
             context = self.get_serializer_context()
             serializer = self.serializer_class(route, context=context)

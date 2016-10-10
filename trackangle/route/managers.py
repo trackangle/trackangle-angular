@@ -1,16 +1,13 @@
 from django.db import models
 from datetime import datetime
 from django.utils import timezone
-from trackangle.place.models import Place
+from django.template.defaultfilters import slugify
 
 
 class RouteManager(models.Manager):
 
-    def create(self, title, description, url_title, **kwargs):
-
-        if not str(url_title).startswith('/'):
-            url_title = '/' + url_title
-
+    def create(self, title, description, **kwargs):
+        url_title = slugify(title)
         now = datetime.now()
         now = timezone.make_aware(now, timezone.get_current_timezone())
         route = self.model(title=title, description=description, url_title=url_title,
@@ -20,12 +17,8 @@ class RouteManager(models.Manager):
 
         return route
 
-    def update(self, id, title, description, url_title, **kwargs):
-
-        if not str(url_title).startswith('/'):
-            url_title = '/' + url_title
-
-        route = self.get(id=id)
+    def update(self, url_title, title, description, **kwargs):
+        route = self.get(url_title=url_title)
         now = datetime.now()
         now = timezone.make_aware(now, timezone.get_current_timezone())
         route.title = title

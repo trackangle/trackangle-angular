@@ -10,10 +10,11 @@ import collections
 class RouteSerializer(serializers.ModelSerializer):
     cities = serializers.SerializerMethodField()
     owners = AccountSerializer(many=True, required=False,)
+    url_title = serializers.SlugField(max_length=100, required=False)
 
     class Meta:
         model = Route
-        fields = ('id', 'title', 'description', 'url_title', 'owners',
+        fields = ('id', 'url_title', 'title', 'description', 'owners',
                   'created', 'updated', 'cities')
         read_only_fields = ('created', 'updated',)
 
@@ -21,7 +22,6 @@ class RouteSerializer(serializers.ModelSerializer):
 
         title = data.get('title')
         description = data.get('description')
-        url_title = data.get('url_title')
         cities = data.get('cities')
 
         #Perform data validation
@@ -33,10 +33,6 @@ class RouteSerializer(serializers.ModelSerializer):
             raise ValidationError({
                 'description': 'This field is required.'
             })
-        if not url_title:
-            raise ValidationError({
-                'url_title': 'This field is required.'
-            })
         if len(title) > 100:
             raise ValidationError({
                 'title': 'May not be more than 100 characters.'
@@ -45,17 +41,12 @@ class RouteSerializer(serializers.ModelSerializer):
             raise ValidationError({
                 'description': 'May not be more than 255 characters.'
             })
-        if len(url_title) > 100:
-            raise ValidationError({
-                'url_title': 'May not be more than 100 characters.'
-            })
 
 
         print data
         return {
             'title': title,
             'description': description,
-            'url_title': url_title,
             'cities': cities
         }
 

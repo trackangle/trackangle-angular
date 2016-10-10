@@ -2,7 +2,7 @@
 define(['trackangle', 'route'], function (trackangle) {
     trackangle.register.controller('RouteController', ['$scope', '$routeParams', 'Route', function ($scope, $routeParams, Route){
 
-      Route.route($routeParams.id).then(getSuccessFunction, errorFunction);
+      Route.route($routeParams.url_title).then(getSuccessFunction, errorFunction);
 
       function getSuccessFunction(data, status, headers, config) {
           $scope.route = data.data;

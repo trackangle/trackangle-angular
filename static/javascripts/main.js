@@ -10,7 +10,7 @@ require.config({
     'angularAMD': '../bower_components/angularAMD/angularAMD',
     'jquery': '../bower_components/jquery/dist/jquery',
     'bootstrap': '../bower_components/bootstrap/dist/js/bootstrap',
-    'bootstrap-material-designer' : '../bower_components/bootstrap-material-design/dist/js/ripples',
+    //'bootstrap-material-designer' : '../bower_components/bootstrap-material-design/dist/js/ripples',
     'ngAutocomplete': '../bower_components/ngAutocomplete/src/ngAutocomplete',
     'underscore': '../bower_components/underscore/underscore',
     'ngDialog': '../bower_components/ngDialog/js/ngDialog',

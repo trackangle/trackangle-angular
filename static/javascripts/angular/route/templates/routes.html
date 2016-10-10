@@ -23,10 +23,10 @@
                 </ui-gmap-google-map>
 
                 <div class="panel-footer text-muted">
-                    <a href="route/{{ route.id }}">{{route.title}}</a>
-                    <a href="#" ng-click="delete_route(route.id)" style="float: right;">Delete</a>
+                    <a href="route/{{ route.url_title }}">{{route.title}}</a>
+                    <a href="#" ng-click="delete_route(route.url_title)" style="float: right;">Delete</a>
                     <span style="float: right;">/</span>
-                    <a href="route/create/{{ route.id }}" style="float:right;">Edit</a>
+                    <a href="route/create/{{ route.url_title }}" style="float:right;">Edit</a>
                 </div>
 
             </div>

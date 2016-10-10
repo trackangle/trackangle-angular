@@ -8,8 +8,6 @@ define(['trackangle', 'route', 'google-maps'], function (trackangle) {
             function getSuccessFunction(data, status, headers, config) {
 
                 $scope.routes = data.data;
-                console.log($scope.routes);
-
 
                 for(var i = 0; i < $scope.routes.length; i++){
 
@@ -24,16 +22,18 @@ define(['trackangle', 'route', 'google-maps'], function (trackangle) {
                         markers: []
                     };
 
+                    var marker_id = 0;
                     for(var j = 0; j < route.cities.length; j++) {
                         var city = route.cities[j];
                         for(var k = 0; k < city.places.length; k++) {
                             var place = city.places[k];
                             var marker = {
-                                id: j*k + k,
+                                id: marker_id,
                                 latitude: place.location_lat,
                                 longitude: place.location_lng
                             };
                             $scope.routes[i].map.markers.push(marker);
+                            marker_id += 1;
                         }
                     }
 
@@ -46,11 +46,9 @@ define(['trackangle', 'route', 'google-maps'], function (trackangle) {
             }
         };
 
-        $scope.delete_route = function(id){
-            console.log(id);
-            Route.delete(id).then(deleteSuccessFunction, deleteErrorFunction);
+        $scope.delete_route = function(url_title){
+            Route.delete(url_title).then(deleteSuccessFunction, deleteErrorFunction);
             function deleteSuccessFunction(data, status, headers, config) {
-                console.log("Successfully removed");
                 $scope.init();
             }
             function deleteErrorFunction(data, status, headers, config) {

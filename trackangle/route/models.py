@@ -10,7 +10,7 @@ class Route(models.Model):
     description = models.CharField(max_length=255, blank=True, null=True)
     owners = models.ManyToManyField(Account, through='RouteHasOwners',
                                     related_name='owned_routes')
-    url_title = models.CharField(max_length=100, blank=False)
+    url_title = models.SlugField(max_length=100, blank=True, unique=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     places = models.ManyToManyField(Place, through='RouteHasPlaces',)

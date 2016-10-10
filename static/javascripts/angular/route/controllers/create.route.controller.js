@@ -101,7 +101,7 @@ define(dependencies, function (trackangle) {
             };
 
 
-            Route.route($routeParams.routeId).then(getSuccessFunction, errorFunction);
+            Route.route($routeParams.url_title).then(getSuccessFunction, errorFunction);
             function getSuccessFunction(data, status, headers, config) {
                 $scope.route = data.data;
                 console.log($scope.route);
@@ -234,12 +234,9 @@ define(dependencies, function (trackangle) {
         $scope.saveRoute = function() {
 
 
-            console.log(markers);
-            console.log($scope.route.cities);
             var cities = [];
             for(var i=0; i < $scope.route.cities.length; i++){
                 city = $scope.route.cities[i];
-                console.log(city);
                 var places = [];
                 for(var j = 0; j < markers[city.id].length; j++) {
                     var place = {
@@ -258,13 +255,12 @@ define(dependencies, function (trackangle) {
             }
 
             var routeJSON = {
-                title: "title1",
-                description: "desc1",
-                url_title: 'url_title',
+                title: $scope.route.title,
+                description: $scope.route.description,
                 cities: cities
             };
             console.log(routeJSON);
-            Route.update($scope.route.id, routeJSON).then(postSuccessFunction, postErrorFunction);
+            Route.update($scope.route.url_title, routeJSON).then(postSuccessFunction, postErrorFunction);
 
             function postSuccessFunction(data, status, headers, config){
                 $window.location.href = "/routes"
