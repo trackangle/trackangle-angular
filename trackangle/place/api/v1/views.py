@@ -14,13 +14,21 @@ class PlaceViewSet(viewsets.ModelViewSet):
     # def get_permissions(self):
     #     return (True,)
 
+    def get_serializer_context(self):
+        return {'request': self.request}
+
     def list(self, request, *args, **kwargs):
         queryset = Place.objects.all()
         serializer = self.serializer_class(queryset, many=True)
         return response.Response(serializer.data)
 
     def retrieve(self, request, id):
-        queryset = Place.objects.all()
-        place = get_object_or_404(queryset, pk=id)
-        serializer = self.serializer_class(place)
-        return response.Response(serializer.data)
+        data = None
+        try:
+            place = Place.objects.get(pk=id)
+            context = self.get_serializer_context()
+            serializer = self.serializer_class(place, context=context)
+            data = serializer.data
+        except:
+            print "Place does not exist"
+        return response.Response(data)

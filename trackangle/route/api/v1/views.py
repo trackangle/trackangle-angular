@@ -79,17 +79,17 @@ class RouteViewSet(viewsets.ModelViewSet):
                     for placeObj in places:
                         place = Place.objects.create(city=city, **placeObj)
                         commentObj = placeObj.pop('comments')
-                        if commentObj:
+                        if commentObj and commentObj["text"]:
                             comment, created = Comment.objects.get_or_create(place=place, author=request.user, defaults={"text": commentObj["text"]})
                             comment.text = commentObj["text"]
                             comment.save()
                         ratingObj = placeObj.pop('ratings')
-                        if ratingObj:
+                        if ratingObj and ratingObj["rate"]:
                             rating, created = Rating.objects.get_or_create( place=place, rater=request.user, defaults={"rate": ratingObj["rate"]})
                             rating.rate = ratingObj["rate"]
                             rating.save()
                         budgetObj = placeObj.pop('budgets')
-                        if budgetObj:
+                        if budgetObj and budgetObj["budget"]:
                             budget, created = Budget.objects.get_or_create(place=place, owner=request.user, defaults={"budget": budgetObj["budget"]})
                             budget.budget = budgetObj["budget"]
                             budget.save()

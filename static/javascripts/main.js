@@ -20,7 +20,8 @@ require.config({
     'angular-simple-logger': '../bower_components/angular-simple-logger/dist/angular-simple-logger.min',
     'angular-google-maps': '../bower_components/angular-google-maps/dist/angular-google-maps.min',
     'authentication': '../javascripts/angular/authentication/services/authentication.service',
-    'route': '../javascripts/angular/route/services/route.service'
+    'route': '../javascripts/angular/route/services/route.service',
+    'place': '../javascripts/angular/place/services/place.service'
   },
 
   // Add angular modules that does not support AMD out of the box, put it in a shim

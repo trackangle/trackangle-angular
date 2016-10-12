@@ -1,13 +1,14 @@
 var dependencies =[
     'trackangle',
     'route',
+    'place',
     'angular-google-maps',
-    'jquery',
-    'authentication'
+    'jquery'
+    //'authentication'
 ];
 
 define(dependencies, function (trackangle) {
-    trackangle.register.controller('CreateRouteController', ['$scope', '$routeParams', '$window', 'Route', 'Authentication', function ($scope, $routeParams, $window, Route, Authentication){
+    trackangle.register.controller('CreateRouteController', ['$scope', '$routeParams', '$window', 'Route', 'Place', function ($scope, $routeParams, $window, Route, Place){
 
 
         var geocoder = new google.maps.Geocoder;
@@ -20,7 +21,6 @@ define(dependencies, function (trackangle) {
         var nightlife = 4;
         var outdoor = 5;
 
-        console.log(Authentication.isAuthenticated());
         $scope.route = {};
 
 
@@ -75,26 +75,35 @@ define(dependencies, function (trackangle) {
                     events: {
                         place_changed: function (searchBox) {
                             var place = searchBox.getPlace();
+
                             if (!place || place == 'undefined' || place.length == 0) {
-                                console.log('no place data :(');
+                                console.log('no place data');
                                 return;
                             }
+
                             var placeObj = {
                                 id: place.place_id,
                                 location_lat: place.geometry.location.lat(),
                                 location_lng: place.geometry.location.lng(),
                                 type: $scope.get_right_navbar(),
-                                comments: [{
+                                comments: {
                                     text:""
-                                }],
-                                ratings: [{
+                                },
+                                ratings: {
                                     rate:""
-                                }],
-                                budgets: [{
+                                },
+                                budgets: {
                                     budget:""
-                                }]
+                                }
                             };
-                            addMarker($scope.currentCity, placeObj, true);
+                            Place.place(place.place_id).then(function successHandler(data, status, headers, config){
+                                if(data.data){
+                                    placeObj = data.data;
+                                }
+                                addMarker($scope.currentCity, placeObj, true);
+                            }, function errorHandler(data, status, headers, config){
+                                 console.log("An error occured: " + data.error);
+                            });
                         }
                     }
                 }
@@ -128,17 +137,12 @@ define(dependencies, function (trackangle) {
 
 
         function addMarker(city, place, isCurrentCity){
-            var marker_id = 0;
-            if($scope.map.markers.length != 0){
-                marker_id = $scope.map.markers[$scope.map.markers.length - 1].id + 1
-            }
 
             var marker = {
-                id: marker_id,
+                id: place.id,
                 latitude: place.location_lat,
                 longitude: place.location_lng,
                 type: place.type,
-                place_id: place.id,
                 comment: place.comments.text,
                 rating: place.ratings.rate,
                 budget: place.budgets.budget
@@ -158,6 +162,7 @@ define(dependencies, function (trackangle) {
             markers[$scope.currentCity.id] = markers[$scope.currentCity.id].filter(function (obj) {
                 return obj.id != clickedMarkerId;
             });
+            $scope.map.window.closeClick();
         };
 
         $scope.changeCity = function(city){
@@ -233,14 +238,13 @@ define(dependencies, function (trackangle) {
 
         $scope.saveRoute = function() {
 
-
             var cities = [];
             for(var i=0; i < $scope.route.cities.length; i++){
                 city = $scope.route.cities[i];
                 var places = [];
                 for(var j = 0; j < markers[city.id].length; j++) {
                     var place = {
-                        id: markers[city.id][j].place_id,
+                        id: markers[city.id][j].id,
                         location_lat: markers[city.id][j].latitude,
                         location_lng: markers[city.id][j].longitude,
                         type: markers[city.id][j].type,
