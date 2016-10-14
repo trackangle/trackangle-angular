@@ -1,8 +1,11 @@
 from rest_framework import viewsets, response, status
 
-from trackangle.place.api.v1.serializers import PlaceSerializer
-from django.shortcuts import get_object_or_404
-from trackangle.place.models import Place
+from trackangle.place.api.v1.serializers import PlaceSerializer, CommentSerializer, BudgetSerializer, RatingSerializer
+from trackangle.route.models import RouteHasPlaces
+from trackangle.place.models import Place, Comment, Budget, Rating
+from django.db import IntegrityError, transaction
+from rest_framework.decorators import detail_route,list_route
+from rest_framework.permissions import IsAuthenticated
 
 
 class PlaceViewSet(viewsets.ModelViewSet):
@@ -17,9 +20,31 @@ class PlaceViewSet(viewsets.ModelViewSet):
     def get_serializer_context(self):
         return {'request': self.request}
 
+    def create(self, request, *args, **kwargs):
+        try:
+            with transaction.atomic():
+                serializer = self.serializer_class(data=request.data)
+                if serializer.is_valid():
+                    place = Place.objects.create(**serializer.validated_data)
+
+                    route_id = serializer.validated_data.pop('route')
+                    route_has_places = RouteHasPlaces(route_id=route_id, place=place)
+                    route_has_places.save()
+
+                    content = {"id": place.id}
+                    return response.Response(content, status=status.HTTP_201_CREATED)
+                return response.Response(status=status.HTTP_400_BAD_REQUEST)
+        except Exception, e:
+            print str(e)
+            return response.Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+    def destroy(self, request, id, *args, **kwargs):
+        Place.objects.filter(id=id).delete()
+        return response.Response(status=status.HTTP_200_OK)
+
     def list(self, request, *args, **kwargs):
-        queryset = Place.objects.all()
-        serializer = self.serializer_class(queryset, many=True)
+        serializer = self.serializer_class(self.queryset, many=True)
         return response.Response(serializer.data)
 
     def retrieve(self, request, id):
@@ -32,3 +57,40 @@ class PlaceViewSet(viewsets.ModelViewSet):
         except:
             print "Place does not exist"
         return response.Response(data)
+
+
+    @detail_route(methods=['post', 'get'], permission_classes=[IsAuthenticated])
+    def set_comment(self, request, id=None, *args, **kwargs):
+        serializer = CommentSerializer(data=request.data)
+        if serializer.is_valid():
+            text = serializer.validated_data.pop('text')
+            comment, created = Comment.objects.get_or_create(place_id=id, author=request.user, defaults={"text": text})
+            comment.text = text
+            comment.save()
+            content = {"id": comment.id}
+            return response.Response(content, status=status.HTTP_201_CREATED)
+        return response.Response(status=status.HTTP_400_BAD_REQUEST)
+
+    @detail_route(methods=['post'], permission_classes=[IsAuthenticated])
+    def set_budget(self, request, id=None, *args, **kwargs):
+        serializer = BudgetSerializer(data=request.data)
+        if serializer.is_valid():
+            budgetObj = serializer.validated_data.pop('budget')
+            budget, created = Budget.objects.get_or_create(owner=request.user, place_id = id, defaults={"budget":budgetObj})
+            budget.budget = budgetObj
+            budget.save()
+            content = {"id": budget.id}
+            return response.Response(content, status=status.HTTP_201_CREATED)
+        return response.Response(status=status.HTTP_400_BAD_REQUEST)
+
+    @detail_route(methods=['post'], permission_classes=[IsAuthenticated])
+    def set_rating(self, request, id=None, *args, **kwargs):
+        serializer = RatingSerializer(data=request.data)
+        if serializer.is_valid():
+            rate = serializer.validated_data.pop('rate')
+            rating, created = Rating.objects.get_or_create(rater=request.user, place_id = id, defaults={"rate":rate})
+            rating.rate = rate
+            rating.save()
+            content = {"id": rating.id}
+            return response.Response(content, status=status.HTTP_201_CREATED)
+        return response.Response(status=status.HTTP_400_BAD_REQUEST)

@@ -14,6 +14,7 @@ class Route(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     places = models.ManyToManyField(Place, through='RouteHasPlaces',)
+    cities = models.ManyToManyField(City, through='RouteHasCities',)
 
     objects = RouteManager()
 

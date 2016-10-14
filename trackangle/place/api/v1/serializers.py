@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from trackangle.place.models import Place, Comment, Rating, Budget, City
 from trackangle.route.models import RouteHasPlaces
+from django.core.exceptions import ValidationError
 
 
 class CitySerializer(serializers.ModelSerializer):
@@ -12,7 +13,7 @@ class CitySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = City
-        fields = ('id', 'name', 'location_lat', 'location_lng', 'places')
+        fields = ('id', 'name', 'location_lat', 'location_lng', 'places', 'route_set')
 
     def get_places(self, obj):
         route_places = RouteHasPlaces.objects.filter(route_id=self.context['route_id'])
@@ -23,6 +24,7 @@ class CitySerializer(serializers.ModelSerializer):
             serialized = PlaceSerializer(places, context=self.context, many=True)
             return serialized.data
         return []
+
 
 class CommentSerializer(serializers.ModelSerializer):
 
@@ -66,7 +68,7 @@ class PlaceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Place
-        fields = ('id', 'location_lat', 'location_lng', 'type', 'comments', 'ratings', 'budgets')
+        fields = ('id', 'location_lat', 'location_lng', 'type', 'comments', 'ratings', 'budgets', 'city', 'route_set')
 
     def get_comments(self, obj):
         #TODO: multiple/single comment/rating/budget issue must be solved with good practice
@@ -101,3 +103,56 @@ class PlaceSerializer(serializers.ModelSerializer):
             serialized = BudgetSerializer(budgets[0])
             return serialized.data
         return {}
+
+    def to_internal_value(self, data):
+
+        id = data.get('id')
+        city = data.get('city')
+        location_lat = data.get('location_lat')
+        location_lng = data.get('location_lng')
+        type = data.get('type')
+        route = data.get('route')
+
+
+        #Perform data validation
+        if not id:
+            raise ValidationError({
+                'id': 'This field is required.'
+            })
+        if not city:
+            raise ValidationError({
+                'city': 'This field is required.'
+            })
+        if not location_lat:
+            raise ValidationError({
+                'location_lat': 'This field is required.'
+            })
+        if not location_lng:
+            raise ValidationError({
+                'location_lng': 'This field is required.'
+            })
+        if not route:
+            raise ValidationError({
+                'route ': 'This field is required.'
+            })
+        if type is None:
+            raise ValidationError({
+                'type': 'This field is required.'
+            })
+        if len(id) > 100:
+            raise ValidationError({
+                'id': 'May not be more than 100 characters.'
+            })
+        if len(city) > 100:
+            raise ValidationError({
+                'city': 'May not be more than 100 characters.'
+            })
+
+        return {
+            'id': id,
+            'city': city,
+            'location_lat': location_lat,
+            'location_lng': location_lng,
+            'type': type,
+            'route': route
+        }

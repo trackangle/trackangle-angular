@@ -1,8 +1,7 @@
 <div class="kinda_bar navbar col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-init="init()">
 
     <div class="step_buttons">
-        <button ng-repeat="city in route.cities" ng-click="changeCity(city)" ng-class="{active : isCitySelected(city.id)}" type="button" class="btn btn-primary outline btn_top btn-arrow-right">{{city.name}}</button>
-        <button ng-click="saveRoute()" type="button" class="btn btn-primary">Save</button>
+        <button ng-repeat="city in route.cities track by $index" ng-click="changeCity($index)" ng-class="{active : isCitySelected(city.id)}" type="button" class="btn btn-primary outline btn_top btn-arrow-right">{{city.name}}</button>
     </div>
 
 </div>
@@ -27,6 +26,7 @@
                 <ui-gmap-markers idkey="marker.id" models="map.markers" coords="'self'" doCluster="false" fit="'true'" icon="'icon'" events="map.markersEvents" options="'options'"></ui-gmap-markers>
             </ui-gmap-google-map>
         </div>
-        <!--div ng-include src="get_partial()"></div-->
+        <!--div ng-show="loading" class="loading">LOADING...</div-->
+        <div ng-show="loading" class="loading"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>LOADING...</div>
     </div>
 </div>

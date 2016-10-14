@@ -18,6 +18,15 @@ define(['trackangle'], function (trackangle) {
         },
         delete:function deletePlace(id) {
             return $http.delete('/api/v1/place/' + id + '/');
+        },
+        createComment:function saveComment(comment, place_id){
+            return $http.post('/api/v1/place/' + place_id + "/set_comment/", comment);
+        },
+        createBudget:function saveComment(budget, place_id){
+            return $http.post('/api/v1/place/' + place_id + "/set_budget/", budget);
+        },
+        createRating:function saveComment(rating, place_id){
+            return $http.post('/api/v1/place/' + place_id + "/set_rating/", rating);
         }
     };
     return PlaceService;
