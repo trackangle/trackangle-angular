@@ -23,7 +23,7 @@ class RouteManager(models.Manager):
         now = timezone.make_aware(now, timezone.get_current_timezone())
         route.title = title
         route.description = description
-        route.url_title = url_title
+        route.url_title = slugify(title)
         route.updated = now
         route.save()
         return route
