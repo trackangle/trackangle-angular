@@ -45,7 +45,9 @@ define(dependencies, function (trackangle) {
                 markersEvents: {
                     click: function(marker, eventName, model) {
                         clickedMarkerId = model.id;
+                        console.log(model);
                         $scope.map.window.templateParameter = {
+                            name: model.name,
                             rating: model.rating,
                             budget: model.budget,
                             comment: model.comment
@@ -79,9 +81,15 @@ define(dependencies, function (trackangle) {
                                 console.log('no place data');
                                 return;
                             }
+                            console.log(place);
+                            var name = "";
+                            if(place.name){
+                                name = place.name;
+                            }
 
                             var placeObj = {
                                 id: place.place_id,
+                                name: name,
                                 location_lat: place.geometry.location.lat(),
                                 location_lng: place.geometry.location.lng(),
                                 type: $scope.get_right_navbar()
@@ -134,6 +142,7 @@ define(dependencies, function (trackangle) {
                 }
                 var marker = {
                     id: place.id,
+                    name: place.name,
                     latitude: place.location_lat,
                     longitude: place.location_lng,
                     comment: comment,
@@ -261,6 +270,7 @@ define(dependencies, function (trackangle) {
 
                     var marker = {
                         id: place.id,
+                        name: place.name,
                         latitude: place.location_lat,
                         longitude: place.location_lng,
                         comment: place.comments.text,

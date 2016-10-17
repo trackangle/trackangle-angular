@@ -20,12 +20,9 @@ define(['trackangle'], function (trackangle) {
             return $http.delete('/api/v1/route/' + url_title + '/');
         },
         addPlace:function addPlace(url_title, place){
-            console.log(url_title);
-            console.log(place);
             return $http.post('/api/v1/route/' + url_title + '/add_place/', place);
         },
         removePlace: function removePlace(url_title, place){
-            console.log(place);
             return $http.post('/api/v1/route/' + url_title + '/delete_place/', place);
         }
     };

@@ -59,6 +59,7 @@ class BudgetSerializer(serializers.ModelSerializer):
 
 class PlaceSerializer(serializers.ModelSerializer):
     id = serializers.CharField(max_length=100)
+    name = serializers.CharField(max_length=100)
     location_lat = serializers.CharField(max_length=100)
     location_lng = serializers.CharField(max_length=100)
     type = serializers.IntegerField()
@@ -68,7 +69,7 @@ class PlaceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Place
-        fields = ('id', 'location_lat', 'location_lng', 'type', 'comments', 'ratings', 'budgets', 'city', 'route_set')
+        fields = ('id', 'name', 'location_lat', 'location_lng', 'type', 'comments', 'ratings', 'budgets', 'city', 'route_set')
 
     def get_comments(self, obj):
         #TODO: multiple/single comment/rating/budget issue must be solved with good practice
@@ -107,6 +108,7 @@ class PlaceSerializer(serializers.ModelSerializer):
     def to_internal_value(self, data):
 
         id = data.get('id')
+        name = data.get('name')
         city = data.get('city')
         location_lat = data.get('location_lat')
         location_lng = data.get('location_lng')
@@ -138,6 +140,10 @@ class PlaceSerializer(serializers.ModelSerializer):
             raise ValidationError({
                 'id': 'May not be more than 100 characters.'
             })
+        if len(name) > 100:
+            raise ValidationError({
+                'name': 'May not be more than 100 characters.'
+            })
         if len(city) > 100:
             raise ValidationError({
                 'city': 'May not be more than 100 characters.'
@@ -145,6 +151,7 @@ class PlaceSerializer(serializers.ModelSerializer):
 
         return {
             'id': id,
+            'name': name,
             'city': city,
             'location_lat': location_lat,
             'location_lng': location_lng,

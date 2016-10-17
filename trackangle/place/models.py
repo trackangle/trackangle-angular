@@ -30,6 +30,7 @@ PLACE_TYPES = (
 class Place(models.Model):
     #TODO id field might be changed to unique field instead of primary key
     id = models.CharField(max_length=100, primary_key=True)
+    name = models.CharField(max_length=100)
     location_lat = models.CharField(max_length=100)
     location_lng = models.CharField(max_length=100)
     city = models.ForeignKey(City, db_column="city_id", related_name="places")
