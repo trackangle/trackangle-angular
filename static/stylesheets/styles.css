@@ -330,8 +330,8 @@ li.navbar_active {
 }
 
 .glyphicon-refresh-animate {
-    -animation: spin 1.7s infinite linear;
-    -webkit-animation: spin2 1.7s infinite linear;
+    -animation: spin .7s infinite linear;
+    -webkit-animation: spin2 .7s infinite linear;
 }
 
 @-webkit-keyframes spin2 {
