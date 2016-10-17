@@ -118,13 +118,27 @@ define(dependencies, function (trackangle) {
 
             $scope.loading = true;
             place.city = $scope.route.cities[currentCityIndex].id;
-            place.route = $scope.route.id;
-            Place.create(place).then(function successHandler(data, status, headers, config){
+            Route.addPlace($scope.route.url_title, place).then(function successHandler(data, status, headers, config){
                 console.log(place);
+                var comment = "";
+                if(place.comments && place.comments.text){
+                    comment = place.comments.text;
+                }
+                var budget = "";
+                if(place.budgets && place.budgets.budget){
+                    budget = place.budgets.budget;
+                }
+                var rating = "";
+                if(place.ratings && place.ratings.rating){
+                    rating = place.ratings.rating;
+                }
                 var marker = {
                     id: place.id,
                     latitude: place.location_lat,
-                    longitude: place.location_lng
+                    longitude: place.location_lng,
+                    comment: comment,
+                    budget: budget,
+                    rating: rating
                 };
                 $scope.map.markers.push(marker);
                 $scope.route.cities[currentCityIndex].places.push(place);
@@ -136,7 +150,12 @@ define(dependencies, function (trackangle) {
 
         $scope.removeMarker = function(){
             $scope.loading = true;
-            Place.delete(clickedMarkerId).then(function successHandler(data, status, headers, config){
+            //var place = $filter('filter')($scope.route.cities[currentCityIndex].places, {id: clickedMarkerId})[0];
+            var place = $scope.route.cities[currentCityIndex].places.filter(function( obj ) {
+                    return obj.id == clickedMarkerId;
+                })[0];
+            Route.removePlace($scope.route.url_title, place).then(function successHandler(data, status, headers, config){
+
                 $scope.map.markers = $scope.map.markers.filter(function( obj ) {
                     return obj.id != clickedMarkerId;
                 });

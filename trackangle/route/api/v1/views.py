@@ -1,12 +1,15 @@
 from rest_framework import viewsets, response, status
 
 from trackangle.route.api.v1.serializers import RouteSerializer
+from trackangle.place.api.v1.serializers import PlaceSerializer
 from trackangle.route.models import Route
 from django.shortcuts import get_object_or_404
 from trackangle.route.models import RouteHasPlaces, RouteHasCities
 from trackangle.route.models import RouteHasOwners
-from trackangle.place.models import Place, Comment, Budget, Rating, City
+from trackangle.place.models import Place, Comment, City
 from django.db import IntegrityError, transaction
+from rest_framework.decorators import detail_route,list_route
+from rest_framework.permissions import IsAuthenticated
 
 
 class RouteViewSet(viewsets.ModelViewSet):
@@ -103,3 +106,39 @@ class RouteViewSet(viewsets.ModelViewSet):
         except Exception, e:
             print str(e)
             return response.Response(status=status.HTTP_400_BAD_REQUEST)
+
+    @detail_route(methods=['post'], permission_classes=[IsAuthenticated])
+    def add_place(self, request, url_title=None, *args, **kwargs):
+        try:
+            with transaction.atomic():
+                serializer = PlaceSerializer(data=request.data)
+                if serializer.is_valid():
+                    place = Place.objects.create(**serializer.validated_data)
+                    queryset = Route.objects.all()
+                    route = get_object_or_404(queryset, url_title=url_title)
+                    route_has_places = RouteHasPlaces(route_id=route.id, place=place)
+                    route_has_places.save()
+
+                    content = {"id": place.id}
+                    return response.Response(content, status=status.HTTP_201_CREATED)
+                return response.Response(status=status.HTTP_400_BAD_REQUEST)
+        except Exception, e:
+            print str(e)
+            return response.Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+    @detail_route(methods=['post'], permission_classes=[IsAuthenticated])
+    def delete_place(self, request, url_title=None, *args, **kwargs):
+        try:
+            serializer = PlaceSerializer(data=request.data)
+            if serializer.is_valid():
+                place_id = serializer.validated_data.pop('id')
+                queryset = Route.objects.all()
+                route = get_object_or_404(queryset, url_title=url_title)
+                RouteHasPlaces.objects.filter(route_id=route.id, place_id=place_id).delete()
+                content = {"id": place_id}
+                return response.Response(content, status=status.HTTP_200_OK)
+        except Exception, e:
+            print str(e)
+            return response.Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+

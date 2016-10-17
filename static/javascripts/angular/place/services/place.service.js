@@ -10,15 +10,6 @@ define(['trackangle'], function (trackangle) {
         places:function getPlaces() {
             return $http.get('/api/v1/place/');
         },
-        create:function createPlace(placeJSON) {
-            return $http.post('/api/v1/place/', placeJSON);
-        },
-        update:function updatePlace(id, placeJSON) {
-            return $http.put('/api/v1/place/' + id + '/', placeJSON);
-        },
-        delete:function deletePlace(id) {
-            return $http.delete('/api/v1/place/' + id + '/');
-        },
         createComment:function saveComment(comment, place_id){
             return $http.post('/api/v1/place/' + place_id + "/set_comment/", comment);
         },

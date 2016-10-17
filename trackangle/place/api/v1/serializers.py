@@ -111,7 +111,6 @@ class PlaceSerializer(serializers.ModelSerializer):
         location_lat = data.get('location_lat')
         location_lng = data.get('location_lng')
         type = data.get('type')
-        route = data.get('route')
 
 
         #Perform data validation
@@ -131,10 +130,6 @@ class PlaceSerializer(serializers.ModelSerializer):
             raise ValidationError({
                 'location_lng': 'This field is required.'
             })
-        if not route:
-            raise ValidationError({
-                'route ': 'This field is required.'
-            })
         if type is None:
             raise ValidationError({
                 'type': 'This field is required.'
@@ -153,6 +148,5 @@ class PlaceSerializer(serializers.ModelSerializer):
             'city': city,
             'location_lat': location_lat,
             'location_lng': location_lng,
-            'type': type,
-            'route': route
+            'type': type
         }

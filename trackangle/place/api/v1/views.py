@@ -20,28 +20,6 @@ class PlaceViewSet(viewsets.ModelViewSet):
     def get_serializer_context(self):
         return {'request': self.request}
 
-    def create(self, request, *args, **kwargs):
-        try:
-            with transaction.atomic():
-                serializer = self.serializer_class(data=request.data)
-                if serializer.is_valid():
-                    place = Place.objects.create(**serializer.validated_data)
-
-                    route_id = serializer.validated_data.pop('route')
-                    route_has_places = RouteHasPlaces(route_id=route_id, place=place)
-                    route_has_places.save()
-
-                    content = {"id": place.id}
-                    return response.Response(content, status=status.HTTP_201_CREATED)
-                return response.Response(status=status.HTTP_400_BAD_REQUEST)
-        except Exception, e:
-            print str(e)
-            return response.Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-    def destroy(self, request, id, *args, **kwargs):
-        Place.objects.filter(id=id).delete()
-        return response.Response(status=status.HTTP_200_OK)
 
     def list(self, request, *args, **kwargs):
         serializer = self.serializer_class(self.queryset, many=True)
@@ -59,7 +37,7 @@ class PlaceViewSet(viewsets.ModelViewSet):
         return response.Response(data)
 
 
-    @detail_route(methods=['post', 'get'], permission_classes=[IsAuthenticated])
+    @detail_route(methods=['post'], permission_classes=[IsAuthenticated])
     def set_comment(self, request, id=None, *args, **kwargs):
         serializer = CommentSerializer(data=request.data)
         if serializer.is_valid():
