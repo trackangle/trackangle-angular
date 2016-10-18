@@ -36,6 +36,7 @@ define(['trackangle', 'google-maps', 'ngMap'], function (trackangle) {
 
 
         };
+        
 
         function errorFunction(data, status, headers, config) {
             console.log("An error occured: " + data.error);

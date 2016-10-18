@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from rest_framework import viewsets, response, status
 
 from django.shortcuts import get_object_or_404
@@ -14,6 +15,7 @@ class UserViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         queryset = Route.objects.filter(routehasowners__owner_id=Account.objects.get(id=request.user.id).id)
         serializer = RouteSerializer(queryset, many=True)
+        print(request.user)
         return response.Response(serializer.data)
 
     def retrieve(self, request, id):
@@ -21,3 +23,11 @@ class UserViewSet(viewsets.ModelViewSet):
         route = get_object_or_404(queryset, pk=id)
         serializer = RouteSerializer(route)
         return response.Response(serializer.data)
+
+    def profile_view(request, username):
+        username=request.user
+        print(username)
+
+    def username_data(request):
+        data = {'username': request.user}
+        return JsonResponse(data)

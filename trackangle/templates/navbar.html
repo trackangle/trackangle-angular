@@ -15,7 +15,7 @@
       <ul class="nav navbar-nav pull-right">
         {% if user.is_authenticated %}
           <li><a href="/route/create">Create Route</a></li>
-          <li><a href="/profile">{{ user.username }}</a></li>
+          <li><a href="/profile_view/{{ user.username }}">{{ user.username }}</a></li>
           <li><a href="/settings">Settings</a></li>
           <li><a href="#" ng-click="logout()">Logout</a></li>
         {% else %}
