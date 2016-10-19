@@ -31,9 +31,11 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def retrieve(self, request, username, *args, **kwargs):
         account = Account.objects.get(username=username)
+        print(account)
         route_has_owners = RouteHasOwners.objects.filter(owner=account)
-        owner_routes = route_has_owners.route
-        owner_routes = RouteSerializer(owner_routes, many=True)
+        owner_routes = route_has_owners[1].route
+        owner_routes = RouteSerializer(owner_routes)
+        print(owner_routes.data)
         return response.Response(owner_routes.data)
 
 
