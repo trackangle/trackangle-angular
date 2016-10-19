@@ -10,8 +10,9 @@ from trackangle.authentication.views import LoginView, LogoutView
 api_urls = [
     url(r'^accounts', include(account_router.urls)),
     url(r'^route', include(route_router.urls)),
-    url(r'^user', include(user_router.urls)),
-    url(r'^profile_view/(?P<username>\w+)/$',UserViewSet.profile_view, include(user_router.urls)),
+    url(r'^user',  include(user_router.urls)),
+    #url(r'^user/(?P<username>\w+)/$',  include(user_router.urls)),
+    #url(r'^profile_view/(?P<username>\w+)/$',UserViewSet.profile_view, include(user_router.urls)),
 
 ]
 

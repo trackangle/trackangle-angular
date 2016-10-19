@@ -1,13 +1,19 @@
 /**
  * Created by root on 27.07.2016.
  */
-define(['trackangle', 'google-maps', 'ngMap'], function (trackangle) {
-    trackangle.register.controller('UserProfileController', function ($scope, $http) {
 
-        $http.get('/api/v1/user/').then(getSuccessFunction, errorFunction);
+
+define(['trackangle', 'google-maps', 'ngMap'], function (trackangle) {
+    trackangle.register.controller('UserProfileController', ['$scope', '$routeParams', '$http', function ($scope, $routeParams, $http){
+
+        console.log($routeParams);
+        var user_param = $routeParams.user;
+        console.log(user_param);
+        //$http.get('/api/v1/user/' + user_param + '/').then(getSuccessFunction, errorFunction);
+        $http.get('/api/v1/user/' + user_param + '/').then(getSuccessFunction, errorFunction);
 
         function getSuccessFunction(data, status, headers, config) {
-            console.log("asd");
+
             for(var i = 0; i < data.data.length; i++){
                 data.data[i].map = {
                     control: {},
@@ -36,11 +42,11 @@ define(['trackangle', 'google-maps', 'ngMap'], function (trackangle) {
 
 
         };
-        
+
 
         function errorFunction(data, status, headers, config) {
             console.log("An error occured: " + data.error);
         }
 
-  });
+  }]);
 });
