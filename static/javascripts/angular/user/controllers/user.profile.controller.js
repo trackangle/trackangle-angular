@@ -5,16 +5,13 @@
 
 define(['trackangle', 'google-maps', 'ngMap'], function (trackangle) {
     trackangle.register.controller('UserProfileController', ['$scope', '$routeParams', '$http', function ($scope, $routeParams, $http){
-
-        console.log($routeParams);
         var user_param = $routeParams.user;
-        console.log(user_param);
         //$http.get('/api/v1/user/' + user_param + '/').then(getSuccessFunction, errorFunction);
         $http.get('/api/v1/user/' + user_param + '/').then(getSuccessFunction, errorFunction);
-
         function getSuccessFunction(data, status, headers, config) {
-
+            console.log(data.data)
             for(var i = 0; i < data.data.length; i++){
+
                 data.data[i].map = {
                     control: {},
                     center: {
@@ -24,7 +21,6 @@ define(['trackangle', 'google-maps', 'ngMap'], function (trackangle) {
                     zoom: 12,
                     markers: []
                 }
-                console.log(data.data);
 
                 for(var j = 0; j < data.data[i].places.length; j++) {
                     var place = data.data[i].places[j];
@@ -34,6 +30,7 @@ define(['trackangle', 'google-maps', 'ngMap'], function (trackangle) {
                         longitude: place.location_lng
                     };
                     data.data[i].map.markers.push(marker);
+
                 }
 
             }

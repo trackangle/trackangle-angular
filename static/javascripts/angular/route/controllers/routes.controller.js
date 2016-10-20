@@ -4,7 +4,7 @@ define(['trackangle', 'google-maps', 'ngMap'], function (trackangle) {
         $http.get('/api/v1/route/').then(getSuccessFunction, errorFunction);
 
         function getSuccessFunction(data, status, headers, config) {
-
+            console.log(data.data);
             for(var i = 0; i < data.data.length; i++){
                 data.data[i].map = {
                     control: {},
@@ -15,7 +15,7 @@ define(['trackangle', 'google-maps', 'ngMap'], function (trackangle) {
                     zoom: 12,
                     markers: []
                 }
-                //console.log(data.data);
+                console.log(data.data.length);
 
                 for(var j = 0; j < data.data[i].places.length; j++) {
                     var place = data.data[i].places[j];
@@ -28,7 +28,6 @@ define(['trackangle', 'google-maps', 'ngMap'], function (trackangle) {
                 }
 
             }
-
             $scope.routes = data.data;
 
 

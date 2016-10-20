@@ -12,19 +12,14 @@ from trackangle.route.models import Route,RouteHasOwners
 
 class UserViewSet(viewsets.ModelViewSet):
     lookup_field = 'username'
-    serializer_class = AccountSerializer
+    serializer_class = RouteSerializer
     queryset = Account.objects.all()
 
 
 
 
     def list(self, request,  *args, **kwargs):
-        '''   account = Account.objects.get(username=username)
-   print("aaaaaaaaaaaaaa: "+account)
-   route_has_owners = RouteHasOwners.objects.filter(owner=account)
-   owner_routes = route_has_owners.route
-   owner_routes = RouteSerializer(owner_routes, many=True)
-   print(account)'''
+
         return response.Response()
 
 
@@ -33,10 +28,12 @@ class UserViewSet(viewsets.ModelViewSet):
         account = Account.objects.get(username=username)
         print(account)
         route_has_owners = RouteHasOwners.objects.filter(owner=account)
-        owner_routes = route_has_owners[1].route
-        owner_routes = RouteSerializer(owner_routes)
-        print(owner_routes.data)
-        return response.Response(owner_routes.data)
+        route_list = []
+        for x in route_has_owners:
+            owner_routes = x.route
+            route_serializer = RouteSerializer(owner_routes)
+            route_list.append(route_serializer.data)
+        return response.Response(route_list)
 
 
 
