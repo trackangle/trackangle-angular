@@ -22,19 +22,14 @@ define(['trackangle', 'route', 'google-maps'], function (trackangle) {
                         markers: []
                     };
 
-                    var marker_id = 0;
-                    for(var j = 0; j < route.cities.length; j++) {
-                        var city = route.cities[j];
-                        for(var k = 0; k < city.places.length; k++) {
-                            var place = city.places[k];
-                            var marker = {
-                                id: marker_id,
-                                latitude: place.location_lat,
-                                longitude: place.location_lng
-                            };
-                            $scope.routes[i].map.markers.push(marker);
-                            marker_id += 1;
-                        }
+                    for(var j = 0; j < route.places.length; j++) {
+                        var place = route.places[j];
+                        var marker = {
+                            id: j,
+                            latitude: place.location_lat,
+                            longitude: place.location_lng
+                        };
+                        $scope.routes[i].map.markers.push(marker);
                     }
 
                 }

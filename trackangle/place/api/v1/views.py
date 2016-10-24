@@ -36,6 +36,18 @@ class PlaceViewSet(viewsets.ModelViewSet):
             print "Place does not exist"
         return response.Response(data)
 
+    @list_route(methods=['get'], permission_classes=[IsAuthenticated])
+    def set_rating(self, request):
+        serializer = RatingSerializer(data=request.data)
+        if serializer.is_valid():
+            rate = serializer.validated_data.pop('rate')
+            rating, created = Rating.objects.get_or_create(rater=request.user, place_id = id, defaults={"rate":rate})
+            rating.rate = rate
+            rating.save()
+            content = {"id": rating.id}
+            return response.Response(content, status=status.HTTP_201_CREATED)
+        return response.Response(status=status.HTTP_400_BAD_REQUEST)
+
 
     @detail_route(methods=['post'], permission_classes=[IsAuthenticated])
     def set_comment(self, request, id=None, *args, **kwargs):

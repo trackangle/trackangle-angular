@@ -2,14 +2,15 @@ from rest_framework import viewsets, response, status
 
 from trackangle.route.api.v1.serializers import RouteSerializer
 from trackangle.place.api.v1.serializers import PlaceSerializer
+from trackangle.authentication.serializers import AccountSerializer
 from trackangle.route.models import Route
 from django.shortcuts import get_object_or_404
 from trackangle.route.models import RouteHasPlaces, RouteHasCities
-from trackangle.route.models import RouteHasOwners
 from trackangle.place.models import Place, Comment, City
 from django.db import IntegrityError, transaction
 from rest_framework.decorators import detail_route,list_route
 from rest_framework.permissions import IsAuthenticated
+from django.template.defaultfilters import slugify
 
 
 class RouteViewSet(viewsets.ModelViewSet):
@@ -26,44 +27,34 @@ class RouteViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         try:
-            with transaction.atomic():
-                serializer = self.serializer_class(data=request.data)
-                if serializer.is_valid():
-                    cities = serializer.validated_data.pop('cities')
-
-                    route = Route.objects.create(**serializer.validated_data)
-
-                    route_has_owners = RouteHasOwners(route=route, owner=request.user)
-                    route_has_owners.save()
-
+            request.data['url_title'] = slugify(request.data['title'])
+            serializer = self.serializer_class(data=request.data)
+            if serializer.is_valid():
+                cities = serializer.validated_data['cities']
+                with transaction.atomic():
+                    route = Route.objects.create(request.user, **serializer.validated_data)
                     for cityObj in cities:
                         city = City(id=cityObj['id'], name=cityObj['name'], location_lat=cityObj['location_lat'], location_lng=cityObj['location_lng'])
                         city.save()
                         route_has_cities = RouteHasCities(route=route, city=city)
                         route_has_cities.save()
 
-                    content = {"url_title": route.url_title}
-                    return response.Response(content, status=status.HTTP_201_CREATED)
+                    return response.Response(serializer.validated_data, status=status.HTTP_201_CREATED)
                 return response.Response(status=status.HTTP_400_BAD_REQUEST)
         except Exception, e:
             print str(e)
             return response.Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    #TODO: make update function transactional
+    # TODO: make update function transactional
     def update(self, request, url_title, *args, **kwargs):
         try:
             #with transaction.atomic():
+            request.data['url_title'] = slugify(request.data['title'])
             serializer = self.serializer_class(data=request.data)
             if serializer.is_valid():
 
-                cities = serializer.validated_data.pop('cities')
-                route = Route.objects.update(url_title, **serializer.validated_data)
-
-                try:
-                    route_has_owners = RouteHasOwners(route=route, owner=request.user)
-                    route_has_owners.save()
-                except IntegrityError as e:
-                    print "Duplicate route owner"
+                cities = serializer.validated_data['cities']
+                route = Route.objects.update(**serializer.validated_data)
 
                 city_ids=[o["id"] for o in cities]
                 RouteHasPlaces.objects.filter(route=route).exclude(place__city__id__in=city_ids).delete()
@@ -75,13 +66,11 @@ class RouteViewSet(viewsets.ModelViewSet):
                     route_has_cities = RouteHasCities(route=route, city=city)
                     route_has_cities.save()
 
-                content = {"url_title": route.url_title}
-                return response.Response(content, status=status.HTTP_201_CREATED)
+                return response.Response(serializer.validated_data, status=status.HTTP_200_OK)
             return response.Response(status=status.HTTP_400_BAD_REQUEST)
         except Exception, e:
             print str(e)
             return response.Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
 
     def destroy(self, request, url_title, *args, **kwargs):
         Route.objects.filter(url_title=url_title).delete()
@@ -89,16 +78,14 @@ class RouteViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         try:
-            queryset = Route.objects.all()
-            serializer = self.serializer_class(queryset, many=True)
+            serializer = self.serializer_class(self.queryset, many=True)
             return response.Response(serializer.data)
         except Exception,e:
             print str(e)
             return response.Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def retrieve(self, request, url_title):
-        queryset = Route.objects.all()
-        route = get_object_or_404(queryset, url_title=url_title)
+        route = get_object_or_404(self.queryset, url_title=url_title)
         try:
             context = self.get_serializer_context()
             serializer = self.serializer_class(route, context=context)
@@ -114,13 +101,10 @@ class RouteViewSet(viewsets.ModelViewSet):
                 serializer = PlaceSerializer(data=request.data)
                 if serializer.is_valid():
                     place = Place.objects.create(**serializer.validated_data)
-                    queryset = Route.objects.all()
-                    route = get_object_or_404(queryset, url_title=url_title)
+                    route = get_object_or_404(self.queryset, url_title=url_title)
                     route_has_places = RouteHasPlaces(route_id=route.id, place=place)
                     route_has_places.save()
-
-                    content = {"id": place.id}
-                    return response.Response(content, status=status.HTTP_201_CREATED)
+                    return response.Response(serializer.validated_data, status=status.HTTP_201_CREATED)
                 return response.Response(status=status.HTTP_400_BAD_REQUEST)
         except Exception, e:
             print str(e)
@@ -132,12 +116,10 @@ class RouteViewSet(viewsets.ModelViewSet):
         try:
             serializer = PlaceSerializer(data=request.data)
             if serializer.is_valid():
-                place_id = serializer.validated_data.pop('id')
-                queryset = Route.objects.all()
-                route = get_object_or_404(queryset, url_title=url_title)
+                place_id = serializer.validated_data['id']
+                route = get_object_or_404(self.queryset, url_title=url_title)
                 RouteHasPlaces.objects.filter(route_id=route.id, place_id=place_id).delete()
-                content = {"id": place_id}
-                return response.Response(content, status=status.HTTP_200_OK)
+                return response.Response(serializer.validated_data, status=status.HTTP_200_OK)
         except Exception, e:
             print str(e)
             return response.Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)

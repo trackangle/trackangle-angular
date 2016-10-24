@@ -125,7 +125,7 @@ define(dependencies, function (trackangle) {
         function addMarker(place){
 
             $scope.loading = true;
-            place.city = $scope.route.cities[currentCityIndex].id;
+            place.city = $scope.route.cities[currentCityIndex];
             Route.addPlace($scope.route.url_title, place).then(function successHandler(data, status, headers, config){
                 console.log(place);
                 var comment = "";
@@ -150,7 +150,7 @@ define(dependencies, function (trackangle) {
                     rating: rating
                 };
                 $scope.map.markers.push(marker);
-                $scope.route.cities[currentCityIndex].places.push(place);
+                $scope.route.places.push(place);
                 $scope.loading = false;
             },function errorHandler(data, status, headers, config){
                 console.log("An error occured: " + data.error);
@@ -159,8 +159,7 @@ define(dependencies, function (trackangle) {
 
         $scope.removeMarker = function(){
             $scope.loading = true;
-            //var place = $filter('filter')($scope.route.cities[currentCityIndex].places, {id: clickedMarkerId})[0];
-            var place = $scope.route.cities[currentCityIndex].places.filter(function( obj ) {
+            var place = $scope.route.places.filter(function( obj ) {
                     return obj.id == clickedMarkerId;
                 })[0];
             Route.removePlace($scope.route.url_title, place).then(function successHandler(data, status, headers, config){
@@ -168,7 +167,7 @@ define(dependencies, function (trackangle) {
                 $scope.map.markers = $scope.map.markers.filter(function( obj ) {
                     return obj.id != clickedMarkerId;
                 });
-                $scope.route.cities[currentCityIndex].places = $scope.route.cities[currentCityIndex].places.filter(function( obj ) {
+                $scope.route.places = $scope.route.places.filter(function( obj ) {
                     return obj.id != clickedMarkerId;
                 });
                 $scope.map.window.closeClick();
@@ -263,9 +262,13 @@ define(dependencies, function (trackangle) {
             if(!city){
                 city = $scope.route.cities[0];
             }
+            console.log($scope.route.places);
+            var places = $scope.route.places.filter(function( obj ) {
+                return obj.city.id == $scope.route.cities[currentCityIndex].id;
+            });
             $scope.map.markers = [];
-            for(var i = 0; i < city.places.length; i++){
-                var place = city.places[i];
+            for(var i = 0; i < places.length; i++){
+                var place = places[i];
                 if(place.type == placetype) {
 
                     var marker = {

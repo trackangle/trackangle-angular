@@ -8,8 +8,7 @@ class Route(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=100, blank=False, null=False)
     description = models.CharField(max_length=255, blank=True, null=True)
-    owners = models.ManyToManyField(Account, through='RouteHasOwners',
-                                    related_name='owned_routes')
+    owner = models.ForeignKey(Account, db_column="owner_id", related_name="routes")
     url_title = models.SlugField(max_length=100, blank=True, unique=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -17,14 +16,6 @@ class Route(models.Model):
     cities = models.ManyToManyField(City, through='RouteHasCities',)
 
     objects = RouteManager()
-
-
-class RouteHasOwners(models.Model):
-    route = models.ForeignKey(Route, db_column='route_id')
-    owner = models.ForeignKey(Account, db_column='owner_id')
-
-    class Meta:
-        unique_together = ("route", "owner",)
 
 
 class RouteHasPlaces(models.Model):

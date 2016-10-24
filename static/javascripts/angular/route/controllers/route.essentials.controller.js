@@ -18,7 +18,8 @@ define(['trackangle', 'route', 'google-maps', 'jquery'], function (trackangle) {
             $scope.route = {
                 title: "",
                 description: "",
-                cities: []
+                cities: [],
+                places: []
             };
         }
         var element = document.getElementById("autocomplete-city");
@@ -33,9 +34,8 @@ define(['trackangle', 'route', 'google-maps', 'jquery'], function (trackangle) {
             var city = {
                 id: place.place_id,
                 name: place.name,
-                location_lat: place.geometry.location.lat(),
-                location_lng: place.geometry.location.lng(),
-                places: []
+                location_lat: place.geometry.location.lat().toString(),
+                location_lng: place.geometry.location.lng().toString()
             };
             $scope.route.cities.push(city);
             $scope.$apply();
@@ -46,19 +46,6 @@ define(['trackangle', 'route', 'google-maps', 'jquery'], function (trackangle) {
     };
 
 
-
-
-    /*var geocoder = new google.maps.Geocoder;
-    geocoder.geocode({'address': cityName}, function (results, status) {
-        if (status === google.maps.GeocoderStatus.OK) {
-            if (results[0]) {
-                $(el[0]).val(cityName);
-                autocomplete.set("place", results[0]);
-            }
-        }
-    });*/
-
-
     $scope.removeCity = function(index){
         $scope.route.cities.splice(index, 1);
     };
@@ -66,6 +53,7 @@ define(['trackangle', 'route', 'google-maps', 'jquery'], function (trackangle) {
 
     $scope.addRouteDetails = function(){
 
+        console.log($scope.route);
         if($routeParams.url_title){
             Route.update($routeParams.url_title, $scope.route).then(postSuccessFunction, postErrorFunction);
         }
