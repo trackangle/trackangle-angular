@@ -13,10 +13,10 @@ define(['trackangle'], function (trackangle) {
         createComment:function saveComment(comment, place_id){
             return $http.post('/api/v1/place/' + place_id + "/set_comment/", comment);
         },
-        createBudget:function saveComment(budget, place_id){
+        createBudget:function saveBudget(budget, place_id){
             return $http.post('/api/v1/place/' + place_id + "/set_budget/", budget);
         },
-        createRating:function saveComment(rating, place_id){
+        createRating:function saveRating(rating, place_id){
             return $http.post('/api/v1/place/' + place_id + "/set_rating/", rating);
         }
     };
