@@ -1,6 +1,7 @@
 /* HTML Elements */
 body {
     background-color: #E6E6E6;
+    padding-top:70px;
 }
 input{
     height: 35px;
@@ -122,7 +123,7 @@ li.navbar_active {
 
 .create_route_div {
     background-color: #FFFFFF;
-    width: 768px;
+    width: 1300px;
     top: 110px;
     left: 225px;
     overflow-y: auto;
@@ -220,114 +221,7 @@ li.navbar_active {
     border-top: 0px;
     background:none;
   }
-/*
-.btn_info {
-    display: inline-block;
-  margin-bottom: 0;
-  white-space: nowrap;
-  vertical-align: middle;
-  cursor: pointer;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-  background-image: none;
-  border: 1px solid transparent;
-  border-radius: 4px;
-}
-.btn-primary {
-  color: #fff;
-  background-color: transparent !important;
-  border-top-color: #357ebd;
-  border-bottom-color: #357ebd;
-}
-.btn.outline {
-    background: none;
-}
-.btn-primary.outline {
-    border: 2px solid #0099cc;
-    color: #0099cc;
-}
-*/
-/*Arrow Button BIG*/
-/*
-.btn-primary.outline:hover, .btn-primary.outline:focus {
-    color: #6FD2D8;
-    border-color: #6FD2D8;
-}
-.btn-primary.outline:active, .btn-primary.outline.active {
-    border-color: #007299;
-    color: #007299;
-    box-shadow: none;
-}
-.btn-primary.outline {
-    border: 2px solid #6FD2D8;
-    color: #ffffff;
-    background-color:#565A5C !important;
-}
-.btn-arrow-right,
-.btn-arrow-left {
-    position: relative;
-    padding-top: 12px !important;
-}
-.btn-arrow-right {
-    padding-left: 36px;
-}
-.btn-arrow-left {
-    padding-right: 36px;
-}
-.btn-arrow-right:before,
-.btn-arrow-right:after,
-.btn-arrow-left:before,
-.btn-arrow-left:after {
-    content:"";
-    position: absolute;
-    top: 5px;
-    width: 31px;
-    height: 31px;
-    background: inherit;
-    border: inherit;
-    border-left-color: transparent;
-    border-bottom-color: transparent;
-}
-.btn-arrow-right:before,
-.btn-arrow-right:after {
-    transform: rotate(45deg);
-    -webkit-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    -o-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-}
-.btn-arrow-left:before {
-       transform: rotate(225deg);
-    -webkit-transform: rotate(225deg);
-    -moz-transform: rotate(225deg);
-    -o-transform: rotate(225deg);
-    -ms-transform: rotate(225deg);
-}
-.btn-arrow-left:after {
-    transform: rotate(225deg);
-    -webkit-transform: rotate(225deg);
-    -moz-transform: rotate(225deg);
-    -o-transform: rotate(225deg);
-    -ms-transform: rotate(225deg);
-}
-.btn-arrow-right:before,
-.btn-arrow-left:before {
-    left: -17px;
-}
-.btn-arrow-right:after,
-.btn-arrow-left:after {
-    right: -17px;
-}
-.btn-arrow-right:after,
-.btn-arrow-left:before {
-    z-index: 1;
-}
-.btn-arrow-right:before,
-.btn-arrow-left:after {
-    background-color: #565a5c;
-}
+
 /*Arrow Button Small*/
 
 .btn-primary.outline:hover, .btn-primary.outline:focus {
@@ -413,10 +307,43 @@ li.navbar_active {
 .btn-arrow-left:after {
     background-color: #565a5c;
 }
-.map_canvas {
-    height: 300px;
-    /*width:300px;*/
+
+
+.angular-google-map-container { height: 800px; }
+
+.col-md-4 .angular-google-map-container {height: 300px;}
+
+.autocomplete-box{
+    top: 10px !important;;
+    width: 75%;
+    height:31px;
 }
-.columns {
-  columns: 3;
+
+.city-info{
+    border-radius: 10px;
+    box-shadow: 0 0 2px 1px #ddd;
+}
+
+.loading{
+    padding-top: 80px;
+    padding-left: 1550px;
+}
+
+.glyphicon-refresh-animate {
+    -animation: spin .7s infinite linear;
+    -webkit-animation: spin2 .7s infinite linear;
+}
+
+@-webkit-keyframes spin2 {
+    from { -webkit-transform: rotate(0deg);}
+    to { -webkit-transform: rotate(360deg);}
+}
+
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg);}
+    to { transform: scale(1) rotate(360deg);}
+}
+
+.green{
+    color:green;
 }

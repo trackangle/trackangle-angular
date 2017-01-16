@@ -26,6 +26,7 @@
     "angular-resource": "1.4.10",
     "angular-ui-router": "~0.2.10",
     "requirejs-text":"2.0.6",
-    "jquery-ui": "1.10.2"
+    "jquery-ui": "1.10.2",
+    "angular-google-maps": "latest"
   }
 }

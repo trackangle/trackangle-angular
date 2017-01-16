@@ -1,18 +1,27 @@
-<div class="form-group" >
-    <label class="control-label col-sm-2" for="route_title">Title</label>
+<form class="form" ng-init="init()">
+    <div class="form-group form-group-sm">
+        <label class="col-sm-8 control-label" for="route-title">Title</label>
         <div class="col-sm-10">
-            <input type="text" id="route_title" ng-model="title.route_title"/>
+            <input type="text" id="route-title" ng-model="route.title" />
         </div>
-</div>
-<div class="form-group">
-    <label class="control-label col-sm-2" for="route_desc">Description</label>
-    <div class="col-sm-10">
-        <input type="text" id="route_desc" ng-model="description.route_description"/>
     </div>
-</div>
-<div class="form-group">
-    <label class="control-label col-sm-2" for="AutocompleteCity">City</label>
-    <div class="col-sm-10">
-        <input type="text" id="AutocompleteCity" ng-autocomplete ng-model="result_city.route_result" details="details_city.route_details" options="$parent.options_city" />
+    <div class="form-group form-group-sm">
+        <label class="col-sm-8 control-label" for="route-desc">Description</label>
+        <div class="col-sm-10">
+            <input type="text" id="route-desc" ng-model="route.description" />
+        </div>
     </div>
-</div>
+    <div class="form-group form-group-sm col-sm-5">
+        <div class="col-sm-3 city-info" ng-repeat="city in route.cities track by $index">
+            <i class="fa fa-times-circle close remove-city" ng-click="removeCity($index)"></i>
+            {{city.name}}
+        </div>
+    </div>
+    <div class="form-group form-group-sm col-sm-10">
+        <input type='text' id="autocomplete-city" size='50' placeholder='Enter a city' />
+    </div>
+    <div class="form-group form-group-sm col-sm-10">
+        <a href="#" ng-click="addRouteDetails()">Continue</a>
+    </div>
+</form>
+

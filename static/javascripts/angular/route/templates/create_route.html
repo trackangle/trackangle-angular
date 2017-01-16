@@ -1,78 +1,33 @@
-<div class="kinda_bar navbar col-lg-12 col-md-12 col-sm-12 col-xs-12">
+<div class="kinda_bar navbar col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-init="init()">
 
     <div class="step_buttons">
-        <button type="button" class="btn btn-primary outline btn_top btn-arrow-right">Verona</button>
-        <button type="button" class="btn btn-primary outline btn_top btn-arrow-right">Venice</button>
-        <button type="button" class="btn btn-primary outline btn_top btn-arrow-right">Florance</button>
-        <button type="button" class="btn btn-primary outline btn_top btn-arrow-right">Genova</button>
+        <button ng-repeat="city in route.cities track by $index" ng-click="changeCity($index)" ng-class="{active : isCitySelected(city.id)}" type="button" class="btn btn-primary outline btn_top btn-arrow-right">{{city.name}}</button>
     </div>
 
 </div>
-<div class="form-group" ng-init="set_right_navbar('route_essentials')">
+<div class="form-group">
     <div >
         <ul class="nav navbar-nav side-nav col-lg-2 col-md-2 col-sm-2 col-xs-2">
-            <li ng-click="set_right_navbar('route_essentials')" ng-class="{'active':get_right_navbar() == 'route_essentials' }"><a href=""><i class="fa fa-fw fa-location-arrow"></i>Route Essentials</a></li>
-            <li ng-click="set_right_navbar('accomodation')" ng-class="{'active':get_right_navbar() == 'accomodation' }"><a href=""><i class="fa fa-fw fa-home"></i>Accomodation</a></li>
-            <li ng-click="set_right_navbar('food')" ng-class="{'active':get_right_navbar() == 'food' }"><a href=""><i class="fa fa-fw fa-cutlery"></i>Food</a></li>
-            <li ng-click="set_right_navbar('nightlife')" ng-class="{'active':get_right_navbar() == 'nightlife' }"><a href=""><i class="fa fa-fw fa-glass"></i>Nightlife</a></li>
-            <li ng-click="set_right_navbar('entertainment_arts')" ng-class="{'active':get_right_navbar() == 'entertainment_arts' }"><a href=""><i class="fa fa-fw fa-paint-brush"></i> Entertainment & Arts</a></li>
-            <li ng-click="set_right_navbar('architecture_buildings')" ng-class="{'active':get_right_navbar() == 'architecture_buildings' }"><a href=""><i class="fa fa-fw fa-university"></i> Architecture</a></li>
-            <li ng-click="set_right_navbar('outdoor')" ng-class="{'active':get_right_navbar() == 'outdoor' }"><a href=""><i class="fa fa-fw fa-bicycle"></i> Outdoor</a></li>
+            <li ng-click="set_right_navbar(placeTypes.accomodation)" ng-class="{'active':get_right_navbar() == placeTypes.accomodation }"><a href=""><i class="fa fa-fw fa-home"></i>Accomodation</a></li>
+            <li ng-click="set_right_navbar(placeTypes.food)" ng-class="{'active':get_right_navbar() == placeTypes.food }"><a href=""><i class="fa fa-fw fa-cutlery"></i>Food</a></li>
+            <li ng-click="set_right_navbar(placeTypes.nightlife)" ng-class="{'active':get_right_navbar() == placeTypes.nightlife }"><a href=""><i class="fa fa-fw fa-glass"></i>Nightlife</a></li>
+            <li ng-click="set_right_navbar(placeTypes.entertainment)" ng-class="{'active':get_right_navbar() == placeTypes.entertainment }"><a href=""><i class="fa fa-fw fa-paint-brush"></i> Entertainment & Arts</a></li>
+            <li ng-click="set_right_navbar(placeTypes.architecture)" ng-class="{'active':get_right_navbar() == placeTypes.architecture }"><a href=""><i class="fa fa-fw fa-university"></i> Architecture</a></li>
+            <li ng-click="set_right_navbar(placeTypes.outdoor)" ng-class="{'active':get_right_navbar() == placeTypes.outdoor }"><a href=""><i class="fa fa-fw fa-bicycle"></i> Outdoor</a></li>
 
         </ul>
     </div>
-    <div class="form-group create_route_div  fixed-width col-lg-6 col-md-6 col-sm-6 col-xs-6" >
-
-
-        <div  class="fixed-width" >
-            <div ng-include src="get_partial()">
+    <div class="row">
+        <div class="form-group create_route_div  fixed-width col-lg-6 col-md-6 col-sm-6 col-xs-6" >
+            <ui-gmap-google-map control='map.control' center="map.center" zoom='map.zoom'>
+                <ui-gmap-search-box options="map.searchbox.options" template="map.searchbox.template" events="map.searchbox.events" position="map.searchbox.position"></ui-gmap-search-box>
+                <ui-gmap-window show="map.window.show" coords="map.window.model" options="map.window.options" templateUrl="map.window.templateUrl" templateParameter="map.window.templateParameter" closeClick="map.window.closeClick()">
+                </ui-gmap-window>
+                <ui-gmap-markers idkey="marker.id" models="map.markers" coords="'self'" doCluster="false" fit="'true'" icon="'icon'" events="map.markersEvents" options="'options'"></ui-gmap-markers>
+            </ui-gmap-google-map>
         </div>
+        <!--div ng-show="loading" class="loading">LOADING...</div-->
+        <div ng-show="loading" class="loading"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>saving...</div>
+        <div ng-show="!loading" class="loading"><span class="glyphicon glyphicon-ok green"></span>saved</div>
     </div>
 </div>
-<!--div class="ribbon col-lg-2 col-md-2 col-sm-2 col-xs-2 pull-right" style="margin-top: 300px">
-            <h3>Header text</h3>
-            <p>Body text</p>
-</div-->
-<!--form class="form-horizontal" role="form">
-  <div class="form-group">
-    <label class="control-label col-sm-2" for="route_title">Title</label>
-    <div class="col-sm-10">
-      <input type="text" id="route_title" ng-model="title"/>
-    </div>
-  </div>
-  <div class="form-group">
-    <label class="control-label col-sm-2" for="route_desc">Description</label>
-    <div class="col-sm-10">
-     <input type="text" id="route_desc" ng-model="description"/>
-    </div>
-  </div>
-  <div class="form-group">
-    <label class="control-label col-sm-2" for="AutocompleteCity">City</label>
-    <div class="col-sm-10">
-      <input type="text" id="AutocompleteCity" ng-autocomplete="result_city" details="details_city" options="options_city" ng-model="country"/>
-    </div>
-  </div>
-  <div class="form-group" ng-show="details_city.address_components[0].short_name != null">
-    <label class="control-label col-sm-2" for="AutocompleteMuseum">Museum</label>
-    <div class="col-sm-10">
-     <input type="text" id="AutocompleteMuseum" ng-autocomplete="result_museum" details="details_museum" options="options_museum" ng-model="museum"/>
-    </div>
-  </div>
-  <div class="form-group" ng-show="details_city.address_components[0].short_name != null">
-    <label class="control-label col-sm-2" for="AutocompleteFood">Food</label>
-    <div class="col-sm-10">
-     <input type="text" id="AutocompleteFood" ng-autocomplete="result_food" details="details_food" options="options_food" ng-model="food"/>
-    </div>
-  </div>
-  <div class="form-group" ng-show="details_city.address_components[0].short_name != null">
-    <label class="control-label col-sm-2" for="AutocompleteShop">Shop</label>
-    <div class="col-sm-10">
-     <input type="text" id="AutocompleteShop" ng-autocomplete="result_shop" details="details_shop" options="options_shop" ng-model="shop"/>
-    </div>
-  </div>
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-		<button class="btn btn-success" ng-click="saveRoute()">Save</button>
-    </div>
-  </div>
-</form-->

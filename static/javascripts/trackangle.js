@@ -1,11 +1,10 @@
-define(['angularAMD', 'angular-route', 'angular-cookies'], function (angularAMD) {
+define(['angularAMD', 'angular-route', 'angular-cookies', 'angular-google-maps'], function (angularAMD) {
     'use strict';
 
-  var trackangle = angular.module("trackangle", ['ngRoute', 'ngCookies']);
+  var trackangle = angular.module("trackangle", ['ngRoute', 'ngCookies', 'uiGmapgoogle-maps']);
 
   trackangle.controller('NavbarController', function ($scope, $http, $cookies) {
       $scope.logout = function() {
-          console.log("asdasd");
           return $http.post('/api/v1/auth/logout/')
               .then(logoutSuccessFn, logoutErrorFn);
 
@@ -17,7 +16,7 @@ define(['angularAMD', 'angular-route', 'angular-cookies'], function (angularAMD)
           function logoutErrorFn(data, status, headers, config) {
               console.error('Epic failure!');
           }
-      }
+      };
       function unauthenticate() {
         delete $cookies.authenticatedAccount;
     }
@@ -45,12 +44,18 @@ define(['angularAMD', 'angular-route', 'angular-cookies'], function (angularAMD)
         controller: 'RoutesController',
         controllerUrl: '/static/javascripts/angular/route/controllers/routes.controller.js'
     }))
-    .when("/route/create", angularAMD.route({
+    .when("/route/create/:url_title?", angularAMD.route({
+        templateUrl: '/static/javascripts/angular/route/templates/route_essentials.html',
+        controller: 'RouteEssentialsController',
+        controllerUrl: '/static/javascripts/angular/route/controllers/route.essentials.controller.js'
+    }))
+    .when("/route/create/details/:url_title", angularAMD.route({
         templateUrl: '/static/javascripts/angular/route/templates/create_route.html',
         controller: 'CreateRouteController',
-        controllerUrl: '/static/javascripts/angular/route/controllers/create.route.controller.js'
+        controllerUrl: '/static/javascripts/angular/route/controllers/create.route.controller.js',
+        reloadOnSearch: false
     }))
-    .when("/route/:id", angularAMD.route({
+    .when("/route/:url_title", angularAMD.route({
         templateUrl: '/static/javascripts/angular/route/templates/route_details.html',
         controller: 'RouteController',
         controllerUrl: '/static/javascripts/angular/route/controllers/route.controller.js'

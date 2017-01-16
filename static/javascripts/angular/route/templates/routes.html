@@ -1,8 +1,8 @@
-<div class="container">
+<div class="container" ng-init="init()">
 
-    <div ng-repeat="route in routes" class="columns raw">
+    <div ng-repeat="route in routes" class="raw col-md-4">
 
-        <div class="col-md-4">
+
             <div class = "panel panel-default">
                 <div class = "panel-heading">
                     <div class="media">
@@ -11,18 +11,25 @@
                         </a>
                         <div class="media-body">
                            <a href="#" class="pull-right text-muted"><i class="icon-reply-all-fill fa fa-2x "></i></a>
-                           <a href="">{{route.owners[0].username}}</a>
+                           <a href="">{{route.owner.username}}</a>
                            <span>on {{route.created}}</span>
                        </div>
                     </div>
                 </div>
 
 
-                <smap places="route.places" id='map_{{route.id}}' class="map_canvas"></smap>
+                <ui-gmap-google-map control='route.map.control' center="route.map.center" zoom='route.map.zoom'>
+                    <ui-gmap-markers idkey="route.marker.id" models="route.map.markers" coords="'self'" doCluster="false" fit="'true'" icon="'icon'"></ui-gmap-markers>
+                </ui-gmap-google-map>
 
-                <div class="panel-footer text-muted"><a href="route/{{ route.id }}">{{route.title}}</a></div>
+                <div class="panel-footer text-muted">
+                    <a href="route/{{ route.url_title }}">{{route.title}}</a>
+                    <a href="#" ng-click="delete_route(route.url_title)" style="float: right;">Delete</a>
+                    <span style="float: right;">/</span>
+                    <a href="route/create/{{ route.url_title }}" style="float:right;">Edit</a>
+                </div>
 
             </div>
-        </div>
+
     </div>
 </div>
