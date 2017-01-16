@@ -41,8 +41,8 @@ class RouteViewSet(viewsets.ModelViewSet):
 
                     return response.Response(serializer.validated_data, status=status.HTTP_201_CREATED)
                 return response.Response(status=status.HTTP_400_BAD_REQUEST)
-        except Exception, e:
-            print str(e)
+        except Exception as e:
+            print(str(e))
             return response.Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     # TODO: make update function transactional
@@ -68,8 +68,8 @@ class RouteViewSet(viewsets.ModelViewSet):
 
                 return response.Response(serializer.validated_data, status=status.HTTP_200_OK)
             return response.Response(status=status.HTTP_400_BAD_REQUEST)
-        except Exception, e:
-            print str(e)
+        except Exception as e:
+            print(str(e))
             return response.Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def destroy(self, request, url_title, *args, **kwargs):
@@ -80,8 +80,8 @@ class RouteViewSet(viewsets.ModelViewSet):
         try:
             serializer = self.serializer_class(self.queryset, many=True)
             return response.Response(serializer.data)
-        except Exception,e:
-            print str(e)
+        except Exception as e:
+            print(str(e))
             return response.Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def retrieve(self, request, url_title):
@@ -90,8 +90,8 @@ class RouteViewSet(viewsets.ModelViewSet):
             context = self.get_serializer_context()
             serializer = self.serializer_class(route, context=context)
             return response.Response(serializer.data)
-        except Exception, e:
-            print str(e)
+        except Exception as e:
+            print(str(e))
             return response.Response(status=status.HTTP_400_BAD_REQUEST)
 
     @detail_route(methods=['post'], permission_classes=[IsAuthenticated])
@@ -106,8 +106,8 @@ class RouteViewSet(viewsets.ModelViewSet):
                     route_has_places.save()
                     return response.Response(serializer.validated_data, status=status.HTTP_201_CREATED)
                 return response.Response(status=status.HTTP_400_BAD_REQUEST)
-        except Exception, e:
-            print str(e)
+        except Exception as e:
+            print(str(e))
             return response.Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
@@ -120,7 +120,7 @@ class RouteViewSet(viewsets.ModelViewSet):
                 route = get_object_or_404(self.queryset, url_title=url_title)
                 RouteHasPlaces.objects.filter(route_id=route.id, place_id=place_id).delete()
                 return response.Response(serializer.validated_data, status=status.HTTP_200_OK)
-        except Exception, e:
-            print str(e)
+        except Exception as e:
+            print(str(e))
             return response.Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 

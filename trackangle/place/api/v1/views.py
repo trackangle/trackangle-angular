@@ -33,7 +33,7 @@ class PlaceViewSet(viewsets.ModelViewSet):
             serializer = self.serializer_class(place, context=context)
             data = serializer.data
         except:
-            print "Place does not exist"
+            print("Place does not exist")
         return response.Response(data)
 
     @list_route(methods=['get'], permission_classes=[IsAuthenticated])
