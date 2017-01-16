@@ -4,7 +4,6 @@ define(['trackangle', 'google-maps', 'ngMap'], function (trackangle) {
         $http.get('/api/v1/route/').then(getSuccessFunction, errorFunction);
 
         function getSuccessFunction(data, status, headers, config) {
-            console.log(data.data);
             for(var i = 0; i < data.data.length; i++){
                 data.data[i].map = {
                     control: {},

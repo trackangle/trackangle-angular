@@ -12,10 +12,7 @@ from trackangle.route.models import Route,RouteHasOwners
 
 class UserViewSet(viewsets.ModelViewSet):
     lookup_field = 'username'
-    serializer_class = RouteSerializer
     queryset = Account.objects.all()
-
-
 
 
     def list(self, request,  *args, **kwargs):
