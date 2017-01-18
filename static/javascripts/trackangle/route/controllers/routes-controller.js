@@ -1,15 +1,15 @@
+define([], function () {
 
-define(['trackangle', 'route', 'google-maps'], function (trackangle) {
-    trackangle.register.controller('RoutesController', ['$scope', 'Route', function ($scope, Route){
+    var RoutesController = function($scope, RouteService) {
 
-        $scope.init = function(){
-            Route.routes().then(getSuccessFunction, getErrorFunction);
+        $scope.init = function () {
+            RouteService.routes().then(getSuccessFunction, getErrorFunction);
 
             function getSuccessFunction(data, status, headers, config) {
 
                 $scope.routes = data.data;
 
-                for(var i = 0; i < $scope.routes.length; i++){
+                for (var i = 0; i < $scope.routes.length; i++) {
 
                     var route = $scope.routes[i];
                     $scope.routes[i].map = {
@@ -22,7 +22,7 @@ define(['trackangle', 'route', 'google-maps'], function (trackangle) {
                         markers: []
                     };
 
-                    for(var j = 0; j < route.places.length; j++) {
+                    for (var j = 0; j < route.places.length; j++) {
                         var place = route.places[j];
                         var marker = {
                             id: j,
@@ -41,15 +41,18 @@ define(['trackangle', 'route', 'google-maps'], function (trackangle) {
             }
         };
 
-        $scope.delete_route = function(url_title){
-            Route.delete(url_title).then(deleteSuccessFunction, deleteErrorFunction);
+        $scope.delete_route = function (url_title) {
+            RouteService.delete(url_title).then(deleteSuccessFunction, deleteErrorFunction);
             function deleteSuccessFunction(data, status, headers, config) {
                 $scope.init();
             }
+
             function deleteErrorFunction(data, status, headers, config) {
                 console.log("An error occured: " + data.error);
             }
         }
 
-  }]);
+    };
+    RoutesController.$inject = ['$scope', 'RouteService'];
+    return RoutesController;
 });

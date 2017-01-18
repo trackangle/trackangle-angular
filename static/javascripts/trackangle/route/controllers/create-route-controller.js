@@ -1,15 +1,5 @@
-var dependencies =[
-    'trackangle',
-    'route',
-    'place',
-    'angular-google-maps',
-    'jquery'
-    //'authentication'
-];
-
-define(dependencies, function (trackangle) {
-    trackangle.register.controller('CreateRouteController', ['$scope', '$routeParams', '$window', 'Route', 'Place', function ($scope, $routeParams, $window, Route, Place){
-
+define(['jquery'], function () {
+    function CreateRouteController($scope, $routeParams, RouteService, PlaceService) {
 
         var clickedMarkerId = -1;
         var accomodation = 0;
@@ -23,7 +13,7 @@ define(dependencies, function (trackangle) {
         $scope.route = {};
 
 
-        $scope.init = function() {
+        $scope.init = function () {
 
             $scope.placeTypes = {
                 'accomodation': accomodation,
@@ -43,7 +33,7 @@ define(dependencies, function (trackangle) {
                 zoom: 12,
                 markers: [],
                 markersEvents: {
-                    click: function(marker, eventName, model) {
+                    click: function (marker, eventName, model) {
                         clickedMarkerId = model.id;
                         console.log(model);
                         $scope.map.window.templateParameter = {
@@ -59,19 +49,19 @@ define(dependencies, function (trackangle) {
                 window: {
                     marker: {},
                     show: false,
-                    closeClick: function() {
+                    closeClick: function () {
                         this.show = false;
                     },
                     options: {}, // define when map is ready
-                    templateUrl: '/static/javascripts/angular/route/templates/infowindow.html',
+                    templateUrl: '/static/javascripts/trackangle/route/templates/infowindow.html',
                 },
                 searchbox: {
-                    template: '/static/javascripts/angular/route/templates/searchbox.html',
+                    template: '/static/javascripts/trackangle/route/templates/searchbox.html',
                     options: {
-                        autocomplete:true,
+                        autocomplete: true,
                         types: ['establishment']
                     },
-                    position:"TOP_LEFT",
+                    position: "TOP_LEFT",
                     control: {},
                     events: {
                         place_changed: function (searchBox) {
@@ -83,7 +73,7 @@ define(dependencies, function (trackangle) {
                             }
                             console.log(place);
                             var name = "";
-                            if(place.name){
+                            if (place.name) {
                                 name = place.name;
                             }
 
@@ -94,13 +84,13 @@ define(dependencies, function (trackangle) {
                                 location_lng: place.geometry.location.lng(),
                                 type: $scope.get_right_navbar()
                             };
-                            Place.place(place.place_id).then(function successHandler(data, status, headers, config){
-                                if(data.data){
+                            PlaceService.place(place.place_id).then(function successHandler(data, status, headers, config) {
+                                if (data.data) {
                                     placeObj = data.data;
                                 }
                                 addMarker(placeObj);
-                            }, function errorHandler(data, status, headers, config){
-                                 console.log("An error occured: " + data.error);
+                            }, function errorHandler(data, status, headers, config) {
+                                console.log("An error occured: " + data.error);
                             });
                         }
                     }
@@ -108,7 +98,7 @@ define(dependencies, function (trackangle) {
             };
 
 
-            Route.route($routeParams.url_title).then(getSuccessFunction, errorFunction);
+            RouteService.route($routeParams.url_title).then(getSuccessFunction, errorFunction);
             function getSuccessFunction(data, status, headers, config) {
                 $scope.route = data.data;
                 console.log($scope.route);
@@ -116,28 +106,29 @@ define(dependencies, function (trackangle) {
                 $scope.changeCity(0);
 
             }
+
             function errorFunction(data, status, headers, config) {
                 console.log("An error occured: " + data.error);
             }
         };
 
 
-        function addMarker(place){
+        function addMarker(place) {
 
             $scope.loading = true;
             place.city = $scope.route.cities[currentCityIndex];
-            Route.addPlace($scope.route.url_title, place).then(function successHandler(data, status, headers, config){
+            RouteService.addPlace($scope.route.url_title, place).then(function successHandler(data, status, headers, config) {
                 console.log(place);
                 var comment = "";
-                if(place.comments && place.comments.text){
+                if (place.comments && place.comments.text) {
                     comment = place.comments.text;
                 }
                 var budget = "";
-                if(place.budgets && place.budgets.budget){
+                if (place.budgets && place.budgets.budget) {
                     budget = place.budgets.budget;
                 }
                 var rating = "";
-                if(place.ratings && place.ratings.rating){
+                if (place.ratings && place.ratings.rating) {
                     rating = place.ratings.rating;
                 }
                 var marker = {
@@ -152,33 +143,33 @@ define(dependencies, function (trackangle) {
                 $scope.map.markers.push(marker);
                 $scope.route.places.push(place);
                 $scope.loading = false;
-            },function errorHandler(data, status, headers, config){
+            }, function errorHandler(data, status, headers, config) {
                 console.log("An error occured: " + data.error);
             })
         }
 
-        $scope.removeMarker = function(){
+        $scope.removeMarker = function () {
             $scope.loading = true;
-            var place = $scope.route.places.filter(function( obj ) {
-                    return obj.id == clickedMarkerId;
-                })[0];
-            Route.removePlace($scope.route.url_title, place).then(function successHandler(data, status, headers, config){
+            var place = $scope.route.places.filter(function (obj) {
+                return obj.id == clickedMarkerId;
+            })[0];
+            RouteService.removePlace($scope.route.url_title, place).then(function successHandler(data, status, headers, config) {
 
-                $scope.map.markers = $scope.map.markers.filter(function( obj ) {
+                $scope.map.markers = $scope.map.markers.filter(function (obj) {
                     return obj.id != clickedMarkerId;
                 });
-                $scope.route.places = $scope.route.places.filter(function( obj ) {
+                $scope.route.places = $scope.route.places.filter(function (obj) {
                     return obj.id != clickedMarkerId;
                 });
                 $scope.map.window.closeClick();
                 $scope.loading = false;
-            }, function errorHandler(data, status, headers, config){
+            }, function errorHandler(data, status, headers, config) {
                 console.log("An error occured: " + data.error);
             });
 
         };
 
-        $scope.changeCity = function(cityIndex){
+        $scope.changeCity = function (cityIndex) {
 
             currentCityIndex = cityIndex;
             var city = $scope.route.cities[cityIndex];
@@ -194,16 +185,16 @@ define(dependencies, function (trackangle) {
             }
         };
 
-        $scope.isCitySelected = function(id){
+        $scope.isCitySelected = function (id) {
             return $scope.route.cities[currentCityIndex].id === id;
         };
 
 
-        $scope.savePlaceComment = function(){
+        $scope.savePlaceComment = function () {
             $scope.loading = true;
-            for(var i = 0; i < $scope.map.markers.length; i++){
+            for (var i = 0; i < $scope.map.markers.length; i++) {
                 var marker_id = $scope.map.markers[i].id;
-                if(marker_id == clickedMarkerId){
+                if (marker_id == clickedMarkerId) {
                     $scope.map.markers[i].comment = $scope.map.window.templateParameter.comment;
                     break;
                 }
@@ -211,18 +202,18 @@ define(dependencies, function (trackangle) {
             var commentJSON = {
                 text: $scope.map.window.templateParameter.comment
             };
-            Place.createComment(commentJSON, clickedMarkerId).then(function (data, status, headers, config) {
+            PlaceService.createComment(commentJSON, clickedMarkerId).then(function (data, status, headers, config) {
                 $scope.loading = false;
             }, function (data, status, headers, config) {
                 console.log(data);
             });
         };
 
-        $scope.savePlaceRating = function(){
+        $scope.savePlaceRating = function () {
             $scope.loading = true;
-            for(var i = 0; i < $scope.map.markers.length; i++){
+            for (var i = 0; i < $scope.map.markers.length; i++) {
                 var marker_id = $scope.map.markers[i].id;
-                if(marker_id == clickedMarkerId){
+                if (marker_id == clickedMarkerId) {
                     $scope.map.markers[i].rating = $scope.map.window.templateParameter.rating;
                     break;
                 }
@@ -230,18 +221,18 @@ define(dependencies, function (trackangle) {
             var ratingJSON = {
                 rate: $scope.map.window.templateParameter.rating
             };
-            Place.createRating(ratingJSON, clickedMarkerId).then(function (data, status, headers, config) {
+            PlaceService.createRating(ratingJSON, clickedMarkerId).then(function (data, status, headers, config) {
                 $scope.loading = false;
             }, function (data, status, headers, config) {
                 console.log(data);
             });
         };
 
-        $scope.savePlaceBudget = function(){
+        $scope.savePlaceBudget = function () {
             $scope.loading = true;
-            for(var i = 0; i < $scope.map.markers.length; i++){
+            for (var i = 0; i < $scope.map.markers.length; i++) {
                 var marker_id = $scope.map.markers[i].id;
-                if(marker_id == clickedMarkerId){
+                if (marker_id == clickedMarkerId) {
                     $scope.map.markers[i].budget = $scope.map.window.templateParameter.budget;
                     break;
                 }
@@ -249,7 +240,7 @@ define(dependencies, function (trackangle) {
             var budgetJSON = {
                 budget: $scope.map.window.templateParameter.budget
             };
-            Place.createBudget(budgetJSON, clickedMarkerId).then(function (data, status, headers, config) {
+            PlaceService.createBudget(budgetJSON, clickedMarkerId).then(function (data, status, headers, config) {
                 $scope.loading = false;
             }, function (data, status, headers, config) {
                 console.log(data);
@@ -259,17 +250,17 @@ define(dependencies, function (trackangle) {
 
         var selected = this;
         $scope.set_right_navbar = function (placetype, city) {
-            if(!city){
+            if (!city) {
                 city = $scope.route.cities[0];
             }
             console.log($scope.route.places);
-            var places = $scope.route.places.filter(function( obj ) {
+            var places = $scope.route.places.filter(function (obj) {
                 return obj.city.id == $scope.route.cities[currentCityIndex].id;
             });
             $scope.map.markers = [];
-            for(var i = 0; i < places.length; i++){
+            for (var i = 0; i < places.length; i++) {
                 var place = places[i];
-                if(place.type == placetype) {
+                if (place.type == placetype) {
 
                     var marker = {
                         id: place.id,
@@ -289,13 +280,15 @@ define(dependencies, function (trackangle) {
 
             selected.li = placetype;
         };
-        $scope.get_partial = function (){
-            return "/static/javascripts/angular/route/templates/"+selected.li+".html";
+        $scope.get_partial = function () {
+            return "/static/javascripts/angular/route/templates/" + selected.li + ".html";
         };
-        $scope.get_right_navbar = function (){
+        $scope.get_right_navbar = function () {
             return selected.li;
         };
+    }
 
-    }]);
+    CreateRouteController.$inject = ['$scope', '$routeParams', 'RouteService', 'PlaceService'];
+    return CreateRouteController;
 });
 
