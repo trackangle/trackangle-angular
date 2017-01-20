@@ -18,6 +18,9 @@ define([], function () {
             },
             createRating: function saveRating(rating, place_id) {
                 return $http.post('/api/v1/place/' + place_id + "/set_rating/", rating);
+            },
+            routes: function getRoutes(place_id) {
+                return $http.get('/api/v1/place/' + place_id + "/get_routes/");
             }
         };
         return service;

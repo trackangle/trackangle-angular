@@ -35,7 +35,6 @@ define(['jquery'], function () {
                 markersEvents: {
                     click: function (marker, eventName, model) {
                         clickedMarkerId = model.id;
-                        console.log(model);
                         $scope.map.window.templateParameter = {
                             name: model.name,
                             rating: model.rating,
@@ -71,7 +70,6 @@ define(['jquery'], function () {
                                 console.log('no place data');
                                 return;
                             }
-                            console.log(place);
                             var name = "";
                             if (place.name) {
                                 name = place.name;
@@ -101,8 +99,6 @@ define(['jquery'], function () {
             RouteService.route($routeParams.url_title).then(getSuccessFunction, errorFunction);
             function getSuccessFunction(data, status, headers, config) {
                 $scope.route = data.data;
-                console.log($scope.route);
-
                 $scope.changeCity(0);
 
             }
@@ -118,18 +114,17 @@ define(['jquery'], function () {
             $scope.loading = true;
             place.city = $scope.route.cities[currentCityIndex];
             RouteService.addPlace($scope.route.url_title, place).then(function successHandler(data, status, headers, config) {
-                console.log(place);
                 var comment = "";
-                if (place.comments && place.comments.text) {
-                    comment = place.comments.text;
+                if (place.comments && place.comments.length == 1 && place.comments[0].text) {
+                    comment = place.comments[0].text;
                 }
                 var budget = "";
-                if (place.budgets && place.budgets.budget) {
-                    budget = place.budgets.budget;
+                if (place.budgets && place.budgets.length == 1 && place.budgets[0].budget) {
+                    budget = place.budgets[0].budget;
                 }
                 var rating = "";
-                if (place.ratings && place.ratings.rating) {
-                    rating = place.ratings.rating;
+                if (place.ratings && place.ratings.length == 1 && place.ratings[0].rating) {
+                    rating = place.ratings[0].rating;
                 }
                 var marker = {
                     id: place.id,
@@ -253,13 +248,24 @@ define(['jquery'], function () {
             if (!city) {
                 city = $scope.route.cities[0];
             }
-            console.log($scope.route.places);
             var places = $scope.route.places.filter(function (obj) {
                 return obj.city.id == $scope.route.cities[currentCityIndex].id;
             });
             $scope.map.markers = [];
             for (var i = 0; i < places.length; i++) {
                 var place = places[i];
+                var comment = "";
+                if (place.comments.length == 1 && place.comments[0].text) {
+                    comment = place.comments[0].text;
+                }
+                var budget = "";
+                if (place.budgets.length == 1 && place.budgets[0].budget) {
+                    budget = place.budgets[0].budget;
+                }
+                var rating = "";
+                if (place.ratings.length == 1 && place.ratings[0].rate) {
+                    rating = place.ratings[0].rate;
+                }
                 if (place.type == placetype) {
 
                     var marker = {
@@ -267,9 +273,9 @@ define(['jquery'], function () {
                         name: place.name,
                         latitude: place.location_lat,
                         longitude: place.location_lng,
-                        comment: place.comments.text,
-                        budget: place.budgets.budget,
-                        rating: place.ratings.rate
+                        comment: comment,
+                        budget: budget,
+                        rating: rating
                     };
                     $scope.map.markers.push(marker);
                 }

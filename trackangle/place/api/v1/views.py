@@ -1,6 +1,7 @@
 from rest_framework import viewsets, response, status
 
 from trackangle.place.api.v1.serializers import PlaceSerializer, CommentSerializer, BudgetSerializer, RatingSerializer
+from trackangle.route.api.v1.serializers import RouteSerializer
 from trackangle.route.models import RouteHasPlaces
 from trackangle.place.models import Place, Comment, Budget, Rating
 from django.db import IntegrityError, transaction
@@ -29,25 +30,23 @@ class PlaceViewSet(viewsets.ModelViewSet):
         data = None
         try:
             place = Place.objects.get(pk=id)
-            context = self.get_serializer_context()
-            serializer = self.serializer_class(place, context=context)
+            serializer = self.serializer_class(place)
             data = serializer.data
         except:
             print("Place does not exist")
         return response.Response(data)
 
-    @list_route(methods=['get'], permission_classes=[IsAuthenticated])
-    def set_rating(self, request):
-        serializer = RatingSerializer(data=request.data)
-        if serializer.is_valid():
-            rate = serializer.validated_data.pop('rate')
-            rating, created = Rating.objects.get_or_create(rater=request.user, place_id = id, defaults={"rate":rate})
-            rating.rate = rate
-            rating.save()
-            content = {"id": rating.id}
-            return response.Response(content, status=status.HTTP_201_CREATED)
-        return response.Response(status=status.HTTP_400_BAD_REQUEST)
 
+    @detail_route(methods=['get'])
+    def get_routes(self, request, id=None, *args, **kwargs):
+        place = Place.objects.get(pk=id)
+        route_has_places = RouteHasPlaces.objects.filter(place=place)
+        print(len(route_has_places))
+        routes = []
+        for rhp in route_has_places:
+            routes.append(rhp.route)
+        serializer = RouteSerializer(routes, many=True)
+        return response.Response(serializer.data)
 
     @detail_route(methods=['post'], permission_classes=[IsAuthenticated])
     def set_comment(self, request, id=None, *args, **kwargs):

@@ -1,5 +1,6 @@
 define([],function(){
   function config($routeProvider, $locationProvider, $httpProvider) {
+
       $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
       $httpProvider.defaults.xsrfCookieName = 'csrftoken';
       $locationProvider.html5Mode(true);
@@ -15,12 +16,12 @@ define([],function(){
               controller: 'LoginController'
           })
           .when("/routes", {
-              templateUrl: '/static/javascripts/trackangle/route/templates/routes.html',
-              controller: 'RoutesController'
+              templateUrl: '/static/javascripts/trackangle/route/templates/dashboard.html',
+              controller: 'DashboardController'
           })
           .when("/route/create/:url_title?", {
-              templateUrl: '/static/javascripts/trackangle/route/templates/route_essentials.html',
-              controller: 'RouteEssentialsController'
+              templateUrl: '/static/javascripts/trackangle/route/templates/route_basics.html',
+              controller: 'RouteBasicsController'
           })
           .when("/route/create/details/:url_title", {
               templateUrl: '/static/javascripts/trackangle/route/templates/create_route.html',
@@ -30,6 +31,10 @@ define([],function(){
           .when("/route/:url_title", {
               templateUrl: '/static/javascripts/trackangle/route/templates/route_details.html',
               controller: 'RouteController'
+          })
+          .when("/place/:id", {
+              templateUrl: '/static/javascripts/trackangle/place/templates/place_details.html',
+              controller: 'PlaceController'
           })
           .otherwise({redirectTo: "/routes"});
 

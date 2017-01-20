@@ -54,41 +54,42 @@ class PlaceSerializer(serializers.ModelSerializer):
     ratings = serializers.SerializerMethodField()
     budgets = serializers.SerializerMethodField()
     city = CitySerializer(many=False)
+    #routes = serializers.SerializerMethodField()
 
     class Meta:
         model = Place
-        fields = ('id', 'name', 'location_lat', 'location_lng', 'type', 'comments', 'ratings', 'budgets', 'city')
+        fields = ('id', 'name', 'location_lat', 'location_lng', 'type', 'comments', 'ratings', 'budgets', 'city', 'route_set')
 
     def get_comments(self, obj):
         #TODO: multiple/single comment/rating/budget issue must be solved with good practice
         comments = []
-        if self.context and 'request' in self.context:
-            comments = Comment.objects.filter(place_id=obj.id, author_id=self.context['request'].user.id)
+        if self.context and 'owner_id' in self.context:
+            comments = Comment.objects.filter(place_id=obj.id, author_id=self.context['owner_id'])
         else:
             comments = Comment.objects.filter(place_id=obj.id)
         if len(comments) != 0:
-            serialized = CommentSerializer(comments[0])
+            serialized = CommentSerializer(comments, many=True)
             return serialized.data
-        return {}
+        return []
 
     def get_ratings(self, obj):
         ratings = []
-        if self.context and 'request' in self.context:
-            ratings = Rating.objects.filter(place_id=obj.id, rater_id=self.context['request'].user.id)
+        if self.context and 'owner_id' in self.context:
+            ratings = Rating.objects.filter(place_id=obj.id, rater_id=self.context['owner_id'])
         else:
             ratings = Rating.objects.filter(place_id=obj.id)
         if len(ratings) != 0:
-            serialized = RatingSerializer(ratings[0])
+            serialized = RatingSerializer(ratings, many=True)
             return serialized.data
-        return {}
+        return []
 
     def get_budgets(self, obj):
         budgets = []
-        if self.context and 'request' in self.context:
-            budgets = Budget.objects.filter(place_id=obj.id, owner_id=self.context['request'].user.id)
+        if self.context and 'owner_id' in self.context:
+            budgets = Budget.objects.filter(place_id=obj.id, owner_id=self.context['owner_id'])
         else:
             budgets = Budget.objects.filter(place_id=obj.id)
         if len(budgets) != 0:
-            serialized = BudgetSerializer(budgets[0])
+            serialized = BudgetSerializer(budgets, many=True)
             return serialized.data
-        return {}
+        return []

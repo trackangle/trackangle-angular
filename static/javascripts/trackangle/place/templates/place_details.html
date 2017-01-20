@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <div id="map"></div>
+    <div class="place-basics">
+        <h1>{{place.name}}</h1>
+        <span>{{routes.length}} Routes</span>
+        <div rating-directive rate="avg_rating" maxrate="max_rate"></div>
+    </div>
+    <div class="place-photos">
+        <div style="display: inline-block; border: 1px white; width:640px; height:640px; background-color: white;">
+            <img ng-src="{{photos[0]}}">
+        </div>
+        <div style="display: inline-block; border: 1px white; width:640px; height:640px; background-color: white;">
+            <div>
+                <img ng-src="{{photos[1]}}">
+            </div>
+            <div>
+                <img ng-src="{{photos[2]}}">
+            </div>
+        </div>
+        <div class="place-address" style="display: inline-block;">
+            <span>{{gplace.formatted_address}}</span>
+            <br>
+            <span>{{gplace.formatted_phone_number}}</span>
+        </div>
+    </div>
+    <div>
+        <span>Routes containing {{place.name}}</span>
+        <div ng-repeat="route in routes">
+            {{route.title}}-{{route.owner.username}}-
+            <span ng-repeat="p in route.places | filter:{id: place.id}">{{p.comments[0].text}}-{{p.comments[0].created}}</span>
+        </div>
+    </div>
+
+
+
+</div>
+</body>
+</html>

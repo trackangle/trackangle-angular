@@ -1,5 +1,5 @@
 define([], function () {
-    var RouteEssentialsController = function($scope, $routeParams, $window, RouteService) {
+    var RouteBasicsController = function($scope, $routeParams, $window, RouteService) {
 
         $scope.init = function () {
             if ($routeParams.url_title) {
@@ -72,7 +72,7 @@ define([], function () {
         }
 
     };
-    RouteEssentialsController.$inject = ['$scope', '$routeParams', '$window', 'RouteService'];
-    return RouteEssentialsController;
+    RouteBasicsController.$inject = ['$scope', '$routeParams', '$window', 'RouteService'];
+    return RouteBasicsController;
 });
 

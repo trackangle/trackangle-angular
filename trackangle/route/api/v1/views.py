@@ -87,8 +87,8 @@ class RouteViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, url_title):
         route = get_object_or_404(self.queryset, url_title=url_title)
         try:
-            context = self.get_serializer_context()
-            serializer = self.serializer_class(route, context=context)
+            #context = self.get_serializer_context()
+            serializer = self.serializer_class(route)
             return response.Response(serializer.data)
         except Exception as e:
             print(str(e))

@@ -1,6 +1,6 @@
 define([], function () {
 
-    var RoutesController = function($scope, RouteService) {
+    var DashboardController = function($scope, RouteService) {
 
         $scope.init = function () {
             RouteService.routes().then(getSuccessFunction, getErrorFunction);
@@ -53,6 +53,6 @@ define([], function () {
         }
 
     };
-    RoutesController.$inject = ['$scope', 'RouteService'];
-    return RoutesController;
+    DashboardController.$inject = ['$scope', 'RouteService'];
+    return DashboardController;
 });

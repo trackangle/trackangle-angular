@@ -6,7 +6,8 @@ from trackangle.authentication.serializers import AccountSerializer
 
 class RouteSerializer(serializers.ModelSerializer):
     cities = CitySerializer(many=True)
-    places = PlaceSerializer(many=True)
+    #places = PlaceSerializer(many=True)
+    places = serializers.SerializerMethodField()
     url_title = serializers.SlugField()
     owner = AccountSerializer(required=False, read_only=True)
 
@@ -17,3 +18,5 @@ class RouteSerializer(serializers.ModelSerializer):
         read_only_fields = ('created', 'updated',)
 
 
+    def get_places(self, obj):
+        return PlaceSerializer(obj.places.all(), many=True, context={'owner_id': obj.owner.id}).data
